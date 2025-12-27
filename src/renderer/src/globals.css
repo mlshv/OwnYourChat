@@ -1,0 +1,134 @@
+@import 'tailwindcss';
+
+@font-face {
+  font-family: 'Libre Caslon Condensed';
+  src: url('./assets/LibreCaslonCondensed.woff2') format('woff2-variations');
+  font-weight: 1 999;
+  font-style: normal;
+  font-display: swap;
+}
+
+@theme {
+  --font-serif:
+    'Libre Caslon Condensed', ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif;
+
+  --color-f1: oklch(var(--f1));
+  --color-f2: oklch(var(--f2));
+  --color-f3: oklch(var(--f3));
+  --color-f4: oklch(var(--f4));
+  --color-b1: oklch(var(--b1));
+  --color-b2: oklch(var(--b2));
+  --color-b3: oklch(var(--b3));
+  --color-b4: oklch(var(--b4));
+}
+
+* {
+  corner-shape: squircle;
+}
+
+:root {
+  --f1: 0% 0 0;
+  --f2: 55.6% 0 0;
+  --f3: 65% 0 0;
+  --f4: 90% 0 0;
+  --b1: 100% 0 0;
+  --b2: 97% 0 0;
+  --b3: 92% 0 0;
+  --b4: 80% 0 0;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --f1: 100% 0 0;
+    --f2: 90.3% 0 0;
+    --f3: 55% 0 0;
+    --f4: 33.2% 0 0;
+    --b1: 11.8% 0 0;
+    --b2: 20% 0 0;
+    --b3: 25% 0 0;
+    --b4: 30% 0 0;
+  }
+}
+
+body {
+  color: oklch(var(--f1));
+  background: oklch(var(--b1));
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: oklch(var(--f3));
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: oklch(var(--f2));
+}
+
+/* Electron window drag region */
+.drag-region {
+  -webkit-app-region: drag;
+}
+
+.no-drag {
+  -webkit-app-region: no-drag;
+}
+
+/* Prose styling for markdown content */
+.prose {
+  max-width: none;
+}
+
+.prose h1 {
+  @apply text-2xl mb-2 font-bold;
+}
+
+.prose h2 {
+  @apply text-xl mb-1 mt-4 font-bold;
+}
+
+.prose p {
+  margin-bottom: 0.5rem;
+}
+
+.prose p {
+  margin-bottom: 0.5rem;
+}
+
+.prose p:not(:first-child) {
+  margin-top: 0.5rem;
+}
+
+.prose hr {
+  @apply my-4;
+  opacity: 0.15;
+}
+
+.prose pre {
+  background: oklch(var(--b3));
+  border-radius: 0.5rem;
+  padding: 1rem;
+  overflow-x: auto;
+}
+
+.prose code {
+  background: oklch(var(--b3));
+  padding: 0.125rem 0.25rem;
+  border-radius: 0.25rem;
+  font-size: 0.875em;
+}
+
+.prose pre code {
+  background: transparent;
+  padding: 0;
+}

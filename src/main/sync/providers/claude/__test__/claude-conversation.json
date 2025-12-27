@@ -1,0 +1,1526 @@
+{
+  "uuid": "adc92776-9458-48d3-946e-1ab69e3516b4",
+  "name": "Cat identification",
+  "summary": "",
+  "created_at": "2025-12-26T09:23:41.124823+00:00",
+  "updated_at": "2025-12-26T09:26:22.490277+00:00",
+  "settings": {
+    "enabled_web_search": true,
+    "enabled_mcp_tools": {
+      "local:meeting-notes:Get-Transcript-5f5ddc2da724e48431f387627bc6bcd8": true,
+      "local:meeting-notes:List-Transcripts-c5d3ac2c8434b18faa796ab6141e48e1": true,
+      "local:meeting-notes:List-Transcripts-ef392afb81a6a6db34c79aad740960e8": true,
+      "local:meeting-notes:Query-Transcripts-9fb4db2a5912e1fd9be6130956e79e12": true,
+      "local:meeting-notes:Search-Transcripts-43f37b949503349dc970cf4ad1cbb8bd": true
+    },
+    "compass_mode": "advanced",
+    "enabled_monkeys_in_a_barrel": true,
+    "enabled_saffron": true,
+    "preview_feature_uses_artifacts": true,
+    "enabled_turmeric": true
+  },
+  "is_starred": false,
+  "is_temporary": false,
+  "platform": "CLAUDE_AI",
+  "current_leaf_message_uuid": "019b59fa-f08b-776d-985d-73c46f749e2d",
+  "chat_messages": [
+    {
+      "uuid": "019b59f8-9b60-70c0-8efe-fa9bb1ca64c6",
+      "text": "",
+      "content": [
+        {
+          "start_timestamp": "2025-12-26T09:23:43.619771+00:00",
+          "stop_timestamp": "2025-12-26T09:23:43.619771+00:00",
+          "type": "text",
+          "text": "What is this cat?",
+          "citations": []
+        }
+      ],
+      "sender": "human",
+      "index": 0,
+      "created_at": "2025-12-26T09:23:43.624558+00:00",
+      "updated_at": "2025-12-26T09:23:43.624558+00:00",
+      "truncated": false,
+      "attachments": [],
+      "files": [
+        {
+          "file_kind": "image",
+          "file_uuid": "6e529d06-f23d-47bd-9386-b60108ade3d2",
+          "file_name": "1766741017983_image.png",
+          "created_at": "2025-12-26T09:23:39.134772+00:00",
+          "thumbnail_url": "/api/bd9eed63-00ac-4bc8-97ad-65632f3b287e/files/6e529d06-f23d-47bd-9386-b60108ade3d2/thumbnail",
+          "preview_url": "/api/bd9eed63-00ac-4bc8-97ad-65632f3b287e/files/6e529d06-f23d-47bd-9386-b60108ade3d2/preview",
+          "thumbnail_asset": {
+            "url": "/api/bd9eed63-00ac-4bc8-97ad-65632f3b287e/files/6e529d06-f23d-47bd-9386-b60108ade3d2/thumbnail",
+            "file_variant": "thumbnail",
+            "primary_color": "4b5217",
+            "image_width": 400,
+            "image_height": 267
+          },
+          "preview_asset": {
+            "url": "/api/bd9eed63-00ac-4bc8-97ad-65632f3b287e/files/6e529d06-f23d-47bd-9386-b60108ade3d2/preview",
+            "file_variant": "preview",
+            "primary_color": "4b5217",
+            "image_width": 1344,
+            "image_height": 896
+          }
+        }
+      ],
+      "files_v2": [
+        {
+          "success": true,
+          "file_kind": "image",
+          "file_uuid": "6e529d06-f23d-47bd-9386-b60108ade3d2",
+          "file_name": "1766741017983_image.png",
+          "created_at": "2025-12-26T09:23:39.134772+00:00",
+          "thumbnail_url": "/api/bd9eed63-00ac-4bc8-97ad-65632f3b287e/files/6e529d06-f23d-47bd-9386-b60108ade3d2/thumbnail",
+          "preview_url": "/api/bd9eed63-00ac-4bc8-97ad-65632f3b287e/files/6e529d06-f23d-47bd-9386-b60108ade3d2/preview",
+          "thumbnail_asset": {
+            "url": "/api/bd9eed63-00ac-4bc8-97ad-65632f3b287e/files/6e529d06-f23d-47bd-9386-b60108ade3d2/thumbnail",
+            "file_variant": "thumbnail",
+            "primary_color": "4b5217",
+            "image_width": 400,
+            "image_height": 267
+          },
+          "preview_asset": {
+            "url": "/api/bd9eed63-00ac-4bc8-97ad-65632f3b287e/files/6e529d06-f23d-47bd-9386-b60108ade3d2/preview",
+            "file_variant": "preview",
+            "primary_color": "4b5217",
+            "image_width": 1344,
+            "image_height": 896
+          }
+        }
+      ],
+      "sync_sources": [],
+      "parent_message_uuid": "00000000-0000-4000-8000-000000000000"
+    },
+    {
+      "uuid": "019b59f8-9b60-70c0-8efe-fa9cb05637a0",
+      "text": "",
+      "content": [
+        {
+          "start_timestamp": "2025-12-26T09:23:46.616272+00:00",
+          "stop_timestamp": "2025-12-26T09:23:50.249299+00:00",
+          "type": "text",
+          "text": " This is a **Bengal cat** — a domestic breed created by crossing domestic cats with the Asian leopard cat. The distinctive features visible here are classic Bengal traits: the striking rosette/spotted coat pattern with that warm golden-brown base color, the muscular athletic build, the relatively large ears, and that characteristic ringed tail with a dark tip.\n\nBengals are known for being highly active, intelligent, and often quite vocal. They tend to love water more than most cats and have a reputation for being a bit dog-like in their playfulness and trainability.\n\nGorgeous example in this photo — that coat pattern is particularly well-defined.",
+          "citations": []
+        }
+      ],
+      "sender": "assistant",
+      "index": 1,
+      "created_at": "2025-12-26T09:23:50.294469+00:00",
+      "updated_at": "2025-12-26T09:23:50.294469+00:00",
+      "truncated": false,
+      "stop_reason": "stop_sequence",
+      "attachments": [],
+      "files": [],
+      "files_v2": [],
+      "sync_sources": [],
+      "parent_message_uuid": "019b59f8-9b60-70c0-8efe-fa9bb1ca64c6"
+    },
+    {
+      "uuid": "019b59f9-bf09-77fa-94a7-5b0680cac38c",
+      "text": "",
+      "content": [
+        {
+          "start_timestamp": "2025-12-26T09:24:58.296984+00:00",
+          "stop_timestamp": "2025-12-26T09:24:58.296984+00:00",
+          "type": "text",
+          "text": "What are the key facts should i know about bengals according to this document?",
+          "citations": []
+        }
+      ],
+      "sender": "human",
+      "index": 2,
+      "created_at": "2025-12-26T09:24:58.302739+00:00",
+      "updated_at": "2025-12-26T09:24:58.302739+00:00",
+      "truncated": false,
+      "attachments": [],
+      "files": [],
+      "files_v2": [
+        {
+          "success": true,
+          "file_kind": "document",
+          "file_uuid": "9f3716df-fec7-41d6-af09-ffe4ed0d3673",
+          "file_name": "bengal-standard.pdf",
+          "created_at": "2025-12-26T09:24:53.464102+00:00",
+          "thumbnail_asset": {
+            "url": "/api/bd9eed63-00ac-4bc8-97ad-65632f3b287e/files/9f3716df-fec7-41d6-af09-ffe4ed0d3673/thumbnail",
+            "file_variant": "thumbnail",
+            "primary_color": "ffffff",
+            "image_width": 313,
+            "image_height": 400
+          },
+          "document_asset": {
+            "url": "/api/bd9eed63-00ac-4bc8-97ad-65632f3b287e/files/9f3716df-fec7-41d6-af09-ffe4ed0d3673/document_pdf",
+            "file_variant": "original",
+            "page_count": 4
+          }
+        }
+      ],
+      "sync_sources": [],
+      "parent_message_uuid": "019b59f8-9b60-70c0-8efe-fa9cb05637a0"
+    },
+    {
+      "uuid": "019b59f9-bf09-77fa-94a7-5b073e793c1a",
+      "text": "",
+      "content": [
+        {
+          "start_timestamp": "2025-12-26T09:25:00.671068+00:00",
+          "stop_timestamp": "2025-12-26T09:25:10.987025+00:00",
+          "type": "text",
+          "text": " Based on this CFA show standard, here are the key facts about Bengals:\n\n**Physical Build**\nThe Bengal is a medium to large cat with a sleek, muscular build and substantial boning. Hindquarters sit slightly higher than shoulders. The head is a broad modified wedge, slightly small in proportion to the body, with high cheekbones. Eyes are large and prominent, conveying a \"nocturnal expression\" that contributes to their wild appearance.\n\n**Coat**\nThe coat is short, close-lying, soft, and luxurious — described as \"like no other.\" It may have a distinctive \"glitter\" effect, which is an iridescent shimmer caused by light reflection at the hair tips.\n\n**Patterns**\nThere are three main pattern types. Rosetted/Spotted features two-toned rosettes (dark outlines with lighter centers) in shapes like donut, paw print, or arrowhead, flowing horizontally. Marble is a modified classic tabby with horizontal or diagonal flow rather than circular — a \"stained glass\" effect is desirable. Charcoal adds dramatic spectacles and a darker \"cape\" on the dorsal side.\n\n**Colors**\nThe breed comes in a surprisingly wide range including brown (black) tabby, silver tabby, blue tabby, and the \"snow\" variations (seal lynx point, seal mink, seal sepia) which have cream/ivory ground colors. There are also AOV (any other variety) colors like chocolate, cinnamon, lilac, and fawn.\n\n**Temperament**\nAlert and active, with inquisitive, dependable dispositions.\n\n**Disqualifications**\nTail deformities, crossed eyes, cow hocking, or an unpatterned belly will disqualify a Bengal from showing.",
+          "citations": []
+        }
+      ],
+      "sender": "assistant",
+      "index": 3,
+      "created_at": "2025-12-26T09:25:11.017374+00:00",
+      "updated_at": "2025-12-26T09:25:11.017374+00:00",
+      "truncated": false,
+      "stop_reason": "stop_sequence",
+      "attachments": [],
+      "files": [],
+      "files_v2": [],
+      "sync_sources": [],
+      "parent_message_uuid": "019b59f9-bf09-77fa-94a7-5b0680cac38c"
+    },
+    {
+      "uuid": "019b59fa-ac74-735b-b62e-fe6eb08f352c",
+      "text": "",
+      "content": [
+        {
+          "start_timestamp": "2025-12-26T09:25:59.080448+00:00",
+          "stop_timestamp": "2025-12-26T09:25:59.080448+00:00",
+          "type": "text",
+          "text": "Bengal cats in history",
+          "citations": []
+        }
+      ],
+      "sender": "human",
+      "index": 4,
+      "created_at": "2025-12-26T09:25:59.085426+00:00",
+      "updated_at": "2025-12-26T09:25:59.085426+00:00",
+      "truncated": false,
+      "attachments": [],
+      "files": [],
+      "files_v2": [],
+      "sync_sources": [],
+      "parent_message_uuid": "019b59f9-bf09-77fa-94a7-5b073e793c1a"
+    },
+    {
+      "uuid": "019b59fa-ac74-735b-b62e-fe6f66c8e4e2",
+      "text": "",
+      "content": [
+        {
+          "start_timestamp": "2025-12-26T09:26:02.010234+00:00",
+          "stop_timestamp": "2025-12-26T09:26:04.776759+00:00",
+          "type": "text",
+          "text": "\n\nInteresting topic! Before I dive into research, a couple of quick questions to make sure I find what you're looking for:\n\n1. Are you interested in the modern breed history (how Bengals were developed starting in the 1960s-80s), the history of their wild ancestor the Asian leopard cat, or both?\n2. Any particular angle — like the science/genetics, the key people involved, or how they gained recognition from cat registries?",
+          "citations": []
+        }
+      ],
+      "sender": "assistant",
+      "index": 5,
+      "created_at": "2025-12-26T09:26:04.807941+00:00",
+      "updated_at": "2025-12-26T09:26:04.807941+00:00",
+      "truncated": false,
+      "stop_reason": "stop_sequence",
+      "attachments": [],
+      "files": [],
+      "files_v2": [],
+      "sync_sources": [],
+      "parent_message_uuid": "019b59fa-ac74-735b-b62e-fe6eb08f352c"
+    },
+    {
+      "uuid": "019b59fa-f08b-776d-985d-73c3a292c09c",
+      "text": "",
+      "content": [
+        {
+          "start_timestamp": "2025-12-26T09:26:16.529211+00:00",
+          "stop_timestamp": "2025-12-26T09:26:16.529211+00:00",
+          "type": "text",
+          "text": "Cultural or media appearances",
+          "citations": []
+        }
+      ],
+      "sender": "human",
+      "index": 6,
+      "created_at": "2025-12-26T09:26:16.539411+00:00",
+      "updated_at": "2025-12-26T09:26:16.539411+00:00",
+      "truncated": false,
+      "attachments": [],
+      "files": [],
+      "files_v2": [],
+      "sync_sources": [],
+      "parent_message_uuid": "019b59fa-ac74-735b-b62e-fe6f66c8e4e2"
+    },
+    {
+      "uuid": "019b59fa-f08b-776d-985d-73c46f749e2d",
+      "text": "",
+      "content": [
+        {
+          "start_timestamp": "2025-12-26T09:26:18.435715+00:00",
+          "stop_timestamp": "2025-12-26T09:26:19.567847+00:00",
+          "type": "text",
+          "text": "\n\nGot it — you're interested in Bengal cats appearing in culture and media. I'll start researching their presence in film, TV, advertising, social media fame, art, and any other cultural touchpoints.",
+          "citations": []
+        },
+        {
+          "start_timestamp": "2025-12-26T09:26:19.904503+00:00",
+          "stop_timestamp": "2025-12-26T09:26:22.191404+00:00",
+          "type": "tool_use",
+          "name": "launch_extended_search_task",
+          "input": {
+            "command": "Research Bengal cats in culture and media. Find information about: (1) Bengal cats appearing in films, TV shows, or commercials, (2) famous Bengal cats on social media or YouTube, (3) Bengal cats in advertising or as brand mascots, (4) Bengal cats owned by celebrities, (5) Bengal cats in art, literature, or other cultural representations, (6) any notable viral moments or cultural phenomena involving Bengal cats. Focus on specific named examples and documented appearances rather than general statements."
+          },
+          "message": "launch_extended_search_task"
+        },
+        {
+          "type": "tool_result",
+          "name": "launch_extended_search_task",
+          "content": [
+            {
+              "type": "text",
+              "text": "{\"task_id\": \"wf-1c5514ea-9cb8-49cc-a126-352763d88807\"}",
+              "uuid": "2562b813-3a6e-4fc6-87b9-1103e8abe353"
+            }
+          ],
+          "is_error": false
+        },
+        {
+          "start_timestamp": "2025-12-26T09:26:22.471091+00:00",
+          "stop_timestamp": "2025-12-26T09:26:22.471091+00:00",
+          "type": "text",
+          "text": "",
+          "citations": []
+        },
+        {
+          "type": "text",
+          "text": "Your research report on Bengal cats in culture and media is ready. It covers their Hollywood film history from 1991 to present, social media fame including accounts with millions of followers, high fashion appearances at Dolce & Gabbana, celebrity owners from Kristen Stewart to Paris Hilton, and viral moments that launched individual cats to internet stardom.",
+          "citations": []
+        },
+        {
+          "type": "tool_use",
+          "name": "artifacts",
+          "input": {
+            "id": "compass_artifact_wf-1c5514ea-9cb8-49cc-a126-352763d88807_text/markdown",
+            "type": "text/markdown",
+            "title": "Bengal Cats in Culture and Media: From Hollywood Films to Social Media Stardom",
+            "source": "c",
+            "command": "create",
+            "content": "# Bengal cats have carved a distinctive niche in culture and media\n\nThe spotted, wild-looking Bengal cat has become a cultural phenomenon far beyond cat fancy circles. From Hollywood films to high fashion runways, from viral internet fame to celebrity households, Bengals have achieved remarkable visibility across media platforms. Their striking leopard-like appearance and dog-like personalities have made them uniquely suited to entertainment, social media stardom, and luxury branding.\n\n## Hollywood discovered Bengals through \"One Fine Day\" with George Clooney\n\nThe Bengal cat's film history begins with **Proof** (1991), an Australian drama starring Hugo Weaving and Russell Crowe, which featured the first Bengal cat in a motion picture—a marble-patterned specimen. However, the breed's breakthrough came with **One Fine Day** (1996), where three Bengal kittens from Pat Killmaire's Aluren Cattery in New Jersey played \"Bob,\" a kitten adopted by George Clooney's daughter in the film. The production team specifically selected Bengals for their resilient temperament during demanding scenes through Central Park and water sequences. Behind the scenes, Jean Mill—founder of the Bengal breed—was originally contacted by producers but recommended Killmaire due to proximity to New York filming locations. Clooney reportedly asked to purchase one of the kittens but was told they were already spoken for.\n\nTelevision appearances span diverse genres. **The X-Files** episode \"Agua Mala\" (1999) featured a Bengal during a hurricane investigation scene. **My Name is Earl** dedicated an entire 2006 episode to a prize-winning Bengal named Sebastian Phillips Du Champs—the only TV episode with a Bengal as a central character. More recently, **Squid Game** (2021) included a poignant scene where protagonist Gi-hun shares a fish tail with a hungry Bengal cat before the deadly games begin. Netflix's **Living With Yourself** (2019) with Paul Rudd and Doja Cat's \"Go to Town\" music video (2018) also feature the breed prominently.\n\n## Social media created Bengal cat millionaires in followers\n\nThe most famous Bengal cat online is arguably **Suki Cat** (@sukiicat), with **2 million Instagram followers**. Owned by Canadian photographer Martina Gutfreund, Suki pioneered the \"adventure cat\" trend with stunning professional photographs in mountains, canoes, and forests across 13 countries. Her success spawned a 2020 book, *Travels of Suki the Adventure Cat*, and inspired countless cat owners to harness-train their pets for outdoor adventures.\n\n**Professor Pouncey** dominates TikTok with **4.1 million followers**, famous for riding in a heated basket on his owner Adam Hartman's ebike through Pennsylvania forests. His partnership with Insta360 cameras documented a dramatic viral moment when he leaped from his basket and went temporarily missing—the rescue footage garnered millions of views.\n\n**Thor the Bengal** (@bengalthor) became an internet sensation in 2016 when his photographs hit Reddit's front page, with many viewers initially convinced the images were photoshopped. His emerald green eyes and coat combining leopard spots with tiger-like stripes earned him coverage across major media outlets and **207,000 Instagram followers**.\n\nThe most viewed Bengal-related content belongs to **Sparta \"The Mean Kitty\"**—a Bengal mix whose \"Mean Kitty Song\" video from 2007 has accumulated over **92 million views**, making it one of YouTube's most-watched cat videos. Owner Cory Williams became one of YouTube's first paid content creators partly due to Sparta's success.\n\n## Dolce & Gabbana put Bengals on the runway\n\nFashion designer **Stefano Gabbana** owns five Bengal cats—Congo, Zambia, Mali, Togo, and Kenya—named after African countries. His personal pets directly inspired Dolce & Gabbana's **Fall/Winter 2016-17 collection**, which featured photo-realistic Bengal cat prints on four of 90+ runway looks. The following year's men's collection expanded the Bengal aesthetic to pants, suits, hoodies, and faux fur jackets, showcasing the breed's luxury brand appeal.\n\nBeyond high fashion, Bengals appear in film production regularly. Hollywood animal trainers like Melissa Millett maintain working Bengal cats for film, TV, and advertising shoots, prizing the breed's trainability, stress tolerance, and striking visual appearance.\n\n## Celebrity ownership spans musicians to reality stars\n\n**Kristen Stewart** owned a Bengal named Max (nicknamed \"Jella-Man\") and brought him to movie sets including *The Messengers* (2007). She described their bond as \"a really strong, really weird co-dependent, almost Bella/Edward relationship.\" **Paris Hilton** adopted a Snow Bengal named Cutesie in December 2022 from Toronto breeder Mandy's Bengals—her family history with the breed extends to her parents and sister Nicky, who also owns Bengals.\n\nMusician **Ian Anderson** of Jethro Tull became an early celebrity Bengal advocate, owning Tiffen and an F2 male named Sambhar. **Machine Gun Kelly and Megan Fox** purchased a Bengal named Whiskey in 2022, drawing PETA criticism for buying rather than adopting. Fashion icon **Martha Stewart** added two brown spotted Bengals to her menagerie in 2022.\n\nThe record for most expensive Bengal cat belongs to socialite **Cindy Jackson**, who paid **$42,000** for a Bengal named Cato in 1998—a Guinness World Record at the time.\n\n## Literature and documentaries showcase Bengal culture\n\nThe Bengal cat has inspired dedicated fiction, most notably **\"The Bengal Identity\"** (2018) by Eileen Watkins, a mystery novel featuring a dyed Bengal show cat at the center of a murder investigation. The book won a Certificate of Excellence from the Cat Writers' Association. Author Jackie Morris, who owns Silverstorm Bengal cats in Wales, published *Cat Walk* (2014), featuring photographs of her Bengals exploring Pembrokeshire landscapes.\n\nThe breed's foundational literature comes from **Jean Mill** (1926-2018), who created the Bengal breed and authored *Guide to Owning a Bengal Cat* (1997) and *Breeding Better Bengals*. Mill, inducted into the TICA Hall of Fame in 2016, developed the breed partly hoping domestic leopard-lookalikes would reduce demand for wild cat furs.\n\nNetflix's documentary series **Cat People** (2021) featured **Maverick**, a surfing Bengal from California who became an emotional support animal for owners Kayla Tabish and Nick Heaney. The episode highlighted Bengals' unusual affinity for water—a trait that distinguishes them from most domestic cats.\n\n## Viral moments have made individual Bengals famous overnight\n\nThor the Bengal's 2016 Reddit explosion demonstrated how a single viral moment can transform a pet into a cultural phenomenon. More recently, **Basil the Bengal** went viral in 2024 when caught playing in a neighbor's sprinkler—the Reddit post garnered over 85,000 upvotes and Newsweek coverage.\n\nThe adventure cat movement, largely pioneered by Bengal owners like Suki Cat's Martina Gutfreund, has created a new content genre. TikTok's #bengalcat hashtag contains **115+ million posts**, with Bengal cats walking on leashes and their distinctive vocalizations driving major trending categories. The breed's chatty, dog-like communication style generates ongoing viral content, with **9.5+ million TikTok posts** specifically featuring Bengal meowing.\n\n**George the Bengal Cat** (@george_the_bengal_cat) represents the rescue side of Bengal fame—adopted at age seven with behavioral challenges, his squeaky \"talker\" videos have earned 535,000 TikTok followers and a viral video with 4.1 million likes.\n\n## Conclusion\n\nBengal cats occupy a unique cultural position at the intersection of exotic wildlife aesthetics and domestic pet accessibility. Their media presence follows a clear pattern: striking visual appearance drives initial attention, while their trainable, social personalities sustain ongoing fame. From Jean Mill's conservation-minded breeding program in the 1980s to Stefano Gabbana's runway tributes, the Bengal has evolved from exotic novelty to established cultural icon—one equally at home in a Squid Game scene, a mountain summit photograph, or a Milan fashion collection.",
+            "language": null,
+            "md_citations": [
+              {
+                "uuid": "10bf4bd4-ecb1-4588-9dad-d84ef7721852",
+                "title": "Cat Browser",
+                "url": "https://catbrowser.com/2021/09/10/bengals-breathtaking-photos-will-fill-you-with-travel-envy/",
+                "metadata": {
+                  "type": "generic_metadata",
+                  "uuid": "10bf4bd4-ecb1-4588-9dad-d84ef7721852",
+                  "preview_title": "Bengal’s breathtaking photos will fill you with travel envy - Cat Browser",
+                  "icon_url": "https://www.google.com/s2/favicons?sz=64&domain=catbrowser.com",
+                  "source": "Cat Browser"
+                },
+                "origin_tool_name": "web_search",
+                "sources": [
+                  {
+                    "title": "Bengal’s breathtaking photos will fill you with travel envy - Cat Browser",
+                    "subtitles": null,
+                    "url": "https://catbrowser.com/2021/09/10/bengals-breathtaking-photos-will-fill-you-with-travel-envy/",
+                    "resource_type": null,
+                    "icon_url": "https://www.google.com/s2/favicons?sz=64&domain=catbrowser.com",
+                    "source": "Cat Browser",
+                    "content_body": null,
+                    "uuid": "10bf4bd4-ecb1-4588-9dad-d84ef7721852"
+                  }
+                ],
+                "start_index": 332,
+                "end_index": 370
+              },
+              {
+                "uuid": "c10c1eba-8ab8-4092-ac87-4932859eb1e8",
+                "title": "Iconicbengalcatbreeders",
+                "url": "https://iconicbengalcatbreeders.com/bengal-cats-in-movies/",
+                "metadata": {
+                  "type": "generic_metadata",
+                  "uuid": "c10c1eba-8ab8-4092-ac87-4932859eb1e8",
+                  "preview_title": "Bengal Cats in Movies - Iconic Bengal Cat Breeders",
+                  "icon_url": "https://www.google.com/s2/favicons?sz=64&domain=iconicbengalcatbreeders.com",
+                  "source": "Iconicbengalcatbreeders"
+                },
+                "origin_tool_name": "web_search",
+                "sources": [
+                  {
+                    "title": "Bengal Cats in Movies - Iconic Bengal Cat Breeders",
+                    "subtitles": null,
+                    "url": "https://iconicbengalcatbreeders.com/bengal-cats-in-movies/",
+                    "resource_type": null,
+                    "icon_url": "https://www.google.com/s2/favicons?sz=64&domain=iconicbengalcatbreeders.com",
+                    "source": "Iconicbengalcatbreeders",
+                    "content_body": null,
+                    "uuid": "c10c1eba-8ab8-4092-ac87-4932859eb1e8"
+                  }
+                ],
+                "start_index": 567,
+                "end_index": 772
+              },
+              {
+                "uuid": "9e5945a0-ec84-43c1-8816-06dafbba9484",
+                "title": "iconicbengalcatbreeders",
+                "url": "https://iconicbengalcatbreeders.com/bengal-cats-in-movies/",
+                "metadata": {
+                  "type": "generic_metadata",
+                  "uuid": "9e5945a0-ec84-43c1-8816-06dafbba9484",
+                  "preview_title": "Bengal Cats In Movies",
+                  "icon_url": "https://www.google.com/s2/favicons?sz=64&domain=iconicbengalcatbreeders.com",
+                  "source": "iconicbengalcatbreeders"
+                },
+                "origin_tool_name": "web_fetch",
+                "sources": [
+                  {
+                    "title": "Bengal Cats In Movies",
+                    "subtitles": null,
+                    "url": "https://iconicbengalcatbreeders.com/bengal-cats-in-movies/",
+                    "resource_type": null,
+                    "icon_url": "https://www.google.com/s2/favicons?sz=64&domain=iconicbengalcatbreeders.com",
+                    "source": "iconicbengalcatbreeders",
+                    "content_body": null,
+                    "uuid": "9e5945a0-ec84-43c1-8816-06dafbba9484"
+                  }
+                ],
+                "start_index": 567,
+                "end_index": 772
+              },
+              {
+                "uuid": "783e891f-9c5b-438d-af66-0cdfec7b2fd6",
+                "title": "iconicbengalcatbreeders",
+                "url": "https://iconicbengalcatbreeders.com/bengal-cats-in-movies/",
+                "metadata": {
+                  "type": "generic_metadata",
+                  "uuid": "783e891f-9c5b-438d-af66-0cdfec7b2fd6",
+                  "preview_title": "Bengal Cats In Movies",
+                  "icon_url": "https://www.google.com/s2/favicons?sz=64&domain=iconicbengalcatbreeders.com",
+                  "source": "iconicbengalcatbreeders"
+                },
+                "origin_tool_name": "web_fetch",
+                "sources": [
+                  {
+                    "title": "Bengal Cats In Movies",
+                    "subtitles": null,
+                    "url": "https://iconicbengalcatbreeders.com/bengal-cats-in-movies/",
+                    "resource_type": null,
+                    "icon_url": "https://www.google.com/s2/favicons?sz=64&domain=iconicbengalcatbreeders.com",
+                    "source": "iconicbengalcatbreeders",
+                    "content_body": null,
+                    "uuid": "783e891f-9c5b-438d-af66-0cdfec7b2fd6"
+                  }
+                ],
+                "start_index": 848,
+                "end_index": 991
+              },
+              {
+                "uuid": "dbf6e1c6-10ee-4736-be9e-89cfaaec2ed1",
+                "title": "Iconicbengalcatbreeders",
+                "url": "https://iconicbengalcatbreeders.com/bengal-cats-in-movies/",
+                "metadata": {
+                  "type": "generic_metadata",
+                  "uuid": "dbf6e1c6-10ee-4736-be9e-89cfaaec2ed1",
+                  "preview_title": "Bengal Cats in Movies - Iconic Bengal Cat Breeders",
+                  "icon_url": "https://www.google.com/s2/favicons?sz=64&domain=iconicbengalcatbreeders.com",
+                  "source": "Iconicbengalcatbreeders"
+                },
+                "origin_tool_name": "web_search",
+                "sources": [
+                  {
+                    "title": "Bengal Cats in Movies - Iconic Bengal Cat Breeders",
+                    "subtitles": null,
+                    "url": "https://iconicbengalcatbreeders.com/bengal-cats-in-movies/",
+                    "resource_type": null,
+                    "icon_url": "https://www.google.com/s2/favicons?sz=64&domain=iconicbengalcatbreeders.com",
+                    "source": "Iconicbengalcatbreeders",
+                    "content_body": null,
+                    "uuid": "dbf6e1c6-10ee-4736-be9e-89cfaaec2ed1"
+                  }
+                ],
+                "start_index": 992,
+                "end_index": 1139
+              },
+              {
+                "uuid": "a04b013b-2054-4215-9c1e-409864ce999e",
+                "title": "iconicbengalcatbreeders",
+                "url": "https://iconicbengalcatbreeders.com/bengal-cats-in-movies/",
+                "metadata": {
+                  "type": "generic_metadata",
+                  "uuid": "a04b013b-2054-4215-9c1e-409864ce999e",
+                  "preview_title": "Bengal Cats In Movies",
+                  "icon_url": "https://www.google.com/s2/favicons?sz=64&domain=iconicbengalcatbreeders.com",
+                  "source": "iconicbengalcatbreeders"
+                },
+                "origin_tool_name": "web_fetch",
+                "sources": [
+                  {
+                    "title": "Bengal Cats In Movies",
+                    "subtitles": null,
+                    "url": "https://iconicbengalcatbreeders.com/bengal-cats-in-movies/",
+                    "resource_type": null,
+                    "icon_url": "https://www.google.com/s2/favicons?sz=64&domain=iconicbengalcatbreeders.com",
+                    "source": "iconicbengalcatbreeders",
+                    "content_body": null,
+                    "uuid": "a04b013b-2054-4215-9c1e-409864ce999e"
+                  }
+                ],
+                "start_index": 992,
+                "end_index": 1139
+              },
+              {
+                "uuid": "5f69edd6-3691-4c26-a81b-37c4542ed64a",
+                "title": "Iconicbengalcatbreeders",
+                "url": "https://iconicbengalcatbreeders.com/bengal-cats-in-movies/",
+                "metadata": {
+                  "type": "generic_metadata",
+                  "uuid": "5f69edd6-3691-4c26-a81b-37c4542ed64a",
+                  "preview_title": "Bengal Cats in Movies - Iconic Bengal Cat Breeders",
+                  "icon_url": "https://www.google.com/s2/favicons?sz=64&domain=iconicbengalcatbreeders.com",
+                  "source": "Iconicbengalcatbreeders"
+                },
+                "origin_tool_name": "web_search",
+                "sources": [
+                  {
+                    "title": "Bengal Cats in Movies - Iconic Bengal Cat Breeders",
+                    "subtitles": null,
+                    "url": "https://iconicbengalcatbreeders.com/bengal-cats-in-movies/",
+                    "resource_type": null,
+                    "icon_url": "https://www.google.com/s2/favicons?sz=64&domain=iconicbengalcatbreeders.com",
+                    "source": "Iconicbengalcatbreeders",
+                    "content_body": null,
+                    "uuid": "5f69edd6-3691-4c26-a81b-37c4542ed64a"
+                  }
+                ],
+                "start_index": 1309,
+                "end_index": 1407
+              },
+              {
+                "uuid": "b63431ce-bc5f-4ae0-815f-ac79f7e99d86",
+                "title": "iconicbengalcatbreeders",
+                "url": "https://iconicbengalcatbreeders.com/bengal-cats-in-movies/",
+                "metadata": {
+                  "type": "generic_metadata",
+                  "uuid": "b63431ce-bc5f-4ae0-815f-ac79f7e99d86",
+                  "preview_title": "Bengal Cats In Movies",
+                  "icon_url": "https://www.google.com/s2/favicons?sz=64&domain=iconicbengalcatbreeders.com",
+                  "source": "iconicbengalcatbreeders"
+                },
+                "origin_tool_name": "web_fetch",
+                "sources": [
+                  {
+                    "title": "Bengal Cats In Movies",
+                    "subtitles": null,
+                    "url": "https://iconicbengalcatbreeders.com/bengal-cats-in-movies/",
+                    "resource_type": null,
+                    "icon_url": "https://www.google.com/s2/favicons?sz=64&domain=iconicbengalcatbreeders.com",
+                    "source": "iconicbengalcatbreeders",
+                    "content_body": null,
+                    "uuid": "b63431ce-bc5f-4ae0-815f-ac79f7e99d86"
+                  }
+                ],
+                "start_index": 1140,
+                "end_index": 1407
+              },
+              {
+                "uuid": "b5ef135c-be21-4e1e-90c1-a20194053727",
+                "title": "Cinema Cats",
+                "url": "https://cinemacats.com/category/breed/bengal/",
+                "metadata": {
+                  "type": "generic_metadata",
+                  "uuid": "b5ef135c-be21-4e1e-90c1-a20194053727",
+                  "preview_title": "Bengal Archives - Cinema Cats",
+                  "icon_url": "https://www.google.com/s2/favicons?sz=64&domain=cinemacats.com",
+                  "source": "Cinema Cats"
+                },
+                "origin_tool_name": "web_search",
+                "sources": [
+                  {
+                    "title": "Bengal Archives - Cinema Cats",
+                    "subtitles": null,
+                    "url": "https://cinemacats.com/category/breed/bengal/",
+                    "resource_type": null,
+                    "icon_url": "https://www.google.com/s2/favicons?sz=64&domain=cinemacats.com",
+                    "source": "Cinema Cats",
+                    "content_body": null,
+                    "uuid": "b5ef135c-be21-4e1e-90c1-a20194053727"
+                  }
+                ],
+                "start_index": 1453,
+                "end_index": 1553
+              },
+              {
+                "uuid": "93b23eb8-b241-43cc-a020-73fa6502759a",
+                "title": "cinemacats",
+                "url": "https://cinemacats.com/my-name-is-earl-larceny-of-a-kitty-cat/",
+                "metadata": {
+                  "type": "generic_metadata",
+                  "uuid": "93b23eb8-b241-43cc-a020-73fa6502759a",
+                  "preview_title": "My Name is Earl - \"Larceny of a Kitty Cat\" (2006)",
+                  "icon_url": "https://www.google.com/s2/favicons?sz=64&domain=cinemacats.com",
+                  "source": "cinemacats"
+                },
+                "origin_tool_name": "web_fetch",
+                "sources": [
+                  {
+                    "title": "My Name is Earl - \"Larceny of a Kitty Cat\" (2006)",
+                    "subtitles": null,
+                    "url": "https://cinemacats.com/my-name-is-earl-larceny-of-a-kitty-cat/",
+                    "resource_type": null,
+                    "icon_url": "https://www.google.com/s2/favicons?sz=64&domain=cinemacats.com",
+                    "source": "cinemacats",
+                    "content_body": null,
+                    "uuid": "93b23eb8-b241-43cc-a020-73fa6502759a"
+                  }
+                ],
+                "start_index": 1554,
+                "end_index": 1725
+              },
+              {
+                "uuid": "45e723de-a189-4352-9c58-fc15bdae8616",
+                "title": "Cinema Cats",
+                "url": "https://cinemacats.com/squid-game-red-light-green-light/",
+                "metadata": {
+                  "type": "generic_metadata",
+                  "uuid": "45e723de-a189-4352-9c58-fc15bdae8616",
+                  "preview_title": "Squid Game - \"Red Light, Green Light\" - Cinema Cats",
+                  "icon_url": "https://www.google.com/s2/favicons?sz=64&domain=cinemacats.com",
+                  "source": "Cinema Cats"
+                },
+                "origin_tool_name": "web_search",
+                "sources": [
+                  {
+                    "title": "Squid Game - \"Red Light, Green Light\" - Cinema Cats",
+                    "subtitles": null,
+                    "url": "https://cinemacats.com/squid-game-red-light-green-light/",
+                    "resource_type": null,
+                    "icon_url": "https://www.google.com/s2/favicons?sz=64&domain=cinemacats.com",
+                    "source": "Cinema Cats",
+                    "content_body": null,
+                    "uuid": "45e723de-a189-4352-9c58-fc15bdae8616"
+                  }
+                ],
+                "start_index": 1741,
+                "end_index": 1888
+              },
+              {
+                "uuid": "7b4e0702-9a58-4789-8d5b-447219a88262",
+                "title": "Cinema Cats",
+                "url": "https://cinemacats.com/category/breed/bengal/",
+                "metadata": {
+                  "type": "generic_metadata",
+                  "uuid": "7b4e0702-9a58-4789-8d5b-447219a88262",
+                  "preview_title": "Bengal Archives - Cinema Cats",
+                  "icon_url": "https://www.google.com/s2/favicons?sz=64&domain=cinemacats.com",
+                  "source": "Cinema Cats"
+                },
+                "origin_tool_name": "web_search",
+                "sources": [
+                  {
+                    "title": "Bengal Archives - Cinema Cats",
+                    "subtitles": null,
+                    "url": "https://cinemacats.com/category/breed/bengal/",
+                    "resource_type": null,
+                    "icon_url": "https://www.google.com/s2/favicons?sz=64&domain=cinemacats.com",
+                    "source": "Cinema Cats",
+                    "content_body": null,
+                    "uuid": "7b4e0702-9a58-4789-8d5b-447219a88262"
+                  }
+                ],
+                "start_index": 1889,
+                "end_index": 1945
+              },
+              {
+                "uuid": "613e5a95-1f89-47c1-98b1-95f572d45b45",
+                "title": "Cinema Cats",
+                "url": "https://cinemacats.com/category/breed/bengal/",
+                "metadata": {
+                  "type": "generic_metadata",
+                  "uuid": "613e5a95-1f89-47c1-98b1-95f572d45b45",
+                  "preview_title": "Bengal Archives - Cinema Cats",
+                  "icon_url": "https://www.google.com/s2/favicons?sz=64&domain=cinemacats.com",
+                  "source": "Cinema Cats"
+                },
+                "origin_tool_name": "web_search",
+                "sources": [
+                  {
+                    "title": "Bengal Archives - Cinema Cats",
+                    "subtitles": null,
+                    "url": "https://cinemacats.com/category/breed/bengal/",
+                    "resource_type": null,
+                    "icon_url": "https://www.google.com/s2/favicons?sz=64&domain=cinemacats.com",
+                    "source": "Cinema Cats",
+                    "content_body": null,
+                    "uuid": "613e5a95-1f89-47c1-98b1-95f572d45b45"
+                  }
+                ],
+                "start_index": 1889,
+                "end_index": 2028
+              },
+              {
+                "uuid": "37d7d9c4-d769-4fa8-a5ec-957a04d781b7",
+                "title": "Cinema Cats",
+                "url": "https://cinemacats.com/go-to-town-2018/",
+                "metadata": {
+                  "type": "generic_metadata",
+                  "uuid": "37d7d9c4-d769-4fa8-a5ec-957a04d781b7",
+                  "preview_title": "Go to Town (2018) - Cinema Cats",
+                  "icon_url": "https://www.google.com/s2/favicons?sz=64&domain=cinemacats.com",
+                  "source": "Cinema Cats"
+                },
+                "origin_tool_name": "web_search",
+                "sources": [
+                  {
+                    "title": "Go to Town (2018) - Cinema Cats",
+                    "subtitles": null,
+                    "url": "https://cinemacats.com/go-to-town-2018/",
+                    "resource_type": null,
+                    "icon_url": "https://www.google.com/s2/favicons?sz=64&domain=cinemacats.com",
+                    "source": "Cinema Cats",
+                    "content_body": null,
+                    "uuid": "37d7d9c4-d769-4fa8-a5ec-957a04d781b7"
+                  }
+                ],
+                "start_index": 1950,
+                "end_index": 2028
+              },
+              {
+                "uuid": "fb161465-8807-4c47-a9a0-48f5e53656ee",
+                "title": "Traveling Cats",
+                "url": "https://traveling-cats.com/2019/09/suki-the-adventure-cat-book.html",
+                "metadata": {
+                  "type": "generic_metadata",
+                  "uuid": "fb161465-8807-4c47-a9a0-48f5e53656ee",
+                  "preview_title": "Book spotlight: Travels of Suki the Adventure Cat - Traveling Cats",
+                  "icon_url": "https://www.google.com/s2/favicons?sz=64&domain=traveling-cats.com",
+                  "source": "Traveling Cats"
+                },
+                "origin_tool_name": "web_search",
+                "sources": [
+                  {
+                    "title": "Book spotlight: Travels of Suki the Adventure Cat - Traveling Cats",
+                    "subtitles": null,
+                    "url": "https://traveling-cats.com/2019/09/suki-the-adventure-cat-book.html",
+                    "resource_type": null,
+                    "icon_url": "https://www.google.com/s2/favicons?sz=64&domain=traveling-cats.com",
+                    "source": "Traveling Cats",
+                    "content_body": null,
+                    "uuid": "fb161465-8807-4c47-a9a0-48f5e53656ee"
+                  }
+                ],
+                "start_index": 2204,
+                "end_index": 2258
+              },
+              {
+                "uuid": "c51acefb-394f-499c-85c3-f1da32c80d7c",
+                "title": "Traveling Cats",
+                "url": "https://traveling-cats.com/2019/09/suki-the-adventure-cat-book.html",
+                "metadata": {
+                  "type": "generic_metadata",
+                  "uuid": "c51acefb-394f-499c-85c3-f1da32c80d7c",
+                  "preview_title": "Book spotlight: Travels of Suki the Adventure Cat - Traveling Cats",
+                  "icon_url": "https://www.google.com/s2/favicons?sz=64&domain=traveling-cats.com",
+                  "source": "Traveling Cats"
+                },
+                "origin_tool_name": "web_search",
+                "sources": [
+                  {
+                    "title": "Book spotlight: Travels of Suki the Adventure Cat - Traveling Cats",
+                    "subtitles": null,
+                    "url": "https://traveling-cats.com/2019/09/suki-the-adventure-cat-book.html",
+                    "resource_type": null,
+                    "icon_url": "https://www.google.com/s2/favicons?sz=64&domain=traveling-cats.com",
+                    "source": "Traveling Cats",
+                    "content_body": null,
+                    "uuid": "c51acefb-394f-499c-85c3-f1da32c80d7c"
+                  }
+                ],
+                "start_index": 2368,
+                "end_index": 2388
+              },
+              {
+                "uuid": "7dd61462-a79e-493b-83fc-8913e6409156",
+                "title": "Traveling Cats",
+                "url": "https://traveling-cats.com/2019/09/suki-the-adventure-cat-book.html",
+                "metadata": {
+                  "type": "generic_metadata",
+                  "uuid": "7dd61462-a79e-493b-83fc-8913e6409156",
+                  "preview_title": "Book spotlight: Travels of Suki the Adventure Cat - Traveling Cats",
+                  "icon_url": "https://www.google.com/s2/favicons?sz=64&domain=traveling-cats.com",
+                  "source": "Traveling Cats"
+                },
+                "origin_tool_name": "web_search",
+                "sources": [
+                  {
+                    "title": "Book spotlight: Travels of Suki the Adventure Cat - Traveling Cats",
+                    "subtitles": null,
+                    "url": "https://traveling-cats.com/2019/09/suki-the-adventure-cat-book.html",
+                    "resource_type": null,
+                    "icon_url": "https://www.google.com/s2/favicons?sz=64&domain=traveling-cats.com",
+                    "source": "Traveling Cats",
+                    "content_body": null,
+                    "uuid": "7dd61462-a79e-493b-83fc-8913e6409156"
+                  }
+                ],
+                "start_index": 2389,
+                "end_index": 2421
+              },
+              {
+                "uuid": "75898a5e-5013-4f40-8475-92fd7db34e35",
+                "title": "Traveling Cats",
+                "url": "https://traveling-cats.com/2019/09/suki-the-adventure-cat-book.html",
+                "metadata": {
+                  "type": "generic_metadata",
+                  "uuid": "75898a5e-5013-4f40-8475-92fd7db34e35",
+                  "preview_title": "Book spotlight: Travels of Suki the Adventure Cat - Traveling Cats",
+                  "icon_url": "https://www.google.com/s2/favicons?sz=64&domain=traveling-cats.com",
+                  "source": "Traveling Cats"
+                },
+                "origin_tool_name": "web_search",
+                "sources": [
+                  {
+                    "title": "Book spotlight: Travels of Suki the Adventure Cat - Traveling Cats",
+                    "subtitles": null,
+                    "url": "https://traveling-cats.com/2019/09/suki-the-adventure-cat-book.html",
+                    "resource_type": null,
+                    "icon_url": "https://www.google.com/s2/favicons?sz=64&domain=traveling-cats.com",
+                    "source": "Traveling Cats",
+                    "content_body": null,
+                    "uuid": "75898a5e-5013-4f40-8475-92fd7db34e35"
+                  }
+                ],
+                "start_index": 2463,
+                "end_index": 2544
+              },
+              {
+                "uuid": "61471008-875b-43be-baa6-cfdd2d8109ea",
+                "title": "Tubefilter",
+                "url": "https://www.tubefilter.com/2019/05/23/youtube-millionaires-the-mean-kitty/",
+                "metadata": {
+                  "type": "generic_metadata",
+                  "uuid": "61471008-875b-43be-baa6-cfdd2d8109ea",
+                  "preview_title": "YouTube Millionaires: 'The Mean Kitty' Is YouTube's Most Beloved Cat - Tubefilter",
+                  "icon_url": "https://www.google.com/s2/favicons?sz=64&domain=tubefilter.com",
+                  "source": "Tubefilter"
+                },
+                "origin_tool_name": "web_search",
+                "sources": [
+                  {
+                    "title": "YouTube Millionaires: 'The Mean Kitty' Is YouTube's Most Beloved Cat - Tubefilter",
+                    "subtitles": null,
+                    "url": "https://www.tubefilter.com/2019/05/23/youtube-millionaires-the-mean-kitty/",
+                    "resource_type": null,
+                    "icon_url": "https://www.google.com/s2/favicons?sz=64&domain=tubefilter.com",
+                    "source": "Tubefilter",
+                    "content_body": null,
+                    "uuid": "61471008-875b-43be-baa6-cfdd2d8109ea"
+                  }
+                ],
+                "start_index": 3249,
+                "end_index": 3474
+              },
+              {
+                "uuid": "7d98ac6b-e8f6-4da1-b229-774ddc6902fb",
+                "title": "Wikipedia",
+                "url": "https://en.wikipedia.org/wiki/Cory_Williams",
+                "metadata": {
+                  "type": "generic_metadata",
+                  "uuid": "7d98ac6b-e8f6-4da1-b229-774ddc6902fb",
+                  "preview_title": "Cory Williams - Wikipedia",
+                  "icon_url": "https://www.google.com/s2/favicons?sz=64&domain=wikipedia.org",
+                  "source": "Wikipedia"
+                },
+                "origin_tool_name": "web_search",
+                "sources": [
+                  {
+                    "title": "Cory Williams - Wikipedia",
+                    "subtitles": null,
+                    "url": "https://en.wikipedia.org/wiki/Cory_Williams",
+                    "resource_type": null,
+                    "icon_url": "https://www.google.com/s2/favicons?sz=64&domain=wikipedia.org",
+                    "source": "Wikipedia",
+                    "content_body": null,
+                    "uuid": "7d98ac6b-e8f6-4da1-b229-774ddc6902fb"
+                  }
+                ],
+                "start_index": 3475,
+                "end_index": 3578
+              },
+              {
+                "uuid": "80798489-81e0-49cf-9431-37a3ede10c5b",
+                "title": "Bengalcats",
+                "url": "https://bengalcats.co/dolcegabbana-bengal-cats-spotted-catwalk/",
+                "metadata": {
+                  "type": "generic_metadata",
+                  "uuid": "80798489-81e0-49cf-9431-37a3ede10c5b",
+                  "preview_title": "Bengal Cats Spotted on the Catwalk at D&G Men's Show",
+                  "icon_url": "https://www.google.com/s2/favicons?sz=64&domain=bengalcats.co",
+                  "source": "Bengalcats"
+                },
+                "origin_tool_name": "web_search",
+                "sources": [
+                  {
+                    "title": "Bengal Cats Spotted on the Catwalk at D&G Men's Show",
+                    "subtitles": null,
+                    "url": "https://bengalcats.co/dolcegabbana-bengal-cats-spotted-catwalk/",
+                    "resource_type": null,
+                    "icon_url": "https://www.google.com/s2/favicons?sz=64&domain=bengalcats.co",
+                    "source": "Bengalcats",
+                    "content_body": null,
+                    "uuid": "80798489-81e0-49cf-9431-37a3ede10c5b"
+                  }
+                ],
+                "start_index": 3626,
+                "end_index": 3752
+              },
+              {
+                "uuid": "972644f9-5e72-4c97-a97e-6859762df59a",
+                "title": "Bengalcats",
+                "url": "https://bengalcats.co/bengal-cats-catwalk-dolce-gabbanas-fall-show/",
+                "metadata": {
+                  "type": "generic_metadata",
+                  "uuid": "972644f9-5e72-4c97-a97e-6859762df59a",
+                  "preview_title": "Bengal Cats on the Catwalk at Dolce & Gabbana's Fall Show",
+                  "icon_url": "https://www.google.com/s2/favicons?sz=64&domain=bengalcats.co",
+                  "source": "Bengalcats"
+                },
+                "origin_tool_name": "web_search",
+                "sources": [
+                  {
+                    "title": "Bengal Cats on the Catwalk at Dolce & Gabbana's Fall Show",
+                    "subtitles": null,
+                    "url": "https://bengalcats.co/bengal-cats-catwalk-dolce-gabbanas-fall-show/",
+                    "resource_type": null,
+                    "icon_url": "https://www.google.com/s2/favicons?sz=64&domain=bengalcats.co",
+                    "source": "Bengalcats",
+                    "content_body": null,
+                    "uuid": "972644f9-5e72-4c97-a97e-6859762df59a"
+                  }
+                ],
+                "start_index": 3753,
+                "end_index": 3920
+              },
+              {
+                "uuid": "7b345fa4-bcba-4ec4-b231-e7d5031cea64",
+                "title": "Bengalcats",
+                "url": "https://bengalcats.co/dolcegabbana-bengal-cats-spotted-catwalk/",
+                "metadata": {
+                  "type": "generic_metadata",
+                  "uuid": "7b345fa4-bcba-4ec4-b231-e7d5031cea64",
+                  "preview_title": "Bengal Cats Spotted on the Catwalk at D&G Men's Show",
+                  "icon_url": "https://www.google.com/s2/favicons?sz=64&domain=bengalcats.co",
+                  "source": "Bengalcats"
+                },
+                "origin_tool_name": "web_search",
+                "sources": [
+                  {
+                    "title": "Bengal Cats Spotted on the Catwalk at D&G Men's Show",
+                    "subtitles": null,
+                    "url": "https://bengalcats.co/dolcegabbana-bengal-cats-spotted-catwalk/",
+                    "resource_type": null,
+                    "icon_url": "https://www.google.com/s2/favicons?sz=64&domain=bengalcats.co",
+                    "source": "Bengalcats",
+                    "content_body": null,
+                    "uuid": "7b345fa4-bcba-4ec4-b231-e7d5031cea64"
+                  }
+                ],
+                "start_index": 3921,
+                "end_index": 4080
+              },
+              {
+                "uuid": "e9b3c4bb-a798-42b2-8a41-b523f3bbf163",
+                "title": "Bengalcats",
+                "url": "https://bengalcats.co/bengal-cats-that-own-celebrities/",
+                "metadata": {
+                  "type": "generic_metadata",
+                  "uuid": "e9b3c4bb-a798-42b2-8a41-b523f3bbf163",
+                  "preview_title": "Celebrities Love Bengal Cats Too!",
+                  "icon_url": "https://www.google.com/s2/favicons?sz=64&domain=bengalcats.co",
+                  "source": "Bengalcats"
+                },
+                "origin_tool_name": "web_search",
+                "sources": [
+                  {
+                    "title": "Celebrities Love Bengal Cats Too!",
+                    "subtitles": null,
+                    "url": "https://bengalcats.co/bengal-cats-that-own-celebrities/",
+                    "resource_type": null,
+                    "icon_url": "https://www.google.com/s2/favicons?sz=64&domain=bengalcats.co",
+                    "source": "Bengalcats",
+                    "content_body": null,
+                    "uuid": "e9b3c4bb-a798-42b2-8a41-b523f3bbf163"
+                  }
+                ],
+                "start_index": 4404,
+                "end_index": 4645
+              },
+              {
+                "uuid": "7abff15c-531f-4695-ba4e-09f1a5e0f01d",
+                "title": "AceShowbiz",
+                "url": "https://www.aceshowbiz.com/news/view/00197170.html",
+                "metadata": {
+                  "type": "generic_metadata",
+                  "uuid": "7abff15c-531f-4695-ba4e-09f1a5e0f01d",
+                  "preview_title": "Paris Hilton Adopting New Cat After Her Dog Is Missing",
+                  "icon_url": "https://www.google.com/s2/favicons?sz=64&domain=aceshowbiz.com",
+                  "source": "AceShowbiz"
+                },
+                "origin_tool_name": "web_search",
+                "sources": [
+                  {
+                    "title": "Paris Hilton Adopting New Cat After Her Dog Is Missing",
+                    "subtitles": null,
+                    "url": "https://www.aceshowbiz.com/news/view/00197170.html",
+                    "resource_type": null,
+                    "icon_url": "https://www.google.com/s2/favicons?sz=64&domain=aceshowbiz.com",
+                    "source": "AceShowbiz",
+                    "content_body": null,
+                    "uuid": "7abff15c-531f-4695-ba4e-09f1a5e0f01d"
+                  }
+                ],
+                "start_index": 4646,
+                "end_index": 4715
+              },
+              {
+                "uuid": "640767f3-f103-4721-b804-edf0d387fe5c",
+                "title": "Mandy's Bengals",
+                "url": "https://www.mandysbengals.com/parishilton",
+                "metadata": {
+                  "type": "generic_metadata",
+                  "uuid": "640767f3-f103-4721-b804-edf0d387fe5c",
+                  "preview_title": "Paris Hilton's Snow Bengal",
+                  "icon_url": "https://www.google.com/s2/favicons?sz=64&domain=mandysbengals.com",
+                  "source": "Mandy's Bengals"
+                },
+                "origin_tool_name": "web_search",
+                "sources": [
+                  {
+                    "title": "Paris Hilton's Snow Bengal",
+                    "subtitles": null,
+                    "url": "https://www.mandysbengals.com/parishilton",
+                    "resource_type": null,
+                    "icon_url": "https://www.google.com/s2/favicons?sz=64&domain=mandysbengals.com",
+                    "source": "Mandy's Bengals",
+                    "content_body": null,
+                    "uuid": "640767f3-f103-4721-b804-edf0d387fe5c"
+                  }
+                ],
+                "start_index": 4646,
+                "end_index": 4850
+              },
+              {
+                "uuid": "6803a309-4952-4156-b489-7c18cbb03f23",
+                "title": "Mandy's Bengals",
+                "url": "https://www.mandysbengals.com/",
+                "metadata": {
+                  "type": "generic_metadata",
+                  "uuid": "6803a309-4952-4156-b489-7c18cbb03f23",
+                  "preview_title": "HOME | BENGAL KITTENS | ONTARIO | MANDY'S BENGALS",
+                  "icon_url": "https://www.google.com/s2/favicons?sz=64&domain=mandysbengals.com",
+                  "source": "Mandy's Bengals"
+                },
+                "origin_tool_name": "web_search",
+                "sources": [
+                  {
+                    "title": "HOME | BENGAL KITTENS | ONTARIO | MANDY'S BENGALS",
+                    "subtitles": null,
+                    "url": "https://www.mandysbengals.com/",
+                    "resource_type": null,
+                    "icon_url": "https://www.google.com/s2/favicons?sz=64&domain=mandysbengals.com",
+                    "source": "Mandy's Bengals",
+                    "content_body": null,
+                    "uuid": "6803a309-4952-4156-b489-7c18cbb03f23"
+                  }
+                ],
+                "start_index": 4753,
+                "end_index": 4850
+              },
+              {
+                "uuid": "3bb9a2b6-a28e-471d-84e5-1d34515e0fd8",
+                "title": "Bengalcats",
+                "url": "https://bengalcats.co/bengal-cats-that-own-celebrities/",
+                "metadata": {
+                  "type": "generic_metadata",
+                  "uuid": "3bb9a2b6-a28e-471d-84e5-1d34515e0fd8",
+                  "preview_title": "Celebrities Love Bengal Cats Too!",
+                  "icon_url": "https://www.google.com/s2/favicons?sz=64&domain=bengalcats.co",
+                  "source": "Bengalcats"
+                },
+                "origin_tool_name": "web_search",
+                "sources": [
+                  {
+                    "title": "Celebrities Love Bengal Cats Too!",
+                    "subtitles": null,
+                    "url": "https://bengalcats.co/bengal-cats-that-own-celebrities/",
+                    "resource_type": null,
+                    "icon_url": "https://www.google.com/s2/favicons?sz=64&domain=bengalcats.co",
+                    "source": "Bengalcats",
+                    "content_body": null,
+                    "uuid": "3bb9a2b6-a28e-471d-84e5-1d34515e0fd8"
+                  }
+                ],
+                "start_index": 4852,
+                "end_index": 4979
+              },
+              {
+                "uuid": "3d26adef-bba6-4981-967c-e92053d2fa94",
+                "title": "The National",
+                "url": "https://www.thenationalnews.com/lifestyle/family/2022/08/08/12-celebrities-who-love-cats-from-jennifer-lopez-to-taylor-swift/",
+                "metadata": {
+                  "type": "generic_metadata",
+                  "uuid": "3d26adef-bba6-4981-967c-e92053d2fa94",
+                  "preview_title": "12 celebrities who love cats, from Jennifer Lopez to Taylor Swift | The National",
+                  "icon_url": "https://www.google.com/s2/favicons?sz=64&domain=thenationalnews.com",
+                  "source": "The National"
+                },
+                "origin_tool_name": "web_search",
+                "sources": [
+                  {
+                    "title": "12 celebrities who love cats, from Jennifer Lopez to Taylor Swift | The National",
+                    "subtitles": null,
+                    "url": "https://www.thenationalnews.com/lifestyle/family/2022/08/08/12-celebrities-who-love-cats-from-jennifer-lopez-to-taylor-swift/",
+                    "resource_type": null,
+                    "icon_url": "https://www.google.com/s2/favicons?sz=64&domain=thenationalnews.com",
+                    "source": "The National",
+                    "content_body": null,
+                    "uuid": "3d26adef-bba6-4981-967c-e92053d2fa94"
+                  }
+                ],
+                "start_index": 4980,
+                "end_index": 5113
+              },
+              {
+                "uuid": "0bbd32dc-fca8-4374-b0df-00dc4b386375",
+                "title": "Amazon",
+                "url": "https://www.amazon.com/Bengal-Identity-Cat-Groomer-Mystery/dp/1496710584",
+                "metadata": {
+                  "type": "generic_metadata",
+                  "uuid": "0bbd32dc-fca8-4374-b0df-00dc4b386375",
+                  "preview_title": "Amazon.com: The Bengal Identity (A Cat Groomer Mystery): 9781496710581: Watkins, Eileen: Books",
+                  "icon_url": "https://www.google.com/s2/favicons?sz=64&domain=amazon.com",
+                  "source": "Amazon"
+                },
+                "origin_tool_name": "web_search",
+                "sources": [
+                  {
+                    "title": "Amazon.com: The Bengal Identity (A Cat Groomer Mystery): 9781496710581: Watkins, Eileen: Books",
+                    "subtitles": null,
+                    "url": "https://www.amazon.com/Bengal-Identity-Cat-Groomer-Mystery/dp/1496710584",
+                    "resource_type": null,
+                    "icon_url": "https://www.google.com/s2/favicons?sz=64&domain=amazon.com",
+                    "source": "Amazon",
+                    "content_body": null,
+                    "uuid": "0bbd32dc-fca8-4374-b0df-00dc4b386375"
+                  }
+                ],
+                "start_index": 5494,
+                "end_index": 5711
+              },
+              {
+                "uuid": "6775c9e5-6726-4b9a-b26c-10eb48de0024",
+                "title": "All Bookstores",
+                "url": "https://www.allbookstores.com/Guide-Owning-Bengal-Cat-Jean/9780793821686",
+                "metadata": {
+                  "type": "generic_metadata",
+                  "uuid": "6775c9e5-6726-4b9a-b26c-10eb48de0024",
+                  "preview_title": "Guide to Owning a Bengal Cat by Jean S. Mill (9780793821686)",
+                  "icon_url": "https://www.google.com/s2/favicons?sz=64&domain=allbookstores.com",
+                  "source": "All Bookstores"
+                },
+                "origin_tool_name": "web_search",
+                "sources": [
+                  {
+                    "title": "Guide to Owning a Bengal Cat by Jean S. Mill (9780793821686)",
+                    "subtitles": null,
+                    "url": "https://www.allbookstores.com/Guide-Owning-Bengal-Cat-Jean/9780793821686",
+                    "resource_type": null,
+                    "icon_url": "https://www.google.com/s2/favicons?sz=64&domain=allbookstores.com",
+                    "source": "All Bookstores",
+                    "content_body": null,
+                    "uuid": "6775c9e5-6726-4b9a-b26c-10eb48de0024"
+                  }
+                ],
+                "start_index": 5996,
+                "end_index": 6026
+              },
+              {
+                "uuid": "ffd46c8f-d8c0-4776-8bcf-fe34ede29c18",
+                "title": "Wikipedia",
+                "url": "https://en.wikipedia.org/wiki/Jean_Mill",
+                "metadata": {
+                  "type": "generic_metadata",
+                  "uuid": "ffd46c8f-d8c0-4776-8bcf-fe34ede29c18",
+                  "preview_title": "Jean Mill - Wikipedia",
+                  "icon_url": "https://www.google.com/s2/favicons?sz=64&domain=wikipedia.org",
+                  "source": "Wikipedia"
+                },
+                "origin_tool_name": "web_search",
+                "sources": [
+                  {
+                    "title": "Jean Mill - Wikipedia",
+                    "subtitles": null,
+                    "url": "https://en.wikipedia.org/wiki/Jean_Mill",
+                    "resource_type": null,
+                    "icon_url": "https://www.google.com/s2/favicons?sz=64&domain=wikipedia.org",
+                    "source": "Wikipedia",
+                    "content_body": null,
+                    "uuid": "ffd46c8f-d8c0-4776-8bcf-fe34ede29c18"
+                  }
+                ],
+                "start_index": 5880,
+                "end_index": 6216
+              },
+              {
+                "uuid": "c1f8a10a-1458-4776-8a52-5136601f4ed9",
+                "title": "Modern Cat",
+                "url": "https://moderncat.com/articles/cat-docs/",
+                "metadata": {
+                  "type": "generic_metadata",
+                  "uuid": "c1f8a10a-1458-4776-8a52-5136601f4ed9",
+                  "preview_title": "Cat Docs - Modern Cat",
+                  "icon_url": "https://www.google.com/s2/favicons?sz=64&domain=moderncat.com",
+                  "source": "Modern Cat"
+                },
+                "origin_tool_name": "web_search",
+                "sources": [
+                  {
+                    "title": "Cat Docs - Modern Cat",
+                    "subtitles": null,
+                    "url": "https://moderncat.com/articles/cat-docs/",
+                    "resource_type": null,
+                    "icon_url": "https://www.google.com/s2/favicons?sz=64&domain=moderncat.com",
+                    "source": "Modern Cat",
+                    "content_body": null,
+                    "uuid": "c1f8a10a-1458-4776-8a52-5136601f4ed9"
+                  }
+                ],
+                "start_index": 6218,
+                "end_index": 6268
+              },
+              {
+                "uuid": "43c135a5-bdba-47b3-8aa4-4cd4a2c2baf6",
+                "title": "Netflix +2",
+                "url": "https://www.netflix.com/title/81173728",
+                "metadata": {
+                  "type": "generic_metadata",
+                  "uuid": "43c135a5-bdba-47b3-8aa4-4cd4a2c2baf6",
+                  "preview_title": "Netflix",
+                  "icon_url": null,
+                  "source": ""
+                },
+                "origin_tool_name": "web_search",
+                "sources": [
+                  {
+                    "title": "Watch Cat People | Netflix Official Site",
+                    "subtitles": null,
+                    "url": "https://www.netflix.com/title/81173728",
+                    "resource_type": null,
+                    "icon_url": "https://www.google.com/s2/favicons?sz=64&domain=netflix.com",
+                    "source": "Netflix",
+                    "content_body": null,
+                    "uuid": "43c135a5-bdba-47b3-8aa4-4cd4a2c2baf6"
+                  },
+                  {
+                    "title": "Cat Docs - Modern Cat",
+                    "subtitles": null,
+                    "url": "https://moderncat.com/articles/cat-docs/",
+                    "resource_type": null,
+                    "icon_url": "https://www.google.com/s2/favicons?sz=64&domain=moderncat.com",
+                    "source": "Modern Cat",
+                    "content_body": null,
+                    "uuid": "397ccfcc-0c86-4c21-a712-01a1c9040ff7"
+                  },
+                  {
+                    "title": "Cat Docs - Cat World News",
+                    "subtitles": null,
+                    "url": "https://www.catworldnews.com/2023/08/31/cat-docs/",
+                    "resource_type": null,
+                    "icon_url": "https://www.google.com/s2/favicons?sz=64&domain=catworldnews.com",
+                    "source": "Cat World News",
+                    "content_body": null,
+                    "uuid": "9428423f-b224-4ff4-a214-994e0a578c58"
+                  }
+                ],
+                "start_index": 6218,
+                "end_index": 6363
+              },
+              {
+                "uuid": "6e811adb-cbbf-4aa3-9b0c-40d5282b3563",
+                "title": "Village News",
+                "url": "https://www.villagenews.com/story/2021/07/22/news/fallbrooks-surfing-cat-featured-in-netflix-documentary/67089.html",
+                "metadata": {
+                  "type": "generic_metadata",
+                  "uuid": "6e811adb-cbbf-4aa3-9b0c-40d5282b3563",
+                  "preview_title": "Fallbrook's surfing cat featured in Netflix documentary - Village News",
+                  "icon_url": "https://www.google.com/s2/favicons?sz=64&domain=villagenews.com",
+                  "source": "Village News"
+                },
+                "origin_tool_name": "web_search",
+                "sources": [
+                  {
+                    "title": "Fallbrook's surfing cat featured in Netflix documentary - Village News",
+                    "subtitles": null,
+                    "url": "https://www.villagenews.com/story/2021/07/22/news/fallbrooks-surfing-cat-featured-in-netflix-documentary/67089.html",
+                    "resource_type": null,
+                    "icon_url": "https://www.google.com/s2/favicons?sz=64&domain=villagenews.com",
+                    "source": "Village News",
+                    "content_body": null,
+                    "uuid": "6e811adb-cbbf-4aa3-9b0c-40d5282b3563"
+                  }
+                ],
+                "start_index": 6364,
+                "end_index": 6404
+              },
+              {
+                "uuid": "f713884b-2ed0-42f7-8dd7-0fd3d6c9df91",
+                "title": "Green Matters",
+                "url": "https://www.greenmatters.com/p/cat-people-netflix",
+                "metadata": {
+                  "type": "generic_metadata",
+                  "uuid": "f713884b-2ed0-42f7-8dd7-0fd3d6c9df91",
+                  "preview_title": "Netflix's New Docuseries, 'Cat People,' Features a Cat Rapper, a Cat Surfer, and More",
+                  "icon_url": "https://www.google.com/s2/favicons?sz=64&domain=greenmatters.com",
+                  "source": "Green Matters"
+                },
+                "origin_tool_name": "web_search",
+                "sources": [
+                  {
+                    "title": "Netflix's New Docuseries, 'Cat People,' Features a Cat Rapper, a Cat Surfer, and More",
+                    "subtitles": null,
+                    "url": "https://www.greenmatters.com/p/cat-people-netflix",
+                    "resource_type": null,
+                    "icon_url": "https://www.google.com/s2/favicons?sz=64&domain=greenmatters.com",
+                    "source": "Green Matters",
+                    "content_body": null,
+                    "uuid": "f713884b-2ed0-42f7-8dd7-0fd3d6c9df91"
+                  }
+                ],
+                "start_index": 6405,
+                "end_index": 6465
+              },
+              {
+                "uuid": "cf0622ba-120e-4f4e-bfc5-903979575d87",
+                "title": "TV Insider",
+                "url": "https://www.tvinsider.com/1004456/cat-people-netflix-series-preview/",
+                "metadata": {
+                  "type": "generic_metadata",
+                  "uuid": "cf0622ba-120e-4f4e-bfc5-903979575d87",
+                  "preview_title": "'Cat People' Aims to Prove Feline Enthusiasts Are Anything But 'Crazy' (VIDEO)",
+                  "icon_url": "https://www.google.com/s2/favicons?sz=64&domain=tvinsider.com",
+                  "source": "TV Insider"
+                },
+                "origin_tool_name": "web_search",
+                "sources": [
+                  {
+                    "title": "'Cat People' Aims to Prove Feline Enthusiasts Are Anything But 'Crazy' (VIDEO)",
+                    "subtitles": null,
+                    "url": "https://www.tvinsider.com/1004456/cat-people-netflix-series-preview/",
+                    "resource_type": null,
+                    "icon_url": "https://www.google.com/s2/favicons?sz=64&domain=tvinsider.com",
+                    "source": "TV Insider",
+                    "content_body": null,
+                    "uuid": "cf0622ba-120e-4f4e-bfc5-903979575d87"
+                  }
+                ],
+                "start_index": 6405,
+                "end_index": 6521
+              },
+              {
+                "uuid": "ac806c96-41a0-4383-95a4-9190f335ea02",
+                "title": "WTHR",
+                "url": "https://www.wthr.com/article/news/trending-viral/this-bengal-cat-knows-how-good-looking-he-is/531-e96748fe-8517-4aba-9f26-3e71173d4706",
+                "metadata": {
+                  "type": "generic_metadata",
+                  "uuid": "ac806c96-41a0-4383-95a4-9190f335ea02",
+                  "preview_title": "This Bengal cat knows how good-looking he is! | wthr.com",
+                  "icon_url": "https://www.google.com/s2/favicons?sz=64&domain=wthr.com",
+                  "source": "WTHR"
+                },
+                "origin_tool_name": "web_search",
+                "sources": [
+                  {
+                    "title": "This Bengal cat knows how good-looking he is! | wthr.com",
+                    "subtitles": null,
+                    "url": "https://www.wthr.com/article/news/trending-viral/this-bengal-cat-knows-how-good-looking-he-is/531-e96748fe-8517-4aba-9f26-3e71173d4706",
+                    "resource_type": null,
+                    "icon_url": "https://www.google.com/s2/favicons?sz=64&domain=wthr.com",
+                    "source": "WTHR",
+                    "content_body": null,
+                    "uuid": "ac806c96-41a0-4383-95a4-9190f335ea02"
+                  }
+                ],
+                "start_index": 6587,
+                "end_index": 6604
+              },
+              {
+                "uuid": "5b7b1463-f728-4adb-be29-28e67fc609e3",
+                "title": "WTHR",
+                "url": "https://www.wthr.com/article/news/trending-viral/this-bengal-cat-knows-how-good-looking-he-is/531-e96748fe-8517-4aba-9f26-3e71173d4706",
+                "metadata": {
+                  "type": "generic_metadata",
+                  "uuid": "5b7b1463-f728-4adb-be29-28e67fc609e3",
+                  "preview_title": "This Bengal cat knows how good-looking he is! | wthr.com",
+                  "icon_url": "https://www.google.com/s2/favicons?sz=64&domain=wthr.com",
+                  "source": "WTHR"
+                },
+                "origin_tool_name": "web_search",
+                "sources": [
+                  {
+                    "title": "This Bengal cat knows how good-looking he is! | wthr.com",
+                    "subtitles": null,
+                    "url": "https://www.wthr.com/article/news/trending-viral/this-bengal-cat-knows-how-good-looking-he-is/531-e96748fe-8517-4aba-9f26-3e71173d4706",
+                    "resource_type": null,
+                    "icon_url": "https://www.google.com/s2/favicons?sz=64&domain=wthr.com",
+                    "source": "WTHR",
+                    "content_body": null,
+                    "uuid": "5b7b1463-f728-4adb-be29-28e67fc609e3"
+                  }
+                ],
+                "start_index": 6610,
+                "end_index": 6626
+              },
+              {
+                "uuid": "af838417-9a6c-40c8-a32b-6b65a305be23",
+                "title": "Newsweek",
+                "url": "https://www.newsweek.com/bengal-indoor-cat-caught-playing-sprinklers-neighbor-yard-2115218",
+                "metadata": {
+                  "type": "generic_metadata",
+                  "uuid": "af838417-9a6c-40c8-a32b-6b65a305be23",
+                  "preview_title": "Indoor Bengal Cat Caught Playing in Yard by Neighbor, Evidence Goes Viral - Newsweek",
+                  "icon_url": "https://www.google.com/s2/favicons?sz=64&domain=newsweek.com",
+                  "source": "Newsweek"
+                },
+                "origin_tool_name": "web_search",
+                "sources": [
+                  {
+                    "title": "Indoor Bengal Cat Caught Playing in Yard by Neighbor, Evidence Goes Viral - Newsweek",
+                    "subtitles": null,
+                    "url": "https://www.newsweek.com/bengal-indoor-cat-caught-playing-sprinklers-neighbor-yard-2115218",
+                    "resource_type": null,
+                    "icon_url": "https://www.google.com/s2/favicons?sz=64&domain=newsweek.com",
+                    "source": "Newsweek",
+                    "content_body": null,
+                    "uuid": "af838417-9a6c-40c8-a32b-6b65a305be23"
+                  }
+                ],
+                "start_index": 6729,
+                "end_index": 6859
+              },
+              {
+                "uuid": "7b93c215-7025-4e7d-a662-029a711207b9",
+                "title": "Traveling Cats",
+                "url": "https://traveling-cats.com/2019/09/suki-the-adventure-cat-book.html",
+                "metadata": {
+                  "type": "generic_metadata",
+                  "uuid": "7b93c215-7025-4e7d-a662-029a711207b9",
+                  "preview_title": "Book spotlight: Travels of Suki the Adventure Cat - Traveling Cats",
+                  "icon_url": "https://www.google.com/s2/favicons?sz=64&domain=traveling-cats.com",
+                  "source": "Traveling Cats"
+                },
+                "origin_tool_name": "web_search",
+                "sources": [
+                  {
+                    "title": "Book spotlight: Travels of Suki the Adventure Cat - Traveling Cats",
+                    "subtitles": null,
+                    "url": "https://traveling-cats.com/2019/09/suki-the-adventure-cat-book.html",
+                    "resource_type": null,
+                    "icon_url": "https://www.google.com/s2/favicons?sz=64&domain=traveling-cats.com",
+                    "source": "Traveling Cats",
+                    "content_body": null,
+                    "uuid": "7b93c215-7025-4e7d-a662-029a711207b9"
+                  }
+                ],
+                "start_index": 6884,
+                "end_index": 7014
+              },
+              {
+                "uuid": "58ef1801-e332-4e89-ac37-86c2b5482e0c",
+                "title": "TikTok",
+                "url": "https://www.tiktok.com/discover/george-the-bengal-cat-rescue-story",
+                "metadata": {
+                  "type": "generic_metadata",
+                  "uuid": "58ef1801-e332-4e89-ac37-86c2b5482e0c",
+                  "preview_title": "George The Bengal Cat Rescue Story | TikTok",
+                  "icon_url": "https://www.google.com/s2/favicons?sz=64&domain=tiktok.com",
+                  "source": "TikTok"
+                },
+                "origin_tool_name": "web_search",
+                "sources": [
+                  {
+                    "title": "George The Bengal Cat Rescue Story | TikTok",
+                    "subtitles": null,
+                    "url": "https://www.tiktok.com/discover/george-the-bengal-cat-rescue-story",
+                    "resource_type": null,
+                    "icon_url": "https://www.google.com/s2/favicons?sz=64&domain=tiktok.com",
+                    "source": "TikTok",
+                    "content_body": null,
+                    "uuid": "58ef1801-e332-4e89-ac37-86c2b5482e0c"
+                  }
+                ],
+                "start_index": 7340,
+                "end_index": 7481
+              },
+              {
+                "uuid": "411fc6ca-992b-4767-8dca-cc7e73cb95d5",
+                "title": "TikTok",
+                "url": "https://www.tiktok.com/@george_the_bengal_cat/video/7256751180024515845?lang=en",
+                "metadata": {
+                  "type": "generic_metadata",
+                  "uuid": "411fc6ca-992b-4767-8dca-cc7e73cb95d5",
+                  "preview_title": "Bossy Bengal Cat Bedtime Shenanigans",
+                  "icon_url": "https://www.google.com/s2/favicons?sz=64&domain=tiktok.com",
+                  "source": "TikTok"
+                },
+                "origin_tool_name": "web_search",
+                "sources": [
+                  {
+                    "title": "Bossy Bengal Cat Bedtime Shenanigans",
+                    "subtitles": null,
+                    "url": "https://www.tiktok.com/@george_the_bengal_cat/video/7256751180024515845?lang=en",
+                    "resource_type": null,
+                    "icon_url": "https://www.google.com/s2/favicons?sz=64&domain=tiktok.com",
+                    "source": "TikTok",
+                    "content_body": null,
+                    "uuid": "411fc6ca-992b-4767-8dca-cc7e73cb95d5"
+                  }
+                ],
+                "start_index": 7551,
+                "end_index": 7588
+              }
+            ],
+            "version_uuid": "00a8143e-af45-46fd-8341-b609db888aad"
+          }
+        },
+        {
+          "type": "tool_result",
+          "name": "artifacts",
+          "content": [
+            {
+              "type": "text",
+              "text": "OK",
+              "uuid": "2847c7a6-1a6e-46cf-b61e-8e86c3f7bdff"
+            }
+          ],
+          "is_error": false
+        }
+      ],
+      "sender": "assistant",
+      "index": 7,
+      "created_at": "2025-12-26T09:26:22.490277+00:00",
+      "updated_at": "2025-12-26T09:31:28.738419+00:00",
+      "truncated": false,
+      "stop_reason": "stop_sequence",
+      "attachments": [],
+      "files": [],
+      "files_v2": [],
+      "sync_sources": [],
+      "parent_message_uuid": "019b59fa-f08b-776d-985d-73c3a292c09c"
+    }
+  ]
+}

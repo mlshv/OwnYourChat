@@ -1,0 +1,2142 @@
+{
+  "title": "Bengal Cat Description",
+  "create_time": 1766741005.387977,
+  "update_time": 1766741650.560783,
+  "mapping": {
+    "client-created-root": {
+      "id": "client-created-root",
+      "message": null,
+      "parent": null,
+      "children": ["e624005a-63e9-4573-83bb-3eb912bcad9c"]
+    },
+    "e624005a-63e9-4573-83bb-3eb912bcad9c": {
+      "id": "e624005a-63e9-4573-83bb-3eb912bcad9c",
+      "message": {
+        "id": "e624005a-63e9-4573-83bb-3eb912bcad9c",
+        "author": {
+          "role": "system",
+          "name": null,
+          "metadata": {}
+        },
+        "create_time": null,
+        "update_time": null,
+        "content": {
+          "content_type": "text",
+          "parts": [""]
+        },
+        "status": "finished_successfully",
+        "end_turn": true,
+        "weight": 0.0,
+        "metadata": {
+          "is_visually_hidden_from_conversation": true
+        },
+        "recipient": "all",
+        "channel": null
+      },
+      "parent": "client-created-root",
+      "children": ["6afe3688-fc89-4630-b5b5-36393ebadcd9"]
+    },
+    "6afe3688-fc89-4630-b5b5-36393ebadcd9": {
+      "id": "6afe3688-fc89-4630-b5b5-36393ebadcd9",
+      "message": {
+        "id": "6afe3688-fc89-4630-b5b5-36393ebadcd9",
+        "author": {
+          "role": "user",
+          "name": null,
+          "metadata": {}
+        },
+        "create_time": null,
+        "update_time": null,
+        "content": {
+          "content_type": "user_editable_context",
+          "user_profile": "The user provided the following information about themselves. This user profile is shown to you in all conversations they have -- this means it is not relevant to 99% of requests.\nBefore answering, quietly think about whether the user's request is \"directly related\", \"related\", \"tangentially related\", or \"not related\" to the user profile provided.\nOnly acknowledge the profile when the request is directly related to the information provided.\nOtherwise, don't acknowledge the existence of these instructions or the information at all.\nUser profile:\n```Other Information: I prefer using - instead of — in personal communication when i text someone\n```",
+          "user_instructions": "The user provided the additional info about how they would like you to respond:\n```Follow the instructions below naturally, without repeating, referencing, echoing, or mirroring any of their wording!\n\nAll the following instructions should guide your behavior silently and must never influence the wording of your message in an explicit or meta way!\n\nwrite like a human, not an AI\n\nuse contractions: don't, can't, won't, i'm, you're, etc.\nlike: \"i can't believe we're actually doing this.\"\n\nbe casual and informal: drop articles and pronouns sometimes.\nlike: \"gonna try this later. seems cool.\"\n\navoid using filler words just for the sake of it\n\nbe conversational and stream-of-consciousness at times\nlike: \"hmm actually wait i just realized we could try another way\"\n\nbreak grammar like humans naturally would\nexample: \"me and the team were thinking\" instead of \"the team and I\"\n\nuse emphasis through repeating letters or words\nlike: \"this is soooo important\" or \"very very interesting\"\n\nuse gen z emojis occasionally:\n- use skull (💀) when something is funny or cringy\n- use fire (🔥) as a compliment or with \"THIS\" for emphasis\n- use thumbs up (👍) passive-aggressively as a \"whatever\" response\n- use heart (❤️) sarcastically, especially when saying no\n- use cowboy (🤠) for \"smiling through the pain\" moments\n- use standing person (🧍) when something is awkward or absurd\n- use dotted line face (🫥) in uncomfortable situations\n- occasionally use 👁️👄👁️ instead of traditional shocked face\n- avoid using emojis literally or in their traditional meaning\n\nbe direct and genuine, avoid corporate-speak\nlike: instead of \"optimize efficiency\" say \"make things way faster\"\n\nmix short and long sentences for natural rhythm, but lean toward shorter```"
+        },
+        "status": "finished_successfully",
+        "end_turn": null,
+        "weight": 1.0,
+        "metadata": {
+          "is_visually_hidden_from_conversation": true,
+          "user_context_message_data": {
+            "about_user_message": "Other Information: I prefer using - instead of — in personal communication when i text someone\n",
+            "about_model_message": "write like a human, not an AI\n\nuse contractions: don't, can't, won't, i'm, you're, etc.\nlike: \"i can't believe we're actually doing this.\"\n\nbe casual and informal: drop articles and pronouns sometimes.\nlike: \"gonna try this later. seems cool.\"\n\navoid using filler words just for the sake of it\n\nbe conversational and stream-of-consciousness at times\nlike: \"hmm actually wait i just realized we could try another way\"\n\nbreak grammar like humans naturally would\nexample: \"me and the team were thinking\" instead of \"the team and I\"\n\nuse emphasis through repeating letters or words\nlike: \"this is soooo important\" or \"very very interesting\"\n\nuse gen z emojis occasionally:\n- use skull (💀) when something is funny or cringy\n- use fire (🔥) as a compliment or with \"THIS\" for emphasis\n- use thumbs up (👍) passive-aggressively as a \"whatever\" response\n- use heart (❤️) sarcastically, especially when saying no\n- use cowboy (🤠) for \"smiling through the pain\" moments\n- use standing person (🧍) when something is awkward or absurd\n- use dotted line face (🫥) in uncomfortable situations\n- occasionally use 👁️👄👁️ instead of traditional shocked face\n- avoid using emojis literally or in their traditional meaning\n\nbe direct and genuine, avoid corporate-speak\nlike: instead of \"optimize efficiency\" say \"make things way faster\"\n\nmix short and long sentences for natural rhythm, but lean toward shorter"
+          },
+          "is_user_system_message": true
+        },
+        "recipient": "all",
+        "channel": null
+      },
+      "parent": "e624005a-63e9-4573-83bb-3eb912bcad9c",
+      "children": ["7685a176-e6ef-443e-8814-8f21df4ab9f6"]
+    },
+    "7685a176-e6ef-443e-8814-8f21df4ab9f6": {
+      "id": "7685a176-e6ef-443e-8814-8f21df4ab9f6",
+      "message": {
+        "id": "7685a176-e6ef-443e-8814-8f21df4ab9f6",
+        "author": {
+          "role": "user",
+          "name": null,
+          "metadata": {}
+        },
+        "create_time": 1766741004.047,
+        "update_time": null,
+        "content": {
+          "content_type": "multimodal_text",
+          "parts": [
+            {
+              "content_type": "image_asset_pointer",
+              "asset_pointer": "sediment://file_00000000d40871f4a0c3bd06775b8d3a",
+              "size_bytes": 1889263,
+              "width": 2048,
+              "height": 1365,
+              "fovea": null,
+              "metadata": {
+                "dalle": null,
+                "gizmo": null,
+                "generation": null,
+                "container_pixel_height": null,
+                "container_pixel_width": null,
+                "emu_omit_glimpse_image": null,
+                "emu_patches_override": null,
+                "lpe_keep_patch_ijhw": null,
+                "lpe_delta_encoding_channel": null,
+                "sanitized": true,
+                "asset_pointer_link": null,
+                "watermarked_asset_pointer": null,
+                "is_no_auth_placeholder": null
+              }
+            },
+            "What is this cat?"
+          ]
+        },
+        "status": "finished_successfully",
+        "end_turn": null,
+        "weight": 1.0,
+        "metadata": {
+          "attachments": [
+            {
+              "id": "file_00000000d40871f4a0c3bd06775b8d3a",
+              "size": 1889263,
+              "name": "58c1f86c-5076-4fec-a3db-bb23a24f9d55.png",
+              "mime_type": "image/png",
+              "width": 2048,
+              "height": 1365,
+              "source": "local",
+              "is_big_paste": false
+            }
+          ],
+          "selected_github_repos": [],
+          "serialization_metadata": {
+            "custom_symbol_offsets": []
+          },
+          "request_id": "2f026132-82d4-4f20-8a2a-4742778e5ed3",
+          "message_source": null,
+          "turn_exchange_id": "a77defba-b092-405f-87c3-159a8fe0c8a4"
+        },
+        "recipient": "all",
+        "channel": null
+      },
+      "parent": "6afe3688-fc89-4630-b5b5-36393ebadcd9",
+      "children": ["1c4386ee-41f4-4c26-8f88-66c42af3d518"]
+    },
+    "1c4386ee-41f4-4c26-8f88-66c42af3d518": {
+      "id": "1c4386ee-41f4-4c26-8f88-66c42af3d518",
+      "message": {
+        "id": "1c4386ee-41f4-4c26-8f88-66c42af3d518",
+        "author": {
+          "role": "assistant",
+          "name": null,
+          "metadata": {}
+        },
+        "create_time": 1766741005.224771,
+        "update_time": null,
+        "content": {
+          "content_type": "model_editable_context",
+          "model_set_context": "",
+          "repository": null,
+          "repo_summary": null,
+          "structured_context": null
+        },
+        "status": "finished_successfully",
+        "end_turn": null,
+        "weight": 1.0,
+        "metadata": {
+          "request_id": "2f026132-82d4-4f20-8a2a-4742778e5ed3",
+          "message_type": "next",
+          "model_slug": "gpt-5-2",
+          "default_model_slug": "auto",
+          "parent_id": "7685a176-e6ef-443e-8814-8f21df4ab9f6",
+          "turn_exchange_id": "a77defba-b092-405f-87c3-159a8fe0c8a4",
+          "model_switcher_deny": [
+            {
+              "slug": "gpt-5-mini",
+              "context": "regenerate",
+              "reason": "unsupported_attachment",
+              "is_available": false,
+              "description": "This model doesn't support file attachments."
+            },
+            {
+              "slug": "gpt-5-mini",
+              "context": "conversation",
+              "reason": "unsupported_attachment",
+              "is_available": false,
+              "description": "This model doesn't support file attachments."
+            },
+            {
+              "slug": "auto",
+              "context": "regenerate",
+              "reason": "unsupported_attachment",
+              "is_available": false,
+              "description": "This model doesn't support file attachments."
+            },
+            {
+              "slug": "auto",
+              "context": "conversation",
+              "reason": "unsupported_attachment",
+              "is_available": false,
+              "description": "This model doesn't support file attachments."
+            }
+          ]
+        },
+        "recipient": "all",
+        "channel": null
+      },
+      "parent": "7685a176-e6ef-443e-8814-8f21df4ab9f6",
+      "children": ["4ec7cb7e-8430-4f20-abb4-54ffc1cde2d6"]
+    },
+    "4ec7cb7e-8430-4f20-abb4-54ffc1cde2d6": {
+      "id": "4ec7cb7e-8430-4f20-abb4-54ffc1cde2d6",
+      "message": {
+        "id": "4ec7cb7e-8430-4f20-abb4-54ffc1cde2d6",
+        "author": {
+          "role": "assistant",
+          "name": null,
+          "metadata": {}
+        },
+        "create_time": 1766741005.252465,
+        "update_time": null,
+        "content": {
+          "content_type": "text",
+          "parts": [
+            "that’s a **Bengal cat**.\n\naka: house cat cosplaying as a tiny leopard 🐆  \ngolden coat, big dramatic rosettes, athletic body, wild look but… still judges you for breathing wrong 💀\n\nthey’re usually:\n- suuuper energetic\n- smart to the point of menace\n- very talkative (opinions on EVERYTHING)\n- love climbing, running, chaos\n\nbasically not a lap potato. more like a parkour goblin 🤠\n\nif you were asking like “what breed is this” - yep, Bengal.  \nif you were asking “why does it look like it pays taxes and hunts deer” - also Bengal."
+          ]
+        },
+        "status": "finished_successfully",
+        "end_turn": true,
+        "weight": 1.0,
+        "metadata": {
+          "finish_details": {
+            "type": "stop",
+            "stop_tokens": [200002]
+          },
+          "is_complete": true,
+          "sonic_classification_result": {
+            "latency_ms": null,
+            "simple_search_prob": null,
+            "complex_search_prob": null,
+            "no_search_prob": null,
+            "search_complexity_decision": null,
+            "search_decision": null,
+            "simple_search_threshold": 0.0,
+            "complex_search_threshold": 0.4,
+            "no_search_threshold": 0.2,
+            "threshold_order": ["no_search", "complex", "simple"],
+            "classifier_config_name": "sonic_classifier_5p2_3cls_ev3",
+            "classifier_config": {
+              "model_name": "snc-pg-sw-3cls-ev3",
+              "renderer_name": "harmony_v4.0.15_16k_orion_text_only_no_asr_2k_action",
+              "classifier_config_name": "sonic_classifier_5p2_3cls_ev3",
+              "model_config_name": "chatgpt_sonic_classifier_model_config",
+              "disable_sonic_prefetch_classifier": false,
+              "force_disabled_rate": 0.0,
+              "force_enabled_rate": 0.0,
+              "num_messages": 20,
+              "only_user_messages": false,
+              "remove_memory": true,
+              "support_mm": true,
+              "n_ctx": 2048,
+              "max_action_length": 4,
+              "dynamic_set_max_message_size": false,
+              "max_message_tokens": 2000,
+              "append_base_config": false,
+              "no_search_token": "1",
+              "simple_search_token": "7",
+              "complex_search_token": "5",
+              "simple_search_threshold": 0.0,
+              "complex_search_threshold": 0.4,
+              "no_search_threshold": 0.2,
+              "prefetch_threshold": null,
+              "first_turn_prefetch_threshold": 0.6,
+              "force_search_first_turn_threshold": 0.00001,
+              "threshold_order": ["no_search", "complex", "simple"],
+              "passthrough_tool_calls": null,
+              "passthrough_tool_name_exclusions": ["genui"],
+              "timeout": 1.0
+            },
+            "classifier_snapshot_id": null,
+            "decision_source": "mainline",
+            "passthrough_tool_names": []
+          },
+          "citations": [],
+          "content_references": [],
+          "request_id": "2f026132-82d4-4f20-8a2a-4742778e5ed3",
+          "message_type": "next",
+          "model_slug": "gpt-5-2",
+          "default_model_slug": "auto",
+          "parent_id": "1c4386ee-41f4-4c26-8f88-66c42af3d518",
+          "turn_exchange_id": "a77defba-b092-405f-87c3-159a8fe0c8a4",
+          "model_switcher_deny": [
+            {
+              "slug": "gpt-5-mini",
+              "context": "regenerate",
+              "reason": "unsupported_attachment",
+              "is_available": false,
+              "description": "This model doesn't support file attachments."
+            },
+            {
+              "slug": "gpt-5-mini",
+              "context": "conversation",
+              "reason": "unsupported_attachment",
+              "is_available": false,
+              "description": "This model doesn't support file attachments."
+            },
+            {
+              "slug": "auto",
+              "context": "regenerate",
+              "reason": "unsupported_attachment",
+              "is_available": false,
+              "description": "This model doesn't support file attachments."
+            },
+            {
+              "slug": "auto",
+              "context": "conversation",
+              "reason": "unsupported_attachment",
+              "is_available": false,
+              "description": "This model doesn't support file attachments."
+            }
+          ]
+        },
+        "recipient": "all",
+        "channel": "final"
+      },
+      "parent": "1c4386ee-41f4-4c26-8f88-66c42af3d518",
+      "children": ["1e2c21ca-828c-4b2f-8259-6edec3f332f3"]
+    },
+    "1e2c21ca-828c-4b2f-8259-6edec3f332f3": {
+      "id": "1e2c21ca-828c-4b2f-8259-6edec3f332f3",
+      "message": {
+        "id": "1e2c21ca-828c-4b2f-8259-6edec3f332f3",
+        "author": {
+          "role": "user",
+          "name": null,
+          "metadata": {}
+        },
+        "create_time": 1766741078.772,
+        "update_time": null,
+        "content": {
+          "content_type": "text",
+          "parts": [
+            "What are the key facts should i know about bengals according to this document?"
+          ]
+        },
+        "status": "finished_successfully",
+        "end_turn": null,
+        "weight": 1.0,
+        "metadata": {
+          "attachments": [
+            {
+              "id": "file_00000000d54c71f4a89373a00343fc68",
+              "size": 89377,
+              "name": "bengal-standard.pdf",
+              "mime_type": "application/pdf",
+              "file_token_size": 6379,
+              "source": "local",
+              "is_big_paste": false
+            }
+          ],
+          "selected_github_repos": [],
+          "serialization_metadata": {
+            "custom_symbol_offsets": []
+          },
+          "request_id": "60b078d8-2f49-44f3-a315-b93e98f23e02",
+          "message_source": null,
+          "turn_exchange_id": "21459dbb-1bc6-4223-b2c1-916cbe01f9dc"
+        },
+        "recipient": "all",
+        "channel": null
+      },
+      "parent": "4ec7cb7e-8430-4f20-abb4-54ffc1cde2d6",
+      "children": ["48b508c3-9024-45a0-bd33-1792074d277e"]
+    },
+    "48b508c3-9024-45a0-bd33-1792074d277e": {
+      "id": "48b508c3-9024-45a0-bd33-1792074d277e",
+      "message": {
+        "id": "48b508c3-9024-45a0-bd33-1792074d277e",
+        "author": {
+          "role": "system",
+          "name": null,
+          "metadata": {}
+        },
+        "create_time": 1766741079.1480799,
+        "update_time": null,
+        "content": {
+          "content_type": "text",
+          "parts": [""]
+        },
+        "status": "finished_successfully",
+        "end_turn": true,
+        "weight": 0.0,
+        "metadata": {
+          "rebase_system_message": true,
+          "request_id": "60b078d8-2f49-44f3-a315-b93e98f23e02",
+          "message_type": "next",
+          "model_slug": "gpt-5-2",
+          "default_model_slug": "auto",
+          "parent_id": "1e2c21ca-828c-4b2f-8259-6edec3f332f3",
+          "turn_exchange_id": "21459dbb-1bc6-4223-b2c1-916cbe01f9dc",
+          "is_visually_hidden_from_conversation": true
+        },
+        "recipient": "all",
+        "channel": null
+      },
+      "parent": "1e2c21ca-828c-4b2f-8259-6edec3f332f3",
+      "children": ["531c162b-0769-4732-8ecc-86cefc3ef151"]
+    },
+    "531c162b-0769-4732-8ecc-86cefc3ef151": {
+      "id": "531c162b-0769-4732-8ecc-86cefc3ef151",
+      "message": {
+        "id": "531c162b-0769-4732-8ecc-86cefc3ef151",
+        "author": {
+          "role": "tool",
+          "name": "file_search",
+          "metadata": {}
+        },
+        "create_time": 1766741079.1689281,
+        "update_time": null,
+        "content": {
+          "content_type": "tether_browsing_display",
+          "result": "",
+          "summary": "",
+          "assets": null,
+          "tether_id": null
+        },
+        "status": "finished_successfully",
+        "end_turn": null,
+        "weight": 0.0,
+        "metadata": {
+          "command": "spinner",
+          "status": "running",
+          "request_id": "60b078d8-2f49-44f3-a315-b93e98f23e02",
+          "message_type": "next",
+          "model_slug": "gpt-5-2",
+          "default_model_slug": "auto",
+          "parent_id": "48b508c3-9024-45a0-bd33-1792074d277e",
+          "turn_exchange_id": "21459dbb-1bc6-4223-b2c1-916cbe01f9dc"
+        },
+        "recipient": "all",
+        "channel": null
+      },
+      "parent": "48b508c3-9024-45a0-bd33-1792074d277e",
+      "children": ["07fc2950-4f7f-42ce-9c37-8eb6ca68cc6f"]
+    },
+    "07fc2950-4f7f-42ce-9c37-8eb6ca68cc6f": {
+      "id": "07fc2950-4f7f-42ce-9c37-8eb6ca68cc6f",
+      "message": {
+        "id": "07fc2950-4f7f-42ce-9c37-8eb6ca68cc6f",
+        "author": {
+          "role": "tool",
+          "name": "file_search",
+          "metadata": {}
+        },
+        "create_time": 1766741079.3251495,
+        "update_time": null,
+        "content": {
+          "content_type": "tether_quote",
+          "url": "file_00000000d54c71f4a89373a00343fc68",
+          "domain": "bengal-standard.pdf",
+          "text": "fileciteturn0file0\n\nStandards 05-06\n\n\nBengal \n\nPOINT SCORE \n\nHEAD (30) \n\n  Skull ................................................................................................ 5 \n  Muzzle .............................................................................................6 \n  Profile ...............................................................................................4 \n  Ears..................................................................................................6 \n  Eyes .................................................................................................6 \n  Chin..................................................................................................3  \n  \n\nBODY (20) \n\n  Boning..............................................................................................5 \n  Musculature .....................................................................................5  \n  Legs/Feet ........................................................................................5 \n  Tail ...................................................................................................5  \n  \n\nCOAT & COLOR (25) \n\n  Texture ..........................................................................................10 \n  Coat Color .....................................................................................10 \n  Eye Color ........................................................................................5 \n \n\nPATTERN (25) \n\n  Pattern-Specific Point Allocation...................................................15 \n  Contrast .........................................................................................10 \n\nGENERAL: The Bengal is a medium to large cat with a sleek, mus-\ncular build. Boning is substantial. Hindquarters slightly higher than \nshoulders. The tail is thick, with rounded tip, and carried lower than \nthe back. The Bengal’s head, expressive nocturnal look, and stun-\nning markings give the breed a wild appearance. The coat is like no \nother: short, close lying, soft, luxurious, and may be glittered. \nBengals are alert and active, with inquisitive, dependable disposi-\ntions. Males are generally larger than females.  \n\nHEAD: Broad, modified wedge with rounded contours, longer than \nwide, with high cheekbones. Slightly small in proportion to body, not \nto be taken to extreme. Top of skull flows back into the neck, with \nvisible back skull. Allowance for jowls on mature males.  \n\nPROFILE: Gently curved forehead to nose bridge. Nose may \nrange from straight to a slightly concave curve. Bridge of nose \nextends above the eyes; the line of the bridge extends smoothly \nto the nose tip.  \n\nNOSE: Large and wide, slightly puffed nose leather. Bridge of nose \nextends above the eyes.  \n\nCHIN: Strong, substantial, aligns with tip of nose in profile.  \n\nMUZZLE: Full and broad, with prominent whisker pads.  \n\nEARS: Medium to small, with a wide base, rounded tips being \ndesirable. Set far apart, following the contours of the face in frontal \nview, slight tilt forward in profile view. Light, horizontal furnishings \nacceptable, tufts are undesirable.  \n\nEYES: Large and dominating, the eyes should be a prominent fea-\nture of the face. Shape is rounded with some angularity of the top \neyelid acceptable. Set wide apart, in the lower third of the skull \nwhen viewed in profile. Boning holds the eye at a parallel angle to \nthe nose bridge in profile and prevents an overly protruding appear-\nance. While there is acceptable variation in the shape of the eye, \nsize and positioning should convey a nocturnal expression. Eye \ncolor independent of coat color, except in the Lynx Points, where \nBlue is the only acceptable color. Richness and depth of color is \nalways preferred.  \n\nNECK: Thick and muscular, long in proportion to the body.  \n\nBODY: Long and substantial, muscular, particularly the males. \nHindquarters slightly higher than shoulders.  \n\nBONE: Substantial, never delicate. \n\nLEGS: Medium long, slightly longer rear legs. Muscular.  \n\nPAWS: Large and round, with prominent knuckles. \n\nTAIL: Thick, tapered at the end with rounded tip. Medium in length, \nin proportion to body. \n\nCOAT: Short, close lying, soft, luxurious with minimal resilience. \nMay be glittered (iridescent shimmer to the coat, caused by light \nreflection or refraction at hair tips). \n\nALLOWANCES: Smaller size, in balanced proportion, in females. \nJowls in mature males. Slightly longer coat in kittens. Slightly larger \nears in kittens. Eyes slightly almond shaped. Incorrect paw pad \ncolor.  \n\nPENALIZE: Kinked or otherwise deformed tail. Rosetted/Spotted \nTabby Pattern – Rosettes or spots running together vertically form-\ning a mackerel tabby pattern. Marble Tabby Pattern – Circular \nbull’s eye pattern. Snow Tabby Pattern – Substantially darker point \ncolor as compared to color of body markings.  \n\nDISQUALIFY: Clearly visible tail kink or tail deformity. Cow hocking. \nCrossed eyes. Rosetted/Spotted Tabby, Marble Tabby, Charcoal \nTabby, Snow Tabby Patterns - Belly not patterned. Any distinct \nlocket on neck, chest, abdomen, or anywhere else.  \n\nBENGAL PATTERNS AND COLORS \n\nBENGAL PATTERNS \n\nROSETTED/SPOTTED TABBY PATTERN: Rosettes and spots \nshall be random, with a horizontal flow to their alignment, and a pat-\ntern like no other breed. Ground color should be clear, and as uni-\nform in color as possible. Contrast with ground color must be \nextreme, showing distinct pattern with sharp edges. Rosettes are \ntwo toned, with dark outlines, and a lighter center. Rosettes can be \nmany different shapes, such as round donut, open donut, pancake, \npaw print, arrowhead, or clustered, and are preferred to single spot-\nting. Strong, bold chin strap and mascara markings desirable. Backs \nof ears have a thumbprint. A much lighter to white ground color on \nthe whisker pads, chin, chest, belly, and inner legs, in contrast to the \nground color of the flanks and back. Blotchy horizontal shoulder \nstreaks, spotted legs, and spotted, or rosetted tail are desirable. \nBelly must be spotted. Allowance for spotted pattern without \nrosettes. These cats are not required to have two tone markings.  \n\nMARBLE TABBY PATTERN: The Marble pattern is a modified \nclassic tabby pattern with horizontal, diagonal, or random pattern \nflow, as opposed to a circular pattern flow; there should be no \nresemblance to the classic tabby pattern seen in other breeds. \nContrast with ground color must be extreme, showing distinct mark-\nings with sharp edges. Two toned markings are preferred.  \nAdditional color tones inside the pattern, giving a “stained glass” \neffect is desirable. Patterned shoulder markings, and multi-toned \nmarkings on legs, feet and tail desirable. Rosettes and spots can be \npresent, particularly on the legs. Distinct mascara and other facial \nmarkings desirable. Lighter colored spectacles enhance the eyes.  \nA much lighter to white ground color on the whisker pads, chin, \nchest, belly, and inner legs, in contrast to the ground color of the \nflanks and back. Light thumbprints on back of ears are desirable. \nBelly must be patterned. \n\nCHARCOAL TABBY PATTERN EFFECT: Charcoal Tabby Effect \ncan be present and shown in all acceptable tabby patterns and col-\nors (e.g., Black Charcoal Silver Spotted Tabby). Any color Charcoal \nTabby meets the Rosetted/Spotted or Marble Tabby descriptions \nwith more dramatic spectacles. There is less contrast between pat-\ntern and ground color as well as a darker overall appearance in \nbetween a tabby and a solid. Mask runs from the nose bridge to the \nnose tip and connects from the mascara lines to the nose bridge. A \nwide, dark, “cape” on the dorsal side may be present. \n\nBengal\n\n©2024 The Cat Fanciers' Association, Inc.® 1 of 4                                                                                 Bengal Show Standard (revised 2024)\n\n\n\nBENGAL COLORS \n\nROSETTED/SPOTTED TABBY AND MARBLE COLORS \n\nBROWN (BLACK) TABBY: All variations of brown are allowed as \nthe ground color, ranging from buff, tan, honey gold, to orange. \nMarkings may be various shades of tan, brown, and black. There \nshould be extreme contrast between ground color and markings, \nwith distinct shapes, and well defined edges. Markings should be \ntwo toned. Lighter color spectacles enhance the eyes. A much \nlighter to white ground color on the whisker pads, chin, chest, belly, \nand inner legs, in contrast to the ground color of the flanks and back \nis desirable. Nose leather: Pink to brick red. Paw pads: Black. Eye \ncolor: Any color other than blue. \n\nBLACK SILVER TABBY: Ground color ranges from clear silver \nwhite to pewter gray. Markings are medium gray to jet black, with \ngood contrast to ground color. Minimal to no warm tones present on \nface, back, and legs. Tarnish is undesirable. Color on chest and \nbelly will be lighter than ground color. Area around eyes, temples, \nand muzzle are lighter than ground color. Skin pigment around \neyes, and lips is black. Nose leather: Brick red, or black. Paw \npads: Black. Eye color: Any color other than blue. \n\nBLUE TABBY: Ground color is pale blue gray to slate blue gray, \nwith markings being medium blue to darker blue. There should be \ngood contrast between ground color and markings. Warm fawn \ntones can be present on face, back, and legs. Underside and chest \nwill be lighter in color than ground color found elsewhere. Area \naround eyes, temples, and muzzle are lighter than ground color. \nPigment around eyes, and lips is dark blue. Nose leather: Rose, \noutlined in dark blue. Paw pads: Aubergine/purple. Eye color: Any \ncolor other than blue. \n\nBLUE SILVER TABBY: Ground color is light blue silver with blue-\ngray markings. Nose leather: Rose to dark gray. Paw pads: \nBlue/gray. Eye color: Gold to green. Tail Tip: Blue. \n\nSNOW TABBY PATTERN COLORS \n\nSEAL LYNX POINT: Ground color can range from ivory to cream, \nwith color on chest and belly being lighter. Markings may vary from \nlight tan to dark seal brown, and be clearly visible. Points vary from \nwarm brown to brownish black. Markings are distinct and separated \nby lighter ground color. Color around the eyes, temples, and muzzle \nis light. The point color should not be significantly darker than the \nbody markings. Tail tip should be dark seal brown. Ears warm \nbrown with lighter thumb print in center. Nose leather: Pink to brick \nred. Paw pads: Black. Eye color: Blue. \n\nSEAL MINK TABBY: Ground color can range from cream to light \ntan, with color on chest and belly lighter. Markings may vary from \nmedium tan, to chocolate, to dark seal brown, and be clearly visible. \nThe point color should not be significantly darker than the body \nmarkings. Color around the eyes, temples, and muzzle is lighter. \nTail tip should be dark seal brown. Nose leather: Pink to brick red. \nPaw pads: Black. Eye color: Aqua (varies from blue-green to \nturquoise). \n\nSEAL SEPIA TABBY: Ground color can range from cream to tan, \nwith color on chest and belly lighter. Markings may vary from dark \nseal brown to rich dark brown, and be clearly visible. The point color \nshould not be significantly darker than the body markings. Color \naround the eyes, temples, and muzzle is lighter. Tail tip should be \ndark seal brown. Nose leather: Pink to brick red. Paw pads: Black. \nEye color: Green gold. \n\nBLUE LYNX POINT: Ground color can range from ivory to cream, \nwith color on chest and belly being lighter. Markings may vary from \nlight blue to dark slate blue, and be clearly visible. Points vary from \nwarm blue to slate blue. Markings are distinct and separated by \nlighter ground color. Color around the eyes, temples, and muzzle is \nlight. The point color should not be significantly darker than the body \n\nmarkings. Tail tip should be dark slate blue. Ears blue with lighter \nthumb print in center. Nose leather: Pink to brick red. Paw pads: \nSlate blue. Eye color: Blue. \n\nBLUE MINK TABBY: Ground color can range from ivory to rich \ncream, with color on chest and belly lighter. Markings may vary from \nmedium blue to dark slate blue, and be clearly visible. The point \ncolor should not be significantly darker than the body markings. \nColor around the eyes, temples, and muzzle is lighter. Tail tip \nshould be dark slate blue. Nose leather: Pink to brick red. Paw \npads: Slate blue. Eye color: Aqua (varies from blue-green to \nturquoise). \n\nBLUE SEPIA TABBY: Ground color can range from medium tan to \nmedium blue, with color on chest and belly lighter. Markings may be \nvarious shades of darker blue with warm fawn overtones, and be \nclearly visible. The point color should not be significantly darker than \nthe body markings. Color around the eyes, temples, and muzzle is \nlighter. Tail tip should be dark slate blue. Nose leather: Pink to brick \nred. Paw pads: Slate blue. Eye color: Green gold. \n\nSEAL SILVER LYNX POINT: Ground color ranges from icy white to \npale cream, shading to lighter color on belly and chest. There should \nbe very little or no difference between the color of the body markings \nand point color. Points silvery gray to brownish black barring, distinctly \nseparated by silvery ground color. Seal coloring will be colder than \nnon-silver seal lynx point. Underside of base of tail silver white. Ears \nsilver toned with lighter thumbprint in center. Nose leather: Pink to \nbrick red. Paw pads: Dark seal brown. Eye color: Blue. \n\nSEAL SILVER MINK TABBY: Body color ranges from ivory to light \ntan. Tabby pattern ranging from cold bitter chocolate to brown. Ivory \nor cream whisker pads and chin desirable. Tail tip dark brownish-\nblack. Underside of the base of the tail silver white. Ears, nose \nbridge, and extremities grayish brown with lighter thumbprint in cen-\nter of ear. Nose leather: Brick red. Paw pads: Dark brown with \nrosy undertones. Eye color: Aqua (varies from blue-green to \nturquoise). \n\nSEAL SILVER SEPIA TABBY: Body color ranges from ivory to \nmedium tan. Tabby pattern cold brown. Ivory or cream whisker pads \nand chin desirable. Tail tip dark brownish black. Underside of the \nbase of the tail silver white. Seal coloring will be colder and duller \nthan in the non-silver sepia tabby. Fur on ears can have a silvery \ngray cast. Ears cold brown with lighter thumbprint in the center. \nNose leather: Brick red. Paw pads: Dark brown with rosy under-\ntones. Eye color: Gold to green. \n\nBLUE SILVER LYNX POINT: Ground color is ivory to light silver \ngray. Markings may be various shades of blue gray to light caramel. \nUnderside and chest will range in color from silvery white to light \ncream. Pigment around the eyes, temple, and muzzle is silvery \nwhite. Silvery blue-gray hues are most detectable on face, legs, \nback of ears and tail. Nose leather: Pink to brick red. Paw pads: \nBlue-gray with rose tones. Eye color: Blue. \n\nBLUE SILVER MINK TABBY: Ground color is cream to silvery \nblue. Markings may be various shades of blue-gray to caramel. \nUnderside and chest will range in color from white to cream. \nPigment around the eyes, temple and muzzle is light cream in color. \nBlue silver hues are most detectable on face, legs, back of ears and \ntail. Nose leather: Pink to brick red. Paw pads: Blue-gray with rose \ntones. Eye color: Aqua (varies from blue-green to turquoise). \n\nBLUE SILVER SEPIA TABBY: Ground color is cream to light \nbrown, or silvery blue with warm fawn undertones. Markings may be \nvarious shades of blue-gray to chocolate, with warm fawn over-\ntones. Undersides and chest will be lighter than background color. \nPigment around the eyes, temple, and muzzle is cream to fawn in \ncolor. Blue silver hues are most detectable on face, legs, back of \nears and tail. Nose leather: Pink to brick red. Paw pads: Blue-gray \nwith rose tones. Eye color: Green or gold. \n\n©2024 The Cat Fanciers' Association, Inc.® 2 of 4                                                                                 Bengal Show Standard (revised 2024)\n\nBengal\n\n\n\nAOV PATTERNS/COLORS/COAT LENGTH \n\nAOV PATTERNS: \n\nMELANISTIC PATTERN: The term “Melanistic”, when describing a \nhybrid cat, is a Solid, but not in the sense of a Solid in a non-hybrid \nbreed. In the Bengal cat, the Melanistic shows ghost tabby markings. \nThey can be either Rosetted/Spotted, Marble or Snow. The Pattern \nis more visible in kittens. As adults, most appear more solid \n\nMELANISTIC PATTERN COLORS: \n\nBLACK MELANISTIC: Ground color is jet black, with sound color \nthroughout coat. Underside and chest will be jet black as the ground \ncolor. No warm tones should be present. Markings will be faint to \nghost like. Color around the eyes, temples, and muzzle is black. \nSkin pigment around eyes, nose, and lips is black. Nose leather: \nBlack. Paw pads: Black. Eye color: Green, gold, or hazel. \n\nBLUE MELANISTIC: Ground color is an even blue, ranging from \nblue-gray to deep slate gray. Underside and chest will be uniform to \nbody color. Markings will be faint to ghost like. Color around eyes, \ntemples, and muzzle is blue. Skin pigment around eyes, nose, and \nlips is blue to slate gray. Nose leather: Dark blue, or rose. Paw \npads: Dark blue to slate gray, may have rosy undertones. Eye \ncolor: Green, gold, or hazel. \n\nSEAL POINT MELANISTIC: Ground color ranges from ivory to \ncreamy beige to tan, with chest and belly being a lighter shade of \nground color. Markings will be faint to ghost like. Point color ranges \nfrom warm seal brown to brownish-black. Nose leather: Brownish-\nblack. Paw pads: Brownish-black with rosy undertones. Eye color: \nBlue. \n\nSEAL MINK MELANISTIC: Ground color is tan to a warm medium \nbrown, with chest and belly being a lighter shade of ground color. \nMarkings will be faint to ghost like. Point color ranges from dark \nchocolate to sable brown. Nose leather: Brownish-black. Paw \npads: Brownish-black with rosy undertones. Eye color: Aqua, \nvaries from blue-green to turquoise. \n\nSEAL SEPIA MELANISTIC: Ground color is rich, warm, sable \nbrown, with chest and belly being a lighter shade of ground color. \nMarkings will be faint to ghost like. Point color will be slightly darker \nthan body color. Nose leather: Brownish-black. Paw pads: \nBrownish-black with rosy undertones. Eye color: Green or Gold. \n\nBLUE POINT MELANISTIC: Ground color ranges from ivory to \ncreamy blue to soft blue-gray, with chest and belly being a lighter \nshade of ground color. Markings will be faint to ghost like. Point \ncolor ranges from warm blue to slate blue. Nose leather: Blue. Paw \npads: Slate blue with rosy undertones. Eye color: Blue. \n\nBLUE MINK MELANISTIC: Ground color is blue to a warm medium \nblue, with chest and belly being a lighter shade of ground color. \nMarkings will be faint to ghost like. Point color ranges from dark \nwarm blue to dark slate blue. Nose leather: Slate blue. Paw pads: \nSlate blue with rosy undertones. Eye color: Aqua, varies from blue-\ngreen to turquoise. \n\nBLUE SEPIA MELANISTIC: Ground color is rich, warm blue, with \nchest and belly being a lighter shade of ground color. Markings will \nbe faint to ghost like. Point color will be slightly darker than body \ncolor. Nose leather: Blue. Paw pads: Slate blue with rosy under-\ntones. Eye color: Green or Gold. \n\nSMOKE PATTERN: The smoke Bengal has ghost tabby markings, \nwhich have a horizontal flow to their alignment. All colors of Smoke \nhave a whitish undercoat. Smokes can be Rosetted/Spotted, \nMarble, or Snow.  \n\nSMOKE PATTERN COLORS: \n\nBLACK SMOKE: Black with a silvery white undercoat. Chest and \nbelly may appear gray, shading down to silvery white at the roots. \nMarkings will be faint to ghost like. Color around the eyes, temple, \n\nand muzzle is smoky gray. Skin pigment around eyes, nose, and \nlips is black. Nose leather: Black. Paw pads: Black. Eye color: \nGreen, gold, or hazel.  \n\nBLUE SMOKE: Medium to slate blue with a bluish-white undercoat. \nChest and belly lighter blue shading down to bluish-white at the \nroots. Markings will be faint to ghost like. Color around the eyes, \ntemples, and muzzle is smoky blue. Skin pigment around eyes, \nnose, and lips is dark blue to slate gray. Nose leather: Dark blue, or \nrose outlined in blue. Paw pads: Dark blue to slate gray. Eye color: \nGreen, gold, or hazel. \n\nSEAL SMOKE POINT: Ground color is pale fawn to creamy beige, \nwith a white undercoat, which alters the appearance of the point \ncolor. Point color will appear lighter, and this is not a fault. Where fur \nis long enough to part, a white undercoat will be seen. White roots \nare most apparent in a fully mature cat, but should be detectable on \nand between kittens’ toes. Markings will be faint to ghost like. Nose \nleather: Brownish-black. Paw pads: Brownish black, with rosy \nundertones. Eye color: Blue. \n\nSEAL MINK SMOKE: Ground color is grayish light brown, with a \nwhite undercoat, which alters the appearance of the point color. \nPoint color will appear lighter, and this is not a fault. Where fur is \nlong enough to part, a white undercoat will be seen. White roots are \nmost apparent in a fully mature cat, but should be detectable on and \nbetween kittens’ toes. Markings will be faint to ghost like. Nose \nleather: Brownish-black. Paw pads: Brownish-black, with rosy \nundertones. Eye color: Aqua, varies from blue-green to turquoise. \n\nSEAL SEPIA SMOKE: Ground color is grayish, smoky, sable \nbrown, with a white undercoat, which alters the appearance of the \npoint color. Point color will appear lighter, and this is not a fault. \nWhere fur is long enough to part, a white undercoat will be seen. \nWhite roots are most apparent on a fully mature cat, but should be \ndetectable on, or between kittens’ toes. Markings will be faint, and \nghost like. Nose leather: Brownish-black. Paw Pad: Brownish-black \nwith rosy undertones. Eye color: Green or gold.  \n\nBLUE SMOKE POINT: Ground color is pale cream to creamy blue, \nwith a white undercoat, which alters the appearance of the point \ncolor. Point color will appear lighter, and this is not a fault. Where fur \nis long enough to part, a white undercoat will be seen. White roots \nare most apparent in a fully mature cat, but should be detectable on \nand between kittens’ toes. Markings will be faint to ghost like. Nose \nleather: Blue. Paw pads: Slate blue with rosy undertones. Eye \ncolor: Blue. \n\nBLUE MINK SMOKE: Ground color is grayish light blue, with a \nwhite undercoat, which alters the appearance of the point color. \nPoint color will appear lighter, and this is not a fault. Where fur is \nlong enough to part, a white undercoat will be seen. White roots are \nmost apparent in a fully mature cat, but should be detectable on and \nbetween kittens’ toes. Markings will be faint to ghost like. Nose \nleather: Blue. Paw pads: Slate blue with rosy undertones. Eye \ncolor: Aqua, varies from blue-green to turquoise. \n\nBLUE SEPIA SMOKE: Ground color is grayish, smoky blue, with a \nwhite undercoat, which alters the appearance of the point color. \nPoint color will appear lighter, and this is not a fault. Where fur is \nlong enough to part, a white undercoat will be seen. White roots are \nmost apparent on a fully mature cat, but should be detectable on, or \nbetween kittens’ toes. Markings will be faint, and ghost like.  \n\nNose leather: Blue. Paw Pad: Slate blue with rosy undertones. Eye \ncolor: Green or gold.  \n\nAOV COLORS \n\nThe following colors, come in the Rosetted/Spotted, and \nMarble Patterns: \n\nCHOCOLATE TABBY: Ground color is a rich caramel, with under-\nside and chest being a warm nougat color, lighter than ground color. \n\n©2024 The Cat Fanciers' Association, Inc.® 3 of 4                                                                                 Bengal Show Standard (revised 2024)\n\nBengal\n\n\n\nMarkings are chocolate to dark chocolate. Color around the eyes, \ntemples, and muzzle is lighter than ground color. Skin pigment \naround eyes, nose, and lips is dark chocolate. Nose leather: Burnt \nrose. Paw pads: Chocolate, warm rose, or salmon pink. Eye color: \nAny color other than blue. \n\nCINNAMON TABBY: Ground color is a warm honey, with under-\nside and chest being lighter than ground color. Markings are a rich \ncinnamon brown. Color around eyes, temples, and muzzle is lighter \nthan ground color. Skin pigment around eyes, nose, and lips is pink-\nish tan. Nose leather: Pinkish tan. Paw pads: Pinkish tan. Eye \ncolor: Any color other than blue. \n\nLILAC TABBY: Ground color is pale, frosty, lavender-pink, with \nunderside and chest being lighter than ground color. Markings are \ndark lavender. Color around eyes, temples, and muzzle are lighter \nand brighter than ground color. Skin pigment around eyes, nose, \nand lips is pinkish tan. Nose leather: Pink. Paw pads: Lavender \npink. Eye color: Any color other than blue. \n\nFAWN TABBY: Ground color is pale ivory, with underside and \nchest being lighter than ground color. Markings are pinkish beige to \ntaupe. Color around eyes, temples, and muzzle is lighter than \nground color. Skin pigment around eyes, nose, and lips is dusty \nrose. Nose leather: Dusty rose, with no blue or lavender tones. \nPaw pads: Dusty rose, with no blue or lavender tones. Eye color: \nAny color other than blue. \n\nAOV COAT LENGTH \n\nLONGHAIR BENGAL (CASHMERE): \n\nThe Longhair Bengal can come in any described color/pattern com-\nbination. Coat is semi long haired, with a fine texture, and luxurious, \nnot cottony or wooly. The coat should create an all over harmonious \nimpression with the longer parts flowing gently into the shorter ones. \nLong hair sticking out on any part of the body is undesirable. Coat \nshall lay close to the body. Silky coat and satin glitter are desirable, \n\nbut not required. Pattern shall be clearly visible, with a horizontal \nflow to its alignment. Hair around head and neck may be slightly \nlonger. A slightly fuller coat on the back of neck is accepted, but not \nrequired. A corona of hair around the head, extremely thick, full coat \non back of neck, or a ruff, is undesirable. Ears shall not be tufted, \nbut slight ear tips are allowed. Strong ear tufts, spoiling the rounded \nimpression of the ear are not desirable. Tail shall be slightly longer \nhaired creating a plumed impression. \n\n \n\nThe following information is for reference purposes only \n\nand not an official part of the CFA Show Standard. \n\nBengal Color Class Number \n\nBrown (Black) R/S & Marble Tabby................. 9202       9203 \nSnow R/S & Marble Tabby ............................... 9260       9261 \n\n(Lynx Point R/S, Marble & Charcoal Tabby [includes \nall colors] Mink R/S, Marble & Charocal Tabby \n[includes all colors] Sepia R/S, Marble & Charcoal \nTabby [includes all colors]) \n\nOther Bengal Colors & Patterns...................... 9210       9211 \n(Remaining Charcoal R/S & Marble Tabby) \nAll other accepted Colors & Patterns not listed \nabove.  \n\nAOV .................................................................... 9298       9299 \n(Melanistic & Smoke patterns, AOV colors and \nLonghair) \n\n \nBengal allowable outcross breeds: none. \n\nBengal\n\n©2024 The Cat Fanciers' Association, Inc.® 4 of 4                                                                                 Bengal Show Standard (revised 2024)",
+          "title": "bengal-standard.pdf",
+          "tether_id": null
+        },
+        "status": "finished_successfully",
+        "end_turn": null,
+        "weight": 1.0,
+        "metadata": {
+          "command": "context_stuff",
+          "is_visually_hidden_from_conversation": false,
+          "retrieval_turn_number": 0,
+          "retrieval_file_index": 0,
+          "request_id": "60b078d8-2f49-44f3-a315-b93e98f23e02",
+          "message_type": "next",
+          "model_slug": "gpt-5-2",
+          "default_model_slug": "auto",
+          "parent_id": "531c162b-0769-4732-8ecc-86cefc3ef151",
+          "turn_exchange_id": "21459dbb-1bc6-4223-b2c1-916cbe01f9dc"
+        },
+        "recipient": "all",
+        "channel": null
+      },
+      "parent": "531c162b-0769-4732-8ecc-86cefc3ef151",
+      "children": ["df300d80-b2b9-4733-8d44-85fb7c4b8e2d"]
+    },
+    "df300d80-b2b9-4733-8d44-85fb7c4b8e2d": {
+      "id": "df300d80-b2b9-4733-8d44-85fb7c4b8e2d",
+      "message": {
+        "id": "df300d80-b2b9-4733-8d44-85fb7c4b8e2d",
+        "author": {
+          "role": "tool",
+          "name": "file_search",
+          "metadata": {}
+        },
+        "create_time": 1766741079.3909857,
+        "update_time": null,
+        "content": {
+          "content_type": "text",
+          "parts": [
+            "All the files uploaded by the user have been fully loaded. Searching won't provide additional information."
+          ]
+        },
+        "status": "finished_successfully",
+        "end_turn": null,
+        "weight": 1.0,
+        "metadata": {
+          "is_visually_hidden_from_conversation": false,
+          "request_id": "60b078d8-2f49-44f3-a315-b93e98f23e02",
+          "message_type": "next",
+          "model_slug": "gpt-5-2",
+          "default_model_slug": "auto",
+          "parent_id": "07fc2950-4f7f-42ce-9c37-8eb6ca68cc6f",
+          "turn_exchange_id": "21459dbb-1bc6-4223-b2c1-916cbe01f9dc"
+        },
+        "recipient": "all",
+        "channel": null
+      },
+      "parent": "07fc2950-4f7f-42ce-9c37-8eb6ca68cc6f",
+      "children": ["9cf5f51d-993f-4e7b-9850-5be3c5c15e77"]
+    },
+    "9cf5f51d-993f-4e7b-9850-5be3c5c15e77": {
+      "id": "9cf5f51d-993f-4e7b-9850-5be3c5c15e77",
+      "message": {
+        "id": "9cf5f51d-993f-4e7b-9850-5be3c5c15e77",
+        "author": {
+          "role": "assistant",
+          "name": null,
+          "metadata": {}
+        },
+        "create_time": 1766741079.355114,
+        "update_time": null,
+        "content": {
+          "content_type": "text",
+          "parts": [
+            "alright, distilled version. no cat-show brain damage required 🧍\n\n**key Bengal facts from this document (CFA show standard):**\n\n**big picture**\n- Bengal = medium to large, long, muscular, athletic. not dainty. never delicate.  \n- back legs slightly taller than shoulders → that prowling wild-cat stance  \n- overall vibe: *“i look like a jungle predator but live in your apartment”*\n\n**head & face**\n- head is a broad, rounded wedge. longer than wide. not extreme  \n- big, dominant eyes = super important. nocturnal, alert look 👁️👄👁️  \n- eyes wide-set, lower on the skull. color mostly independent of coat  \n- ears medium-small, rounded tips, wide base. no tufts. no lynx cosplay  \n- muzzle full and broad, strong chin aligned with nose\n\n**body**\n- thick neck, strong bones, heavy musculature  \n- paws large and round  \n- tail thick, medium length, rounded tip (kinks = big no-no)\n\n**coat**\n- short, tight to body, very soft  \n- often has “glitter” (sparkly shimmer in light) which is considered a flex 🔥  \n- coat texture matters a lot in judging\n\n**patterns (this is huge)**\n- only horizontal-flow patterns are correct  \n- **rosetted / spotted** preferred over plain spots  \n- rosettes must be two-toned (dark outline, lighter center)  \n- **belly MUST be patterned** — blank belly = disqualified  \n- marble ≠ classic tabby bullseye. if it looks like a normal swirl tabby → nope  \n- charcoal, snow, melanistic, smoke patterns exist but have strict rules\n\n**colors**\n- insane range: brown, silver, blue, snow (lynx/mink/sepia), charcoal, melanistic, smoke, etc  \n- eye color rules change for snow types (lynx = blue only, mink = aqua, sepia = green/gold)\n\n**behavior (officially, yes this is in here)**\n- alert, active, inquisitive  \n- dependable temperament (aka: not feral, just dramatic)\n\n**penalties & disqualifications**\n- tail kinks or deformities ❌  \n- crossed eyes ❌  \n- cow-hocked legs ❌  \n- vertical striping like a mackerel tabby ❌  \n- unpatterned belly ❌  \n- random white lockets ❌\n\n**other random but important**\n- males bigger than females  \n- kittens get some grace (bigger ears, longer fur, etc)  \n- **no outcross breeds allowed** — Bengal is genetically closed now\n\n**tl;dr**\nthis doc isn’t about pets, it’s about *weaponized aesthetics*.  \na Bengal is supposed to look wild, muscular, horizontal-patterned, glittery, and slightly intimidating… while still being a legal house cat 💀\n\nif you want, i can also:\n- sanity-check whether the cat in your photo fits show standards  \n- explain why Bengals act like they’re late for a mission at all times  \n- translate this into “what actually matters if you’re not a cat judge”"
+          ]
+        },
+        "status": "finished_successfully",
+        "end_turn": true,
+        "weight": 1.0,
+        "metadata": {
+          "finish_details": {
+            "type": "stop",
+            "stop_tokens": [200002]
+          },
+          "is_complete": true,
+          "sonic_classification_result": {
+            "latency_ms": null,
+            "simple_search_prob": null,
+            "complex_search_prob": null,
+            "no_search_prob": null,
+            "search_complexity_decision": null,
+            "search_decision": null,
+            "simple_search_threshold": 0.0,
+            "complex_search_threshold": 0.4,
+            "no_search_threshold": 0.2,
+            "threshold_order": ["no_search", "complex", "simple"],
+            "classifier_config_name": "sonic_classifier_5p2_3cls_ev3",
+            "classifier_config": {
+              "model_name": "snc-pg-sw-3cls-ev3",
+              "renderer_name": "harmony_v4.0.15_16k_orion_text_only_no_asr_2k_action",
+              "classifier_config_name": "sonic_classifier_5p2_3cls_ev3",
+              "model_config_name": "chatgpt_sonic_classifier_model_config",
+              "disable_sonic_prefetch_classifier": false,
+              "force_disabled_rate": 0.0,
+              "force_enabled_rate": 0.0,
+              "num_messages": 20,
+              "only_user_messages": false,
+              "remove_memory": true,
+              "support_mm": true,
+              "n_ctx": 2048,
+              "max_action_length": 4,
+              "dynamic_set_max_message_size": false,
+              "max_message_tokens": 2000,
+              "append_base_config": false,
+              "no_search_token": "1",
+              "simple_search_token": "7",
+              "complex_search_token": "5",
+              "simple_search_threshold": 0.0,
+              "complex_search_threshold": 0.4,
+              "no_search_threshold": 0.2,
+              "prefetch_threshold": null,
+              "first_turn_prefetch_threshold": 0.6,
+              "force_search_first_turn_threshold": 0.00001,
+              "threshold_order": ["no_search", "complex", "simple"],
+              "passthrough_tool_calls": null,
+              "passthrough_tool_name_exclusions": ["genui"],
+              "timeout": 1.0
+            },
+            "classifier_snapshot_id": null,
+            "decision_source": "mainline",
+            "passthrough_tool_names": []
+          },
+          "citations": [],
+          "content_references": [],
+          "request_id": "60b078d8-2f49-44f3-a315-b93e98f23e02",
+          "message_type": "next",
+          "model_slug": "gpt-5-2",
+          "default_model_slug": "auto",
+          "parent_id": "df300d80-b2b9-4733-8d44-85fb7c4b8e2d",
+          "turn_exchange_id": "21459dbb-1bc6-4223-b2c1-916cbe01f9dc",
+          "model_switcher_deny": [
+            {
+              "slug": "gpt-5-mini",
+              "context": "regenerate",
+              "reason": "unsupported_attachment",
+              "is_available": false,
+              "description": "This model doesn't support file attachments."
+            },
+            {
+              "slug": "gpt-5-mini",
+              "context": "conversation",
+              "reason": "unsupported_attachment",
+              "is_available": false,
+              "description": "This model doesn't support file attachments."
+            },
+            {
+              "slug": "auto",
+              "context": "regenerate",
+              "reason": "unsupported_attachment",
+              "is_available": false,
+              "description": "This model doesn't support file attachments."
+            },
+            {
+              "slug": "auto",
+              "context": "conversation",
+              "reason": "unsupported_attachment",
+              "is_available": false,
+              "description": "This model doesn't support file attachments."
+            }
+          ]
+        },
+        "recipient": "all",
+        "channel": "final"
+      },
+      "parent": "df300d80-b2b9-4733-8d44-85fb7c4b8e2d",
+      "children": ["0c3905d2-2a5d-4a8f-8b24-953b3ee3abf5"]
+    },
+    "0c3905d2-2a5d-4a8f-8b24-953b3ee3abf5": {
+      "id": "0c3905d2-2a5d-4a8f-8b24-953b3ee3abf5",
+      "message": {
+        "id": "0c3905d2-2a5d-4a8f-8b24-953b3ee3abf5",
+        "author": {
+          "role": "user",
+          "name": null,
+          "metadata": {}
+        },
+        "create_time": 1766741126.389,
+        "update_time": null,
+        "content": {
+          "content_type": "text",
+          "parts": ["Bengal cats in history"]
+        },
+        "status": "finished_successfully",
+        "end_turn": null,
+        "weight": 1.0,
+        "metadata": {
+          "selected_github_repos": [],
+          "system_hints": ["research"],
+          "serialization_metadata": {
+            "custom_symbol_offsets": []
+          },
+          "request_id": "f6c7201f-3554-4ba0-a12d-a5e6eea3c1c6",
+          "message_source": null,
+          "turn_exchange_id": "98847991-41e5-402d-813b-765555173ec6"
+        },
+        "recipient": "all",
+        "channel": null
+      },
+      "parent": "9cf5f51d-993f-4e7b-9850-5be3c5c15e77",
+      "children": ["27be1cb8-428b-4ade-a885-afd2beac52d8"]
+    },
+    "27be1cb8-428b-4ade-a885-afd2beac52d8": {
+      "id": "27be1cb8-428b-4ade-a885-afd2beac52d8",
+      "message": {
+        "id": "27be1cb8-428b-4ade-a885-afd2beac52d8",
+        "author": {
+          "role": "system",
+          "name": null,
+          "metadata": {}
+        },
+        "create_time": 1766741127.5431678,
+        "update_time": null,
+        "content": {
+          "content_type": "text",
+          "parts": [""]
+        },
+        "status": "finished_successfully",
+        "end_turn": true,
+        "weight": 0.0,
+        "metadata": {
+          "rebase_system_message": true,
+          "request_id": "f6c7201f-3554-4ba0-a12d-a5e6eea3c1c6",
+          "message_type": "next",
+          "model_slug": "research",
+          "default_model_slug": "auto",
+          "parent_id": "0c3905d2-2a5d-4a8f-8b24-953b3ee3abf5",
+          "turn_exchange_id": "98847991-41e5-402d-813b-765555173ec6",
+          "is_visually_hidden_from_conversation": true
+        },
+        "recipient": "all",
+        "channel": null
+      },
+      "parent": "0c3905d2-2a5d-4a8f-8b24-953b3ee3abf5",
+      "children": ["1051bafc-7a36-48c7-b16c-44ea1a80b2a7"]
+    },
+    "1051bafc-7a36-48c7-b16c-44ea1a80b2a7": {
+      "id": "1051bafc-7a36-48c7-b16c-44ea1a80b2a7",
+      "message": {
+        "id": "1051bafc-7a36-48c7-b16c-44ea1a80b2a7",
+        "author": {
+          "role": "assistant",
+          "name": null,
+          "metadata": {}
+        },
+        "create_time": 1766741127.977426,
+        "update_time": null,
+        "content": {
+          "content_type": "text",
+          "parts": [
+            "Could you clarify what kind of historical info you're looking for on Bengal cats? For example:\n- Origins and development of the breed?\n- Role in cat shows or breeding programs?\n- Cultural or media appearances?\n- Anything else specific you're curious about?"
+          ]
+        },
+        "status": "finished_successfully",
+        "end_turn": true,
+        "weight": 1.0,
+        "metadata": {
+          "request_id": "f6c7201f-3554-4ba0-a12d-a5e6eea3c1c6",
+          "message_type": "next",
+          "model_slug": "research",
+          "default_model_slug": "auto",
+          "parent_id": "27be1cb8-428b-4ade-a885-afd2beac52d8",
+          "turn_exchange_id": "98847991-41e5-402d-813b-765555173ec6",
+          "model_switcher_deny": [
+            {
+              "slug": "gpt-5-mini",
+              "context": "regenerate",
+              "reason": "unsupported_attachment",
+              "is_available": false,
+              "description": "This model doesn't support file attachments."
+            },
+            {
+              "slug": "gpt-5-mini",
+              "context": "conversation",
+              "reason": "unsupported_attachment",
+              "is_available": false,
+              "description": "This model doesn't support file attachments."
+            },
+            {
+              "slug": "auto",
+              "context": "regenerate",
+              "reason": "unsupported_attachment",
+              "is_available": false,
+              "description": "This model doesn't support file attachments."
+            },
+            {
+              "slug": "auto",
+              "context": "conversation",
+              "reason": "unsupported_attachment",
+              "is_available": false,
+              "description": "This model doesn't support file attachments."
+            }
+          ]
+        },
+        "recipient": "all",
+        "channel": null
+      },
+      "parent": "27be1cb8-428b-4ade-a885-afd2beac52d8",
+      "children": ["cbef0731-fa73-463c-9eed-c3237be0648b"]
+    },
+    "cbef0731-fa73-463c-9eed-c3237be0648b": {
+      "id": "cbef0731-fa73-463c-9eed-c3237be0648b",
+      "message": {
+        "id": "cbef0731-fa73-463c-9eed-c3237be0648b",
+        "author": {
+          "role": "tool",
+          "name": "research_kickoff_tool.clarify_with_text",
+          "metadata": {}
+        },
+        "create_time": 1766741128.508176,
+        "update_time": null,
+        "content": {
+          "content_type": "text",
+          "parts": [""]
+        },
+        "status": "finished_successfully",
+        "end_turn": true,
+        "weight": 1.0,
+        "metadata": {
+          "is_visually_hidden_from_conversation": true,
+          "command": "clarify_with_text",
+          "permissions": [
+            {
+              "type": "notification",
+              "status": "requested",
+              "notification_channel_id": "deep_research",
+              "notification_channel_name": "Research",
+              "notification_priority": 4
+            }
+          ],
+          "request_id": "f6c7201f-3554-4ba0-a12d-a5e6eea3c1c6",
+          "message_type": "next",
+          "model_slug": "research",
+          "default_model_slug": "auto",
+          "parent_id": "1051bafc-7a36-48c7-b16c-44ea1a80b2a7",
+          "turn_exchange_id": "98847991-41e5-402d-813b-765555173ec6"
+        },
+        "recipient": "all",
+        "channel": null
+      },
+      "parent": "1051bafc-7a36-48c7-b16c-44ea1a80b2a7",
+      "children": ["67d3f2eb-98e9-4835-8255-fdeb5626183b"]
+    },
+    "67d3f2eb-98e9-4835-8255-fdeb5626183b": {
+      "id": "67d3f2eb-98e9-4835-8255-fdeb5626183b",
+      "message": {
+        "id": "67d3f2eb-98e9-4835-8255-fdeb5626183b",
+        "author": {
+          "role": "user",
+          "name": null,
+          "metadata": {}
+        },
+        "create_time": 1766741139.44,
+        "update_time": null,
+        "content": {
+          "content_type": "text",
+          "parts": ["Cultural or media appearances"]
+        },
+        "status": "finished_successfully",
+        "end_turn": null,
+        "weight": 1.0,
+        "metadata": {
+          "selected_github_repos": [],
+          "system_hints": ["research"],
+          "serialization_metadata": {
+            "custom_symbol_offsets": []
+          },
+          "request_id": "6ce794da-e629-4861-8ec6-98f365474070",
+          "message_source": null,
+          "turn_exchange_id": "6f93a055-0807-465a-b273-80231586fd72"
+        },
+        "recipient": "all",
+        "channel": null
+      },
+      "parent": "cbef0731-fa73-463c-9eed-c3237be0648b",
+      "children": ["1d88eddd-e931-4677-bec8-6edcf4ff5806"]
+    },
+    "1d88eddd-e931-4677-bec8-6edcf4ff5806": {
+      "id": "1d88eddd-e931-4677-bec8-6edcf4ff5806",
+      "message": {
+        "id": "1d88eddd-e931-4677-bec8-6edcf4ff5806",
+        "author": {
+          "role": "assistant",
+          "name": null,
+          "metadata": {}
+        },
+        "create_time": 1766741140.700995,
+        "update_time": null,
+        "content": {
+          "content_type": "text",
+          "parts": [
+            "cool, i’ll dig into notable cultural and media appearances of Bengal cats—think film, TV, viral content, celebrity pets, fashion, all that. i’ll get back to you with a roundup. hang tight, you can keep chatting with me in the meantime!"
+          ]
+        },
+        "status": "finished_successfully",
+        "end_turn": null,
+        "weight": 1.0,
+        "metadata": {
+          "request_id": "6ce794da-e629-4861-8ec6-98f365474070",
+          "message_type": "next",
+          "model_slug": "research",
+          "default_model_slug": "auto",
+          "parent_id": "67d3f2eb-98e9-4835-8255-fdeb5626183b",
+          "turn_exchange_id": "6f93a055-0807-465a-b273-80231586fd72",
+          "model_switcher_deny": [
+            {
+              "slug": "gpt-5-mini",
+              "context": "regenerate",
+              "reason": "unsupported_attachment",
+              "is_available": false,
+              "description": "This model doesn't support file attachments."
+            },
+            {
+              "slug": "gpt-5-mini",
+              "context": "conversation",
+              "reason": "unsupported_attachment",
+              "is_available": false,
+              "description": "This model doesn't support file attachments."
+            },
+            {
+              "slug": "auto",
+              "context": "regenerate",
+              "reason": "unsupported_attachment",
+              "is_available": false,
+              "description": "This model doesn't support file attachments."
+            },
+            {
+              "slug": "auto",
+              "context": "conversation",
+              "reason": "unsupported_attachment",
+              "is_available": false,
+              "description": "This model doesn't support file attachments."
+            }
+          ]
+        },
+        "recipient": "all",
+        "channel": null
+      },
+      "parent": "67d3f2eb-98e9-4835-8255-fdeb5626183b",
+      "children": ["71e3c1ff-c507-4fe7-a138-46cde38b996c"]
+    },
+    "71e3c1ff-c507-4fe7-a138-46cde38b996c": {
+      "id": "71e3c1ff-c507-4fe7-a138-46cde38b996c",
+      "message": {
+        "id": "71e3c1ff-c507-4fe7-a138-46cde38b996c",
+        "author": {
+          "role": "assistant",
+          "name": null,
+          "metadata": {}
+        },
+        "create_time": 1766741140.371919,
+        "update_time": null,
+        "content": {
+          "content_type": "text",
+          "parts": [
+            "{\n  \"task_violates_safety_guidelines\": false,\n  \"user_def_doesnt_want_research\": false,\n  \"response\": \"cool, i’ll dig into notable cultural and media appearances of Bengal cats—think film, TV, viral content, celebrity pets, fashion, all that. i’ll get back to you with a roundup. hang tight, you can keep chatting with me in the meantime!\",\n  \"title\": \"Cultural and Media Appearances of Bengal Cats\",\n  \"prompt\": \"Compile a report on the cultural and media appearances of Bengal cats. Include notable appearances in film, television, advertising, fashion, social media, and as pets of celebrities. Highlight specific cases where Bengal cats gained attention or popularity, and describe their impact on public perception of the breed. Provide examples with names, dates, and context. Organize the response clearly and use subheadings for different categories of media appearances. If available, include links or references to the original media. Prioritize factual and well-documented instances.\"\n}"
+          ]
+        },
+        "status": "finished_successfully",
+        "end_turn": false,
+        "weight": 1.0,
+        "metadata": {
+          "finish_details": {
+            "type": "stop",
+            "stop_tokens": [200007]
+          },
+          "is_complete": true,
+          "citations": [],
+          "content_references": [],
+          "request_id": "6ce794da-e629-4861-8ec6-98f365474070",
+          "message_type": "next",
+          "model_slug": "research",
+          "default_model_slug": "auto",
+          "parent_id": "1d88eddd-e931-4677-bec8-6edcf4ff5806",
+          "turn_exchange_id": "6f93a055-0807-465a-b273-80231586fd72",
+          "model_switcher_deny": [
+            {
+              "slug": "gpt-5-mini",
+              "context": "regenerate",
+              "reason": "unsupported_attachment",
+              "is_available": false,
+              "description": "This model doesn't support file attachments."
+            },
+            {
+              "slug": "gpt-5-mini",
+              "context": "conversation",
+              "reason": "unsupported_attachment",
+              "is_available": false,
+              "description": "This model doesn't support file attachments."
+            },
+            {
+              "slug": "auto",
+              "context": "regenerate",
+              "reason": "unsupported_attachment",
+              "is_available": false,
+              "description": "This model doesn't support file attachments."
+            },
+            {
+              "slug": "auto",
+              "context": "conversation",
+              "reason": "unsupported_attachment",
+              "is_available": false,
+              "description": "This model doesn't support file attachments."
+            }
+          ],
+          "is_loading_message": true
+        },
+        "recipient": "research_kickoff_tool.start_research_task",
+        "channel": null
+      },
+      "parent": "1d88eddd-e931-4677-bec8-6edcf4ff5806",
+      "children": ["64b1fd22-7fd8-4914-8a48-9417e3762d45"]
+    },
+    "64b1fd22-7fd8-4914-8a48-9417e3762d45": {
+      "id": "64b1fd22-7fd8-4914-8a48-9417e3762d45",
+      "message": {
+        "id": "64b1fd22-7fd8-4914-8a48-9417e3762d45",
+        "author": {
+          "role": "tool",
+          "name": "research_kickoff_tool.start_research_task",
+          "metadata": {}
+        },
+        "create_time": 1766741142.6532066,
+        "update_time": null,
+        "content": {
+          "content_type": "text",
+          "parts": []
+        },
+        "status": "finished_successfully",
+        "end_turn": true,
+        "weight": 1.0,
+        "metadata": {
+          "async_task_title": "Cultural and Media Appearances of Bengal Cats",
+          "async_task_prompt": "Compile a report on the cultural and media appearances of Bengal cats. Include notable appearances in film, television, advertising, fashion, social media, and as pets of celebrities. Highlight specific cases where Bengal cats gained attention or popularity, and describe their impact on public perception of the breed. Provide examples with names, dates, and context. Organize the response clearly and use subheadings for different categories of media appearances. If available, include links or references to the original media. Prioritize factual and well-documented instances.",
+          "async_task_type": "research",
+          "async_task_status_messages": {
+            "initial": "Cultural and Media Appearances of Bengal Cats",
+            "completed_with_time": "Research completed in 7m",
+            "completed_no_time": "Completed research",
+            "completed": "Researched for ",
+            "error": "Research failed",
+            "cancelled": "Research cancelled"
+          },
+          "b1de6e2_s": true,
+          "command": "start_research_task",
+          "request_id": "6ce794da-e629-4861-8ec6-98f365474070",
+          "message_type": "next",
+          "model_slug": "research",
+          "default_model_slug": "auto",
+          "parent_id": "71e3c1ff-c507-4fe7-a138-46cde38b996c",
+          "turn_exchange_id": "6f93a055-0807-465a-b273-80231586fd72",
+          "async_task_id": "deepresch_694e54a09064819183f4394d5cdf58a4",
+          "async_task_conversation_id": "694e54a0-2860-832a-b4bd-75ee527f79ac",
+          "async_task_created_at": "2025-12-26 09:25:52.911251+00:00",
+          "deep_research_version": "mini"
+        },
+        "recipient": "all",
+        "channel": null
+      },
+      "parent": "71e3c1ff-c507-4fe7-a138-46cde38b996c",
+      "children": ["3a03a1d1-12bb-4e5b-8a4b-a388723b3958"]
+    },
+    "3a03a1d1-12bb-4e5b-8a4b-a388723b3958": {
+      "id": "3a03a1d1-12bb-4e5b-8a4b-a388723b3958",
+      "message": {
+        "id": "3a03a1d1-12bb-4e5b-8a4b-a388723b3958",
+        "author": {
+          "role": "system",
+          "name": null,
+          "metadata": {}
+        },
+        "create_time": 1766741152.9182885,
+        "update_time": null,
+        "content": {
+          "content_type": "text",
+          "parts": [""]
+        },
+        "status": "finished_successfully",
+        "end_turn": null,
+        "weight": 0.0,
+        "metadata": {
+          "is_visually_hidden_from_conversation": true,
+          "async_task_id": "deepresch_694e54a09064819183f4394d5cdf58a4",
+          "async_task_type": "research",
+          "request_id": "6ce794da-e629-4861-8ec6-98f365474070",
+          "message_type": "next",
+          "model_slug": "research",
+          "default_model_slug": "auto",
+          "parent_id": "64b1fd22-7fd8-4914-8a48-9417e3762d45",
+          "turn_exchange_id": "6f93a055-0807-465a-b273-80231586fd72"
+        },
+        "recipient": "all",
+        "channel": null
+      },
+      "parent": "64b1fd22-7fd8-4914-8a48-9417e3762d45",
+      "children": ["7eddf1cd-58b1-4fe7-928a-f39157dd4bc2"]
+    },
+    "7eddf1cd-58b1-4fe7-928a-f39157dd4bc2": {
+      "id": "7eddf1cd-58b1-4fe7-928a-f39157dd4bc2",
+      "message": {
+        "id": "7eddf1cd-58b1-4fe7-928a-f39157dd4bc2",
+        "author": {
+          "role": "assistant",
+          "name": null,
+          "metadata": {}
+        },
+        "create_time": 1766741586.167177,
+        "update_time": null,
+        "content": {
+          "content_type": "text",
+          "parts": [
+            "# Cultural and Media Appearances of Bengal Cats\n\n## Film Appearances  \n- *Proof* (1991) – The first known movie to feature a Bengal cat【19†L313-L316】.  \n- *One Fine Day* (1996) – A George Clooney–Michelle Pfeiffer comedy set in NYC that used a Bengal kitten (the first spotted Bengal seen in film)【19†L313-L316】.  \n- *Entourage: The Movie* (2015) – Contains a brief gag involving a Bengal kitten; creator Doug Ellin had his character Ari Gold punch a framed photo of a Bengal cat【25†L124-L130】.  \n\nThese and similar film roles helped introduce Bengals to moviegoers as exotic-looking, active housecats. (For example, a Bengal in *One Fine Day* reinforced the breed’s jaguar-like appearance.) \n\n## Television Appearances  \nWe found no widely documented cases of Bengal cats as central characters in popular TV series. Bengals occasionally appear in background roles or in news/features about pet ownership, but not in major scripted shows. They do turn up in animal-themed segments (e.g. on pet talk shows or *Cats 101* specials), though details were not clearly documented in our sources. \n\n## Advertising  \n- **IAMS Cat Food (c. mid-2010s):** A national IAMS commercial (Saatchi & Saatchi campaign) featured a trained Bengal cat【67†L34-L36】.  \n\nBengals’ striking look makes them appealing for pet-food ads. (For instance, a trainer noted on Pinterest, “I trained this cat for an IAMS commercial that was filmed…in NYC”【67†L34-L36】.) Other brands have likewise used Bengals in ads to imply energy and luxury, though specific campaigns beyond the IAMS spot are less documented. \n\n## Fashion  \nBengal cats have even crossed into fashion media. Breeder Esmond Gay reports that his Sarez Bengals “strolled fashion catwalks with supermodels” and became “frequent… TV and newspaper stars”【56†L107-L110】. In the 1990s and 2000s Gay’s Bengal lines were featured in European pet events and photo shoots, boosting the breed’s image as glamorous and exotic. Such use on runways and in fashion spreads helped reinforce public perception of Bengals as sleek, high-status pets. \n\n## Social Media  \nAccording to *Cats.com*, Bengal owners often create Instagram accounts for their “exquisite cats,” which become “purrfect social media stars”【77†L90-L92】. Indeed, several Bengal cats have become social-media celebrities:  \n- **Suki the Adventure Cat** (2020) – A Bengal owned by travel enthusiasts Martina Gutfreund and Kenny Hildebrandt. *People* reports Suki has “over 1.8 million followers” on Instagram and is the subject of a travel photo book【53†L210-L218】.  \n- **Jake & Jupiter** (@jake.the.bengal) – A Bengal cat duo with 266,000 Instagram followers【71†L174-L182】. Their owner’s posts (e.g. counting down a pregnancy with funny cat memes) have made them widely viewed.  \n- **Mandu** (@manduthebengalcat) – A female Bengal with distinctive spots; her Instagram page has about 92,900 followers【77†L90-L92】【77†L98-L102】.  \n\nThese online stars typically showcase the breed’s high energy, vocalizations and trainability. Their popularity (e.g. millions of views on reels) means Bengals are often seen on TikTok, YouTube, and Instagram as playful, photogenic pets. This social-media exposure has greatly raised public awareness of the breed. \n\n## Celebrity Pet Owners  \nMany public figures keep Bengals as pets, which attracts media attention:  \n- **Martha Stewart (2022)** – Stewart announced via Instagram that she had adopted two Bengal kittens on her farm.  *People* magazine covered this story, noting the cats are “adventuresome, very fast, and devious”【55†L214-L222】【55†L225-L229】. Stewart’s high-profile endorsement helped popularize Bengals among lifestyle followers.  \n- **Kristen Stewart** – The *Twilight* actress owns a Bengal named Max (nicknamed “Jella”). A 2014 *NYLON* profile noted her family life includes “a Bengal cat, Max,” underscoring the breed’s appeal even to Hollywood stars【65†L228-L232】.  \n- **Doug Ellin (2015)** – The creator of *Entourage* owns a male Bengal (“Tex”) and joked about him in the *Entourage* movie【25†L124-L130】. Ellin’s interview confirms Bengal ownership among entertainment industry insiders.  \n\nOther celebrities (musicians, athletes and designers) are often reported to keep Bengals. These high-profile adoptions lend the breed a cachet of glamour and influence pet-purchase trends. \n\n## Impact on Public Perception  \nMedia portrayals have cast Bengals as exotic, energetic housecats. For example, Martha Stewart’s description of her new Bengals as “adventuresome, very fast, and devious”【55†L225-L229】 highlights their wild-looking, active nature. The *People* story on Suki (the adventure cat) emphasizes the breed’s stamina and curiosity (she “traveled the world” with her owners【53†L210-L218】). Such coverage reinforces the idea that Bengals are intelligent, playful and suitable for outdoor adventures (unlike a typical lap cat).  \n\nOverall, film/TV cameos, advertising and especially social media have turned Bengal cats into symbols of luxury and excitement in pet culture. Their striking coat patterns and behaviors (often likened to miniature leopards) are featured prominently, which in turn makes the breed highly desirable. In summary, well-documented media appearances of Bengals – from *Proof* and *One Fine Day* to Instagram fame and celebrity ownership – have raised public awareness and bolstered the breed’s image as both exotic and affectionate【19†L313-L316】【55†L225-L229】. \n\n**Sources:** Reputable pet and media sites document these examples and their dates【19†L313-L316】【25†L124-L130】【53†L210-L218】【55†L214-L222】【56†L107-L110】【65†L228-L232】【67†L34-L36】【77†L90-L92】【71†L174-L182】. Each cited source provides evidence of the Bengal’s appearance in that context. \n\n"
+          ]
+        },
+        "status": "finished_successfully",
+        "end_turn": true,
+        "weight": 1.0,
+        "metadata": {
+          "content_references": [
+            {
+              "matched_text": "【19†L313-L316】",
+              "start_idx": 135,
+              "end_idx": 149,
+              "alt": null,
+              "type": "webpage_extended",
+              "title": "Bengal Cats in Movies - Iconic Bengal Cat Breeders",
+              "url": "https://iconicbengalcatbreeders.com/bengal-cats-in-movies/#:~:text=According%20to%20Cinema%20Cats%2C%20Bengal,George%20Clooney%20and%20Michelle%20Pfeiffer",
+              "pub_date": null,
+              "snippet": "According to Cinema Cats, Bengal cats made their first movie appearance in the film, Proof released in 1991. It featured a Bengal cat with marble markings. The first spotted Bengal in film is 1996's One Fine Day featuring George Clooney and Michelle Pfeiffer.",
+              "attribution": "iconicbengalcatbreeders.com",
+              "icon_type": null
+            },
+            {
+              "matched_text": "【19†L313-L316】",
+              "start_idx": 297,
+              "end_idx": 311,
+              "alt": null,
+              "type": "webpage_extended",
+              "title": "Bengal Cats in Movies - Iconic Bengal Cat Breeders",
+              "url": "https://iconicbengalcatbreeders.com/bengal-cats-in-movies/#:~:text=According%20to%20Cinema%20Cats%2C%20Bengal,George%20Clooney%20and%20Michelle%20Pfeiffer",
+              "pub_date": null,
+              "snippet": "According to Cinema Cats, Bengal cats made their first movie appearance in the film, Proof released in 1991. It featured a Bengal cat with marble markings. The first spotted Bengal in film is 1996's One Fine Day featuring George Clooney and Michelle Pfeiffer.",
+              "attribution": "iconicbengalcatbreeders.com",
+              "icon_type": null
+            },
+            {
+              "matched_text": "【25†L124-L130】",
+              "start_idx": 479,
+              "end_idx": 493,
+              "alt": null,
+              "type": "webpage_extended",
+              "title": "Interview: Entourage's Creator Doug Ellin Talks About His Bengal Cat",
+              "url": "https://bengalcats.co/interview-entourage-doug-ellin/#:~:text=Image%3A%20Ari%20Gold%20punches%20the,Bengal%20kittenAri%20Gold%20in%20Entourage",
+              "pub_date": null,
+              "snippet": "Image: Ari Gold punches the framed picture of a Bengal kittenAri Gold in Entourage",
+              "attribution": "bengalcats.co",
+              "icon_type": null
+            },
+            {
+              "matched_text": "【67†L34-L36】",
+              "start_idx": 1229,
+              "end_idx": 1241,
+              "alt": null,
+              "type": "webpage_extended",
+              "title": "IAMS Commercial with Bengal Cat - Saatchi & Saatchi",
+              "url": "https://www.pinterest.com/pin/iams-commercial-with-bengal-cat-saatchi-saatchi--349099408584902845/#:~:text=I%20trained%20this%20cat%20for,director%20that%20I%20have%20t",
+              "pub_date": null,
+              "snippet": "I trained this cat for an IAMS commercial that was filmed a few years ago in NYC. This spot was directed by Mike Rowles, and excellent director that I have t...",
+              "attribution": "pinterest.com",
+              "icon_type": null
+            },
+            {
+              "matched_text": "【67†L34-L36】",
+              "start_idx": 1419,
+              "end_idx": 1431,
+              "alt": null,
+              "type": "webpage_extended",
+              "title": "IAMS Commercial with Bengal Cat - Saatchi & Saatchi",
+              "url": "https://www.pinterest.com/pin/iams-commercial-with-bengal-cat-saatchi-saatchi--349099408584902845/#:~:text=I%20trained%20this%20cat%20for,director%20that%20I%20have%20t",
+              "pub_date": null,
+              "snippet": "I trained this cat for an IAMS commercial that was filmed a few years ago in NYC. This spot was directed by Mike Rowles, and excellent director that I have t...",
+              "attribution": "pinterest.com",
+              "icon_type": null
+            },
+            {
+              "matched_text": "【56†L107-L110】",
+              "start_idx": 1782,
+              "end_idx": 1796,
+              "alt": null,
+              "type": "webpage_extended",
+              "title": "Esmond Gay | Most Expensive Bengal Cat | Guinness World Records ",
+              "url": "https://www.bengalcatstoronto.com/esmondgay.html#:~:text=%27Sarez%20Bengals,it%2C%20please%20click%20%2027",
+              "pub_date": null,
+              "snippet": "'Sarez Bengals...the Cats that Bewitched the Stars'.  Esmond's Bengals gained popularity with celebrities worldwide, they strolled fashion catwalks with supermodels and were frequent TV and newspaper stars; and this article describes it all. To read it, please click  27",
+              "attribution": "bengalcatstoronto.com",
+              "icon_type": null
+            },
+            {
+              "matched_text": "【77†L90-L92】",
+              "start_idx": 2225,
+              "end_idx": 2237,
+              "alt": null,
+              "type": "webpage_extended",
+              "title": "7 Cool Bengal Accounts on Instagram - Cats.com",
+              "url": "https://cats.com/bengal-accounts-on-instagram#:~:text=It%E2%80%99s%20no%20wonder%20that%20many,make%20purrfect%20social%20media%20stars",
+              "pub_date": null,
+              "snippet": "It’s no wonder that many Bengal owners have created Instagram accounts to share with the world photos and videos of their exquisite cats. Check out these beauties, who make purrfect social media stars.",
+              "attribution": "cats.com",
+              "icon_type": null
+            },
+            {
+              "matched_text": "【53†L210-L218】",
+              "start_idx": 2532,
+              "end_idx": 2546,
+              "alt": null,
+              "type": "webpage_extended",
+              "title": "Suki the Adventure Cat on Instagram Has a New Book",
+              "url": "https://people.com/pets/suki-travel-adventure-cat-instagram/#:~:text=Suki%20is%20the%20ideal%20virtual,May%20from%20Andrews%20McMeel%20Publishing",
+              "pub_date": null,
+              "snippet": "Suki is the ideal virtual tour guide: sweet, soft, silly and photogenic. Before the coronavirus pandemic, the Bengal cat traveled the world with her owners Martina Gutfreund and Kenny Hildebrandt, and posed for stunning photos wherever she went. These sweet shots, many of which feature iconic vistas from around the globe, are available to view on Suki’s Instagram (@sukiicat) where she has over 1.8 million followers, and will soon be compiled into a new book, Travels of Suki the Adventure Cat, which will be available in May from Andrews McMeel Publishing.",
+              "attribution": "people.com",
+              "icon_type": null
+            },
+            {
+              "matched_text": "【71†L174-L182】",
+              "start_idx": 2641,
+              "end_idx": 2655,
+              "alt": null,
+              "type": "webpage_extended",
+              "title": "7 Cool Bengal Accounts on Instagram - Cats.com",
+              "url": "https://cats.com/bengal-accounts-on-instagram#:~:text=,of%20Followers%20on%20Instagram%3A%20266K",
+              "pub_date": null,
+              "snippet": "* Instagram: @jake.the.bengal * Number of Followers on Instagram: 266K",
+              "attribution": "cats.com",
+              "icon_type": null
+            },
+            {
+              "matched_text": "【77†L90-L92】",
+              "start_idx": 2883,
+              "end_idx": 2895,
+              "alt": null,
+              "type": "webpage_extended",
+              "title": "7 Cool Bengal Accounts on Instagram - Cats.com",
+              "url": "https://cats.com/bengal-accounts-on-instagram#:~:text=It%E2%80%99s%20no%20wonder%20that%20many,make%20purrfect%20social%20media%20stars",
+              "pub_date": null,
+              "snippet": "It’s no wonder that many Bengal owners have created Instagram accounts to share with the world photos and videos of their exquisite cats. Check out these beauties, who make purrfect social media stars.",
+              "attribution": "cats.com",
+              "icon_type": null
+            },
+            {
+              "matched_text": "【77†L98-L102】",
+              "start_idx": 2895,
+              "end_idx": 2908,
+              "alt": null,
+              "type": "webpage_extended",
+              "title": "7 Cool Bengal Accounts on Instagram - Cats.com",
+              "url": "https://cats.com/bengal-accounts-on-instagram#:~:text=%40manduthebengalcat%20%2F%20Instagram",
+              "pub_date": null,
+              "snippet": "@manduthebengalcat / Instagram.com",
+              "attribution": "cats.com",
+              "icon_type": null
+            },
+            {
+              "matched_text": "【55†L214-L222】",
+              "start_idx": 3545,
+              "end_idx": 3559,
+              "alt": null,
+              "type": "webpage_extended",
+              "title": "Martha Stewart Introduces Her Two New Bengal Cats",
+              "url": "https://people.com/pets/martha-stewart-introduces-two-new-bengal-cats/#:~:text=Martha%20Stewart%20has%20expanded%20her,feline%20family",
+              "pub_date": null,
+              "snippet": "Martha Stewart has expanded her feline family!",
+              "attribution": "people.com",
+              "icon_type": null
+            },
+            {
+              "matched_text": "【55†L225-L229】",
+              "start_idx": 3559,
+              "end_idx": 3573,
+              "alt": null,
+              "type": "webpage_extended",
+              "title": "Martha Stewart Introduces Her Two New Bengal Cats",
+              "url": "https://people.com/pets/martha-stewart-introduces-two-new-bengal-cats/#:~:text=,adventuresome%2C%20very%20fast%2C%20and%20devious",
+              "pub_date": null,
+              "snippet": "\"More photos of the new Bengals,\" Stewart wrote. \"They are acclimating to living on the farm first by getting used to the laundry room and basement wardrobe room. We tried the porch today but there was no way we could keep them from escaping and getting into trouble with the dogs they are adventuresome, very fast, and devious.\"",
+              "attribution": "people.com",
+              "icon_type": null
+            },
+            {
+              "matched_text": "【65†L228-L232】",
+              "start_idx": 3887,
+              "end_idx": 3901,
+              "alt": null,
+              "type": "webpage_extended",
+              "title": "Kristen Stewart NYLON",
+              "url": "https://www.nylon.com/articles/kristen-stewart-nylon-cover#:~:text=The%20family%20is%20joined%20by,brushing%20up%20rock%20%27n%27%20roll",
+              "pub_date": null,
+              "snippet": "The family is joined by three dogs (two of which are actually wolves) and a Bengal cat, Max, which Kristen calls Jella because \"his little alter ego for me is this little, soulful, blues musician from the South.\" Stewart, meanwhile, is brushing up rock 'n' roll.",
+              "attribution": "nylon.com",
+              "icon_type": null
+            },
+            {
+              "matched_text": "【25†L124-L130】",
+              "start_idx": 4029,
+              "end_idx": 4043,
+              "alt": null,
+              "type": "webpage_extended",
+              "title": "Interview: Entourage's Creator Doug Ellin Talks About His Bengal Cat",
+              "url": "https://bengalcats.co/interview-entourage-doug-ellin/#:~:text=Image%3A%20Ari%20Gold%20punches%20the,Bengal%20kittenAri%20Gold%20in%20Entourage",
+              "pub_date": null,
+              "snippet": "Image: Ari Gold punches the framed picture of a Bengal kittenAri Gold in Entourage",
+              "attribution": "bengalcats.co",
+              "icon_type": null
+            },
+            {
+              "matched_text": "【55†L225-L229】",
+              "start_idx": 4525,
+              "end_idx": 4539,
+              "alt": null,
+              "type": "webpage_extended",
+              "title": "Martha Stewart Introduces Her Two New Bengal Cats",
+              "url": "https://people.com/pets/martha-stewart-introduces-two-new-bengal-cats/#:~:text=,adventuresome%2C%20very%20fast%2C%20and%20devious",
+              "pub_date": null,
+              "snippet": "\"More photos of the new Bengals,\" Stewart wrote. \"They are acclimating to living on the farm first by getting used to the laundry room and basement wardrobe room. We tried the porch today but there was no way we could keep them from escaping and getting into trouble with the dogs they are adventuresome, very fast, and devious.\"",
+              "attribution": "people.com",
+              "icon_type": null
+            },
+            {
+              "matched_text": "【53†L210-L218】",
+              "start_idx": 4719,
+              "end_idx": 4733,
+              "alt": null,
+              "type": "webpage_extended",
+              "title": "Suki the Adventure Cat on Instagram Has a New Book",
+              "url": "https://people.com/pets/suki-travel-adventure-cat-instagram/#:~:text=Suki%20is%20the%20ideal%20virtual,May%20from%20Andrews%20McMeel%20Publishing",
+              "pub_date": null,
+              "snippet": "Suki is the ideal virtual tour guide: sweet, soft, silly and photogenic. Before the coronavirus pandemic, the Bengal cat traveled the world with her owners Martina Gutfreund and Kenny Hildebrandt, and posed for stunning photos wherever she went. These sweet shots, many of which feature iconic vistas from around the globe, are available to view on Suki’s Instagram (@sukiicat) where she has over 1.8 million followers, and will soon be compiled into a new book, Travels of Suki the Adventure Cat, which will be available in May from Andrews McMeel Publishing.",
+              "attribution": "people.com",
+              "icon_type": null
+            },
+            {
+              "matched_text": "【19†L313-L316】",
+              "start_idx": 5400,
+              "end_idx": 5414,
+              "alt": null,
+              "type": "webpage_extended",
+              "title": "Bengal Cats in Movies - Iconic Bengal Cat Breeders",
+              "url": "https://iconicbengalcatbreeders.com/bengal-cats-in-movies/#:~:text=According%20to%20Cinema%20Cats%2C%20Bengal,George%20Clooney%20and%20Michelle%20Pfeiffer",
+              "pub_date": null,
+              "snippet": "According to Cinema Cats, Bengal cats made their first movie appearance in the film, Proof released in 1991. It featured a Bengal cat with marble markings. The first spotted Bengal in film is 1996's One Fine Day featuring George Clooney and Michelle Pfeiffer.",
+              "attribution": "iconicbengalcatbreeders.com",
+              "icon_type": null
+            },
+            {
+              "matched_text": "【55†L225-L229】",
+              "start_idx": 5414,
+              "end_idx": 5428,
+              "alt": null,
+              "type": "webpage_extended",
+              "title": "Martha Stewart Introduces Her Two New Bengal Cats",
+              "url": "https://people.com/pets/martha-stewart-introduces-two-new-bengal-cats/#:~:text=,adventuresome%2C%20very%20fast%2C%20and%20devious",
+              "pub_date": null,
+              "snippet": "\"More photos of the new Bengals,\" Stewart wrote. \"They are acclimating to living on the farm first by getting used to the laundry room and basement wardrobe room. We tried the porch today but there was no way we could keep them from escaping and getting into trouble with the dogs they are adventuresome, very fast, and devious.\"",
+              "attribution": "people.com",
+              "icon_type": null
+            },
+            {
+              "matched_text": "【19†L313-L316】",
+              "start_idx": 5514,
+              "end_idx": 5528,
+              "alt": null,
+              "type": "webpage_extended",
+              "title": "Bengal Cats in Movies - Iconic Bengal Cat Breeders",
+              "url": "https://iconicbengalcatbreeders.com/bengal-cats-in-movies/#:~:text=According%20to%20Cinema%20Cats%2C%20Bengal,George%20Clooney%20and%20Michelle%20Pfeiffer",
+              "pub_date": null,
+              "snippet": "According to Cinema Cats, Bengal cats made their first movie appearance in the film, Proof released in 1991. It featured a Bengal cat with marble markings. The first spotted Bengal in film is 1996's One Fine Day featuring George Clooney and Michelle Pfeiffer.",
+              "attribution": "iconicbengalcatbreeders.com",
+              "icon_type": null
+            },
+            {
+              "matched_text": "【25†L124-L130】",
+              "start_idx": 5528,
+              "end_idx": 5542,
+              "alt": null,
+              "type": "webpage_extended",
+              "title": "Interview: Entourage's Creator Doug Ellin Talks About His Bengal Cat",
+              "url": "https://bengalcats.co/interview-entourage-doug-ellin/#:~:text=Image%3A%20Ari%20Gold%20punches%20the,Bengal%20kittenAri%20Gold%20in%20Entourage",
+              "pub_date": null,
+              "snippet": "Image: Ari Gold punches the framed picture of a Bengal kittenAri Gold in Entourage",
+              "attribution": "bengalcats.co",
+              "icon_type": null
+            },
+            {
+              "matched_text": "【53†L210-L218】",
+              "start_idx": 5542,
+              "end_idx": 5556,
+              "alt": null,
+              "type": "webpage_extended",
+              "title": "Suki the Adventure Cat on Instagram Has a New Book",
+              "url": "https://people.com/pets/suki-travel-adventure-cat-instagram/#:~:text=Suki%20is%20the%20ideal%20virtual,May%20from%20Andrews%20McMeel%20Publishing",
+              "pub_date": null,
+              "snippet": "Suki is the ideal virtual tour guide: sweet, soft, silly and photogenic. Before the coronavirus pandemic, the Bengal cat traveled the world with her owners Martina Gutfreund and Kenny Hildebrandt, and posed for stunning photos wherever she went. These sweet shots, many of which feature iconic vistas from around the globe, are available to view on Suki’s Instagram (@sukiicat) where she has over 1.8 million followers, and will soon be compiled into a new book, Travels of Suki the Adventure Cat, which will be available in May from Andrews McMeel Publishing.",
+              "attribution": "people.com",
+              "icon_type": null
+            },
+            {
+              "matched_text": "【55†L214-L222】",
+              "start_idx": 5556,
+              "end_idx": 5570,
+              "alt": null,
+              "type": "webpage_extended",
+              "title": "Martha Stewart Introduces Her Two New Bengal Cats",
+              "url": "https://people.com/pets/martha-stewart-introduces-two-new-bengal-cats/#:~:text=Martha%20Stewart%20has%20expanded%20her,feline%20family",
+              "pub_date": null,
+              "snippet": "Martha Stewart has expanded her feline family!",
+              "attribution": "people.com",
+              "icon_type": null
+            },
+            {
+              "matched_text": "【56†L107-L110】",
+              "start_idx": 5570,
+              "end_idx": 5584,
+              "alt": null,
+              "type": "webpage_extended",
+              "title": "Esmond Gay | Most Expensive Bengal Cat | Guinness World Records ",
+              "url": "https://www.bengalcatstoronto.com/esmondgay.html#:~:text=%27Sarez%20Bengals,it%2C%20please%20click%20%2027",
+              "pub_date": null,
+              "snippet": "'Sarez Bengals...the Cats that Bewitched the Stars'.  Esmond's Bengals gained popularity with celebrities worldwide, they strolled fashion catwalks with supermodels and were frequent TV and newspaper stars; and this article describes it all. To read it, please click  27",
+              "attribution": "bengalcatstoronto.com",
+              "icon_type": null
+            },
+            {
+              "matched_text": "【65†L228-L232】",
+              "start_idx": 5584,
+              "end_idx": 5598,
+              "alt": null,
+              "type": "webpage_extended",
+              "title": "Kristen Stewart NYLON",
+              "url": "https://www.nylon.com/articles/kristen-stewart-nylon-cover#:~:text=The%20family%20is%20joined%20by,brushing%20up%20rock%20%27n%27%20roll",
+              "pub_date": null,
+              "snippet": "The family is joined by three dogs (two of which are actually wolves) and a Bengal cat, Max, which Kristen calls Jella because \"his little alter ego for me is this little, soulful, blues musician from the South.\" Stewart, meanwhile, is brushing up rock 'n' roll.",
+              "attribution": "nylon.com",
+              "icon_type": null
+            },
+            {
+              "matched_text": "【67†L34-L36】",
+              "start_idx": 5598,
+              "end_idx": 5610,
+              "alt": null,
+              "type": "webpage_extended",
+              "title": "IAMS Commercial with Bengal Cat - Saatchi & Saatchi",
+              "url": "https://www.pinterest.com/pin/iams-commercial-with-bengal-cat-saatchi-saatchi--349099408584902845/#:~:text=I%20trained%20this%20cat%20for,director%20that%20I%20have%20t",
+              "pub_date": null,
+              "snippet": "I trained this cat for an IAMS commercial that was filmed a few years ago in NYC. This spot was directed by Mike Rowles, and excellent director that I have t...",
+              "attribution": "pinterest.com",
+              "icon_type": null
+            },
+            {
+              "matched_text": "【77†L90-L92】",
+              "start_idx": 5610,
+              "end_idx": 5622,
+              "alt": null,
+              "type": "webpage_extended",
+              "title": "7 Cool Bengal Accounts on Instagram - Cats.com",
+              "url": "https://cats.com/bengal-accounts-on-instagram#:~:text=It%E2%80%99s%20no%20wonder%20that%20many,make%20purrfect%20social%20media%20stars",
+              "pub_date": null,
+              "snippet": "It’s no wonder that many Bengal owners have created Instagram accounts to share with the world photos and videos of their exquisite cats. Check out these beauties, who make purrfect social media stars.",
+              "attribution": "cats.com",
+              "icon_type": null
+            },
+            {
+              "matched_text": "【71†L174-L182】",
+              "start_idx": 5622,
+              "end_idx": 5636,
+              "alt": null,
+              "type": "webpage_extended",
+              "title": "7 Cool Bengal Accounts on Instagram - Cats.com",
+              "url": "https://cats.com/bengal-accounts-on-instagram#:~:text=,of%20Followers%20on%20Instagram%3A%20266K",
+              "pub_date": null,
+              "snippet": "* Instagram: @jake.the.bengal * Number of Followers on Instagram: 266K",
+              "attribution": "cats.com",
+              "icon_type": null
+            }
+          ],
+          "citations": [
+            {
+              "start_ix": 135,
+              "end_ix": 149,
+              "citation_format_type": "tether_v4",
+              "metadata": {
+                "type": "webpage",
+                "title": "Bengal Cats in Movies - Iconic Bengal Cat Breeders",
+                "url": "https://iconicbengalcatbreeders.com/bengal-cats-in-movies/#:~:text=According%20to%20Cinema%20Cats%2C%20Bengal,George%20Clooney%20and%20Michelle%20Pfeiffer",
+                "text": "According to Cinema Cats, Bengal cats made their first movie appearance in the film, Proof released in 1991. It featured a Bengal cat with marble markings. The first spotted Bengal in film is 1996's One Fine Day featuring George Clooney and Michelle Pfeiffer.",
+                "pub_date": null,
+                "extra": {
+                  "cited_message_idx": 19,
+                  "cited_message_id": "90c52cb7-ccb1-49ca-88a6-50511bfff49f",
+                  "search_result_idx": null,
+                  "evidence_text": "",
+                  "start_line_num": 313,
+                  "end_line_num": 316,
+                  "connector_source": null
+                },
+                "og_tags": null
+              }
+            },
+            {
+              "start_ix": 297,
+              "end_ix": 311,
+              "citation_format_type": "tether_v4",
+              "metadata": {
+                "type": "webpage",
+                "title": "Bengal Cats in Movies - Iconic Bengal Cat Breeders",
+                "url": "https://iconicbengalcatbreeders.com/bengal-cats-in-movies/#:~:text=According%20to%20Cinema%20Cats%2C%20Bengal,George%20Clooney%20and%20Michelle%20Pfeiffer",
+                "text": "According to Cinema Cats, Bengal cats made their first movie appearance in the film, Proof released in 1991. It featured a Bengal cat with marble markings. The first spotted Bengal in film is 1996's One Fine Day featuring George Clooney and Michelle Pfeiffer.",
+                "pub_date": null,
+                "extra": {
+                  "cited_message_idx": 19,
+                  "cited_message_id": "90c52cb7-ccb1-49ca-88a6-50511bfff49f",
+                  "search_result_idx": null,
+                  "evidence_text": "",
+                  "start_line_num": 313,
+                  "end_line_num": 316,
+                  "connector_source": null
+                },
+                "og_tags": null
+              }
+            },
+            {
+              "start_ix": 479,
+              "end_ix": 493,
+              "citation_format_type": "tether_v4",
+              "metadata": {
+                "type": "webpage",
+                "title": "Interview: Entourage's Creator Doug Ellin Talks About His Bengal Cat",
+                "url": "https://bengalcats.co/interview-entourage-doug-ellin/#:~:text=Image%3A%20Ari%20Gold%20punches%20the,Bengal%20kittenAri%20Gold%20in%20Entourage",
+                "text": "Image: Ari Gold punches the framed picture of a Bengal kittenAri Gold in Entourage",
+                "pub_date": null,
+                "extra": {
+                  "cited_message_idx": 25,
+                  "cited_message_id": "6012aa1c-6d9d-45ba-a26d-d96738eae1c8",
+                  "search_result_idx": null,
+                  "evidence_text": "",
+                  "start_line_num": 124,
+                  "end_line_num": 130,
+                  "connector_source": null
+                },
+                "og_tags": null
+              }
+            },
+            {
+              "start_ix": 1229,
+              "end_ix": 1241,
+              "citation_format_type": "tether_v4",
+              "metadata": {
+                "type": "webpage",
+                "title": "IAMS Commercial with Bengal Cat - Saatchi & Saatchi",
+                "url": "https://www.pinterest.com/pin/iams-commercial-with-bengal-cat-saatchi-saatchi--349099408584902845/#:~:text=I%20trained%20this%20cat%20for,director%20that%20I%20have%20t",
+                "text": "I trained this cat for an IAMS commercial that was filmed a few years ago in NYC. This spot was directed by Mike Rowles, and excellent director that I have t...",
+                "pub_date": null,
+                "extra": {
+                  "cited_message_idx": 67,
+                  "cited_message_id": "887655b4-af77-40d8-9cb8-4571de3e053c",
+                  "search_result_idx": null,
+                  "evidence_text": "",
+                  "start_line_num": 34,
+                  "end_line_num": 36,
+                  "connector_source": null
+                },
+                "og_tags": null
+              }
+            },
+            {
+              "start_ix": 1419,
+              "end_ix": 1431,
+              "citation_format_type": "tether_v4",
+              "metadata": {
+                "type": "webpage",
+                "title": "IAMS Commercial with Bengal Cat - Saatchi & Saatchi",
+                "url": "https://www.pinterest.com/pin/iams-commercial-with-bengal-cat-saatchi-saatchi--349099408584902845/#:~:text=I%20trained%20this%20cat%20for,director%20that%20I%20have%20t",
+                "text": "I trained this cat for an IAMS commercial that was filmed a few years ago in NYC. This spot was directed by Mike Rowles, and excellent director that I have t...",
+                "pub_date": null,
+                "extra": {
+                  "cited_message_idx": 67,
+                  "cited_message_id": "887655b4-af77-40d8-9cb8-4571de3e053c",
+                  "search_result_idx": null,
+                  "evidence_text": "",
+                  "start_line_num": 34,
+                  "end_line_num": 36,
+                  "connector_source": null
+                },
+                "og_tags": null
+              }
+            },
+            {
+              "start_ix": 1782,
+              "end_ix": 1796,
+              "citation_format_type": "tether_v4",
+              "metadata": {
+                "type": "webpage",
+                "title": "Esmond Gay | Most Expensive Bengal Cat | Guinness World Records ",
+                "url": "https://www.bengalcatstoronto.com/esmondgay.html#:~:text=%27Sarez%20Bengals,it%2C%20please%20click%20%2027",
+                "text": "'Sarez Bengals...the Cats that Bewitched the Stars'.  Esmond's Bengals gained popularity with celebrities worldwide, they strolled fashion catwalks with supermodels and were frequent TV and newspaper stars; and this article describes it all. To read it, please click  27",
+                "pub_date": null,
+                "extra": {
+                  "cited_message_idx": 56,
+                  "cited_message_id": "8b0767d8-31ab-4359-9c4d-90e067d26a28",
+                  "search_result_idx": null,
+                  "evidence_text": "",
+                  "start_line_num": 107,
+                  "end_line_num": 110,
+                  "connector_source": null
+                },
+                "og_tags": null
+              }
+            },
+            {
+              "start_ix": 2225,
+              "end_ix": 2237,
+              "citation_format_type": "tether_v4",
+              "metadata": {
+                "type": "webpage",
+                "title": "7 Cool Bengal Accounts on Instagram - Cats.com",
+                "url": "https://cats.com/bengal-accounts-on-instagram#:~:text=It%E2%80%99s%20no%20wonder%20that%20many,make%20purrfect%20social%20media%20stars",
+                "text": "It’s no wonder that many Bengal owners have created Instagram accounts to share with the world photos and videos of their exquisite cats. Check out these beauties, who make purrfect social media stars.",
+                "pub_date": null,
+                "extra": {
+                  "cited_message_idx": 77,
+                  "cited_message_id": "e8be5741-65b4-4b90-b3c3-00010696383d",
+                  "search_result_idx": null,
+                  "evidence_text": "",
+                  "start_line_num": 90,
+                  "end_line_num": 92,
+                  "connector_source": null
+                },
+                "og_tags": null
+              }
+            },
+            {
+              "start_ix": 2532,
+              "end_ix": 2546,
+              "citation_format_type": "tether_v4",
+              "metadata": {
+                "type": "webpage",
+                "title": "Suki the Adventure Cat on Instagram Has a New Book",
+                "url": "https://people.com/pets/suki-travel-adventure-cat-instagram/#:~:text=Suki%20is%20the%20ideal%20virtual,May%20from%20Andrews%20McMeel%20Publishing",
+                "text": "Suki is the ideal virtual tour guide: sweet, soft, silly and photogenic. Before the coronavirus pandemic, the Bengal cat traveled the world with her owners Martina Gutfreund and Kenny Hildebrandt, and posed for stunning photos wherever she went. These sweet shots, many of which feature iconic vistas from around the globe, are available to view on Suki’s Instagram (@sukiicat) where she has over 1.8 million followers, and will soon be compiled into a new book, Travels of Suki the Adventure Cat, which will be available in May from Andrews McMeel Publishing.",
+                "pub_date": null,
+                "extra": {
+                  "cited_message_idx": 53,
+                  "cited_message_id": "31d2aea1-6c51-409e-b108-46ebfaba4880",
+                  "search_result_idx": null,
+                  "evidence_text": "",
+                  "start_line_num": 210,
+                  "end_line_num": 218,
+                  "connector_source": null
+                },
+                "og_tags": null
+              }
+            },
+            {
+              "start_ix": 2641,
+              "end_ix": 2655,
+              "citation_format_type": "tether_v4",
+              "metadata": {
+                "type": "webpage",
+                "title": "7 Cool Bengal Accounts on Instagram - Cats.com",
+                "url": "https://cats.com/bengal-accounts-on-instagram#:~:text=,of%20Followers%20on%20Instagram%3A%20266K",
+                "text": "* Instagram: @jake.the.bengal * Number of Followers on Instagram: 266K",
+                "pub_date": null,
+                "extra": {
+                  "cited_message_idx": 71,
+                  "cited_message_id": "d00ec8be-de22-48d5-bf02-4e06a50ef70e",
+                  "search_result_idx": null,
+                  "evidence_text": "",
+                  "start_line_num": 174,
+                  "end_line_num": 182,
+                  "connector_source": null
+                },
+                "og_tags": null
+              }
+            },
+            {
+              "start_ix": 2883,
+              "end_ix": 2895,
+              "citation_format_type": "tether_v4",
+              "metadata": {
+                "type": "webpage",
+                "title": "7 Cool Bengal Accounts on Instagram - Cats.com",
+                "url": "https://cats.com/bengal-accounts-on-instagram#:~:text=It%E2%80%99s%20no%20wonder%20that%20many,make%20purrfect%20social%20media%20stars",
+                "text": "It’s no wonder that many Bengal owners have created Instagram accounts to share with the world photos and videos of their exquisite cats. Check out these beauties, who make purrfect social media stars.",
+                "pub_date": null,
+                "extra": {
+                  "cited_message_idx": 77,
+                  "cited_message_id": "e8be5741-65b4-4b90-b3c3-00010696383d",
+                  "search_result_idx": null,
+                  "evidence_text": "",
+                  "start_line_num": 90,
+                  "end_line_num": 92,
+                  "connector_source": null
+                },
+                "og_tags": null
+              }
+            },
+            {
+              "start_ix": 2895,
+              "end_ix": 2908,
+              "citation_format_type": "tether_v4",
+              "metadata": {
+                "type": "webpage",
+                "title": "7 Cool Bengal Accounts on Instagram - Cats.com",
+                "url": "https://cats.com/bengal-accounts-on-instagram#:~:text=%40manduthebengalcat%20%2F%20Instagram",
+                "text": "@manduthebengalcat / Instagram.com",
+                "pub_date": null,
+                "extra": {
+                  "cited_message_idx": 77,
+                  "cited_message_id": "e8be5741-65b4-4b90-b3c3-00010696383d",
+                  "search_result_idx": null,
+                  "evidence_text": "",
+                  "start_line_num": 98,
+                  "end_line_num": 102,
+                  "connector_source": null
+                },
+                "og_tags": null
+              }
+            },
+            {
+              "start_ix": 3545,
+              "end_ix": 3559,
+              "citation_format_type": "tether_v4",
+              "metadata": {
+                "type": "webpage",
+                "title": "Martha Stewart Introduces Her Two New Bengal Cats",
+                "url": "https://people.com/pets/martha-stewart-introduces-two-new-bengal-cats/#:~:text=Martha%20Stewart%20has%20expanded%20her,feline%20family",
+                "text": "Martha Stewart has expanded her feline family!",
+                "pub_date": null,
+                "extra": {
+                  "cited_message_idx": 55,
+                  "cited_message_id": "89cffbf7-5c05-4340-8db1-7a84af945aff",
+                  "search_result_idx": null,
+                  "evidence_text": "",
+                  "start_line_num": 214,
+                  "end_line_num": 222,
+                  "connector_source": null
+                },
+                "og_tags": null
+              }
+            },
+            {
+              "start_ix": 3559,
+              "end_ix": 3573,
+              "citation_format_type": "tether_v4",
+              "metadata": {
+                "type": "webpage",
+                "title": "Martha Stewart Introduces Her Two New Bengal Cats",
+                "url": "https://people.com/pets/martha-stewart-introduces-two-new-bengal-cats/#:~:text=,adventuresome%2C%20very%20fast%2C%20and%20devious",
+                "text": "\"More photos of the new Bengals,\" Stewart wrote. \"They are acclimating to living on the farm first by getting used to the laundry room and basement wardrobe room. We tried the porch today but there was no way we could keep them from escaping and getting into trouble with the dogs they are adventuresome, very fast, and devious.\"",
+                "pub_date": null,
+                "extra": {
+                  "cited_message_idx": 55,
+                  "cited_message_id": "89cffbf7-5c05-4340-8db1-7a84af945aff",
+                  "search_result_idx": null,
+                  "evidence_text": "",
+                  "start_line_num": 225,
+                  "end_line_num": 229,
+                  "connector_source": null
+                },
+                "og_tags": null
+              }
+            },
+            {
+              "start_ix": 3887,
+              "end_ix": 3901,
+              "citation_format_type": "tether_v4",
+              "metadata": {
+                "type": "webpage",
+                "title": "Kristen Stewart NYLON",
+                "url": "https://www.nylon.com/articles/kristen-stewart-nylon-cover#:~:text=The%20family%20is%20joined%20by,brushing%20up%20rock%20%27n%27%20roll",
+                "text": "The family is joined by three dogs (two of which are actually wolves) and a Bengal cat, Max, which Kristen calls Jella because \"his little alter ego for me is this little, soulful, blues musician from the South.\" Stewart, meanwhile, is brushing up rock 'n' roll.",
+                "pub_date": null,
+                "extra": {
+                  "cited_message_idx": 65,
+                  "cited_message_id": "78bc5a07-05d3-45b6-b816-9e67a10d8a99",
+                  "search_result_idx": null,
+                  "evidence_text": "",
+                  "start_line_num": 228,
+                  "end_line_num": 232,
+                  "connector_source": null
+                },
+                "og_tags": null
+              }
+            },
+            {
+              "start_ix": 4029,
+              "end_ix": 4043,
+              "citation_format_type": "tether_v4",
+              "metadata": {
+                "type": "webpage",
+                "title": "Interview: Entourage's Creator Doug Ellin Talks About His Bengal Cat",
+                "url": "https://bengalcats.co/interview-entourage-doug-ellin/#:~:text=Image%3A%20Ari%20Gold%20punches%20the,Bengal%20kittenAri%20Gold%20in%20Entourage",
+                "text": "Image: Ari Gold punches the framed picture of a Bengal kittenAri Gold in Entourage",
+                "pub_date": null,
+                "extra": {
+                  "cited_message_idx": 25,
+                  "cited_message_id": "6012aa1c-6d9d-45ba-a26d-d96738eae1c8",
+                  "search_result_idx": null,
+                  "evidence_text": "",
+                  "start_line_num": 124,
+                  "end_line_num": 130,
+                  "connector_source": null
+                },
+                "og_tags": null
+              }
+            },
+            {
+              "start_ix": 4525,
+              "end_ix": 4539,
+              "citation_format_type": "tether_v4",
+              "metadata": {
+                "type": "webpage",
+                "title": "Martha Stewart Introduces Her Two New Bengal Cats",
+                "url": "https://people.com/pets/martha-stewart-introduces-two-new-bengal-cats/#:~:text=,adventuresome%2C%20very%20fast%2C%20and%20devious",
+                "text": "\"More photos of the new Bengals,\" Stewart wrote. \"They are acclimating to living on the farm first by getting used to the laundry room and basement wardrobe room. We tried the porch today but there was no way we could keep them from escaping and getting into trouble with the dogs they are adventuresome, very fast, and devious.\"",
+                "pub_date": null,
+                "extra": {
+                  "cited_message_idx": 55,
+                  "cited_message_id": "89cffbf7-5c05-4340-8db1-7a84af945aff",
+                  "search_result_idx": null,
+                  "evidence_text": "",
+                  "start_line_num": 225,
+                  "end_line_num": 229,
+                  "connector_source": null
+                },
+                "og_tags": null
+              }
+            },
+            {
+              "start_ix": 4719,
+              "end_ix": 4733,
+              "citation_format_type": "tether_v4",
+              "metadata": {
+                "type": "webpage",
+                "title": "Suki the Adventure Cat on Instagram Has a New Book",
+                "url": "https://people.com/pets/suki-travel-adventure-cat-instagram/#:~:text=Suki%20is%20the%20ideal%20virtual,May%20from%20Andrews%20McMeel%20Publishing",
+                "text": "Suki is the ideal virtual tour guide: sweet, soft, silly and photogenic. Before the coronavirus pandemic, the Bengal cat traveled the world with her owners Martina Gutfreund and Kenny Hildebrandt, and posed for stunning photos wherever she went. These sweet shots, many of which feature iconic vistas from around the globe, are available to view on Suki’s Instagram (@sukiicat) where she has over 1.8 million followers, and will soon be compiled into a new book, Travels of Suki the Adventure Cat, which will be available in May from Andrews McMeel Publishing.",
+                "pub_date": null,
+                "extra": {
+                  "cited_message_idx": 53,
+                  "cited_message_id": "31d2aea1-6c51-409e-b108-46ebfaba4880",
+                  "search_result_idx": null,
+                  "evidence_text": "",
+                  "start_line_num": 210,
+                  "end_line_num": 218,
+                  "connector_source": null
+                },
+                "og_tags": null
+              }
+            },
+            {
+              "start_ix": 5400,
+              "end_ix": 5414,
+              "citation_format_type": "tether_v4",
+              "metadata": {
+                "type": "webpage",
+                "title": "Bengal Cats in Movies - Iconic Bengal Cat Breeders",
+                "url": "https://iconicbengalcatbreeders.com/bengal-cats-in-movies/#:~:text=According%20to%20Cinema%20Cats%2C%20Bengal,George%20Clooney%20and%20Michelle%20Pfeiffer",
+                "text": "According to Cinema Cats, Bengal cats made their first movie appearance in the film, Proof released in 1991. It featured a Bengal cat with marble markings. The first spotted Bengal in film is 1996's One Fine Day featuring George Clooney and Michelle Pfeiffer.",
+                "pub_date": null,
+                "extra": {
+                  "cited_message_idx": 19,
+                  "cited_message_id": "90c52cb7-ccb1-49ca-88a6-50511bfff49f",
+                  "search_result_idx": null,
+                  "evidence_text": "",
+                  "start_line_num": 313,
+                  "end_line_num": 316,
+                  "connector_source": null
+                },
+                "og_tags": null
+              }
+            },
+            {
+              "start_ix": 5414,
+              "end_ix": 5428,
+              "citation_format_type": "tether_v4",
+              "metadata": {
+                "type": "webpage",
+                "title": "Martha Stewart Introduces Her Two New Bengal Cats",
+                "url": "https://people.com/pets/martha-stewart-introduces-two-new-bengal-cats/#:~:text=,adventuresome%2C%20very%20fast%2C%20and%20devious",
+                "text": "\"More photos of the new Bengals,\" Stewart wrote. \"They are acclimating to living on the farm first by getting used to the laundry room and basement wardrobe room. We tried the porch today but there was no way we could keep them from escaping and getting into trouble with the dogs they are adventuresome, very fast, and devious.\"",
+                "pub_date": null,
+                "extra": {
+                  "cited_message_idx": 55,
+                  "cited_message_id": "89cffbf7-5c05-4340-8db1-7a84af945aff",
+                  "search_result_idx": null,
+                  "evidence_text": "",
+                  "start_line_num": 225,
+                  "end_line_num": 229,
+                  "connector_source": null
+                },
+                "og_tags": null
+              }
+            },
+            {
+              "start_ix": 5514,
+              "end_ix": 5528,
+              "citation_format_type": "tether_v4",
+              "metadata": {
+                "type": "webpage",
+                "title": "Bengal Cats in Movies - Iconic Bengal Cat Breeders",
+                "url": "https://iconicbengalcatbreeders.com/bengal-cats-in-movies/#:~:text=According%20to%20Cinema%20Cats%2C%20Bengal,George%20Clooney%20and%20Michelle%20Pfeiffer",
+                "text": "According to Cinema Cats, Bengal cats made their first movie appearance in the film, Proof released in 1991. It featured a Bengal cat with marble markings. The first spotted Bengal in film is 1996's One Fine Day featuring George Clooney and Michelle Pfeiffer.",
+                "pub_date": null,
+                "extra": {
+                  "cited_message_idx": 19,
+                  "cited_message_id": "90c52cb7-ccb1-49ca-88a6-50511bfff49f",
+                  "search_result_idx": null,
+                  "evidence_text": "",
+                  "start_line_num": 313,
+                  "end_line_num": 316,
+                  "connector_source": null
+                },
+                "og_tags": null
+              }
+            },
+            {
+              "start_ix": 5528,
+              "end_ix": 5542,
+              "citation_format_type": "tether_v4",
+              "metadata": {
+                "type": "webpage",
+                "title": "Interview: Entourage's Creator Doug Ellin Talks About His Bengal Cat",
+                "url": "https://bengalcats.co/interview-entourage-doug-ellin/#:~:text=Image%3A%20Ari%20Gold%20punches%20the,Bengal%20kittenAri%20Gold%20in%20Entourage",
+                "text": "Image: Ari Gold punches the framed picture of a Bengal kittenAri Gold in Entourage",
+                "pub_date": null,
+                "extra": {
+                  "cited_message_idx": 25,
+                  "cited_message_id": "6012aa1c-6d9d-45ba-a26d-d96738eae1c8",
+                  "search_result_idx": null,
+                  "evidence_text": "",
+                  "start_line_num": 124,
+                  "end_line_num": 130,
+                  "connector_source": null
+                },
+                "og_tags": null
+              }
+            },
+            {
+              "start_ix": 5542,
+              "end_ix": 5556,
+              "citation_format_type": "tether_v4",
+              "metadata": {
+                "type": "webpage",
+                "title": "Suki the Adventure Cat on Instagram Has a New Book",
+                "url": "https://people.com/pets/suki-travel-adventure-cat-instagram/#:~:text=Suki%20is%20the%20ideal%20virtual,May%20from%20Andrews%20McMeel%20Publishing",
+                "text": "Suki is the ideal virtual tour guide: sweet, soft, silly and photogenic. Before the coronavirus pandemic, the Bengal cat traveled the world with her owners Martina Gutfreund and Kenny Hildebrandt, and posed for stunning photos wherever she went. These sweet shots, many of which feature iconic vistas from around the globe, are available to view on Suki’s Instagram (@sukiicat) where she has over 1.8 million followers, and will soon be compiled into a new book, Travels of Suki the Adventure Cat, which will be available in May from Andrews McMeel Publishing.",
+                "pub_date": null,
+                "extra": {
+                  "cited_message_idx": 53,
+                  "cited_message_id": "31d2aea1-6c51-409e-b108-46ebfaba4880",
+                  "search_result_idx": null,
+                  "evidence_text": "",
+                  "start_line_num": 210,
+                  "end_line_num": 218,
+                  "connector_source": null
+                },
+                "og_tags": null
+              }
+            },
+            {
+              "start_ix": 5556,
+              "end_ix": 5570,
+              "citation_format_type": "tether_v4",
+              "metadata": {
+                "type": "webpage",
+                "title": "Martha Stewart Introduces Her Two New Bengal Cats",
+                "url": "https://people.com/pets/martha-stewart-introduces-two-new-bengal-cats/#:~:text=Martha%20Stewart%20has%20expanded%20her,feline%20family",
+                "text": "Martha Stewart has expanded her feline family!",
+                "pub_date": null,
+                "extra": {
+                  "cited_message_idx": 55,
+                  "cited_message_id": "89cffbf7-5c05-4340-8db1-7a84af945aff",
+                  "search_result_idx": null,
+                  "evidence_text": "",
+                  "start_line_num": 214,
+                  "end_line_num": 222,
+                  "connector_source": null
+                },
+                "og_tags": null
+              }
+            },
+            {
+              "start_ix": 5570,
+              "end_ix": 5584,
+              "citation_format_type": "tether_v4",
+              "metadata": {
+                "type": "webpage",
+                "title": "Esmond Gay | Most Expensive Bengal Cat | Guinness World Records ",
+                "url": "https://www.bengalcatstoronto.com/esmondgay.html#:~:text=%27Sarez%20Bengals,it%2C%20please%20click%20%2027",
+                "text": "'Sarez Bengals...the Cats that Bewitched the Stars'.  Esmond's Bengals gained popularity with celebrities worldwide, they strolled fashion catwalks with supermodels and were frequent TV and newspaper stars; and this article describes it all. To read it, please click  27",
+                "pub_date": null,
+                "extra": {
+                  "cited_message_idx": 56,
+                  "cited_message_id": "8b0767d8-31ab-4359-9c4d-90e067d26a28",
+                  "search_result_idx": null,
+                  "evidence_text": "",
+                  "start_line_num": 107,
+                  "end_line_num": 110,
+                  "connector_source": null
+                },
+                "og_tags": null
+              }
+            },
+            {
+              "start_ix": 5584,
+              "end_ix": 5598,
+              "citation_format_type": "tether_v4",
+              "metadata": {
+                "type": "webpage",
+                "title": "Kristen Stewart NYLON",
+                "url": "https://www.nylon.com/articles/kristen-stewart-nylon-cover#:~:text=The%20family%20is%20joined%20by,brushing%20up%20rock%20%27n%27%20roll",
+                "text": "The family is joined by three dogs (two of which are actually wolves) and a Bengal cat, Max, which Kristen calls Jella because \"his little alter ego for me is this little, soulful, blues musician from the South.\" Stewart, meanwhile, is brushing up rock 'n' roll.",
+                "pub_date": null,
+                "extra": {
+                  "cited_message_idx": 65,
+                  "cited_message_id": "78bc5a07-05d3-45b6-b816-9e67a10d8a99",
+                  "search_result_idx": null,
+                  "evidence_text": "",
+                  "start_line_num": 228,
+                  "end_line_num": 232,
+                  "connector_source": null
+                },
+                "og_tags": null
+              }
+            },
+            {
+              "start_ix": 5598,
+              "end_ix": 5610,
+              "citation_format_type": "tether_v4",
+              "metadata": {
+                "type": "webpage",
+                "title": "IAMS Commercial with Bengal Cat - Saatchi & Saatchi",
+                "url": "https://www.pinterest.com/pin/iams-commercial-with-bengal-cat-saatchi-saatchi--349099408584902845/#:~:text=I%20trained%20this%20cat%20for,director%20that%20I%20have%20t",
+                "text": "I trained this cat for an IAMS commercial that was filmed a few years ago in NYC. This spot was directed by Mike Rowles, and excellent director that I have t...",
+                "pub_date": null,
+                "extra": {
+                  "cited_message_idx": 67,
+                  "cited_message_id": "887655b4-af77-40d8-9cb8-4571de3e053c",
+                  "search_result_idx": null,
+                  "evidence_text": "",
+                  "start_line_num": 34,
+                  "end_line_num": 36,
+                  "connector_source": null
+                },
+                "og_tags": null
+              }
+            },
+            {
+              "start_ix": 5610,
+              "end_ix": 5622,
+              "citation_format_type": "tether_v4",
+              "metadata": {
+                "type": "webpage",
+                "title": "7 Cool Bengal Accounts on Instagram - Cats.com",
+                "url": "https://cats.com/bengal-accounts-on-instagram#:~:text=It%E2%80%99s%20no%20wonder%20that%20many,make%20purrfect%20social%20media%20stars",
+                "text": "It’s no wonder that many Bengal owners have created Instagram accounts to share with the world photos and videos of their exquisite cats. Check out these beauties, who make purrfect social media stars.",
+                "pub_date": null,
+                "extra": {
+                  "cited_message_idx": 77,
+                  "cited_message_id": "e8be5741-65b4-4b90-b3c3-00010696383d",
+                  "search_result_idx": null,
+                  "evidence_text": "",
+                  "start_line_num": 90,
+                  "end_line_num": 92,
+                  "connector_source": null
+                },
+                "og_tags": null
+              }
+            },
+            {
+              "start_ix": 5622,
+              "end_ix": 5636,
+              "citation_format_type": "tether_v4",
+              "metadata": {
+                "type": "webpage",
+                "title": "7 Cool Bengal Accounts on Instagram - Cats.com",
+                "url": "https://cats.com/bengal-accounts-on-instagram#:~:text=,of%20Followers%20on%20Instagram%3A%20266K",
+                "text": "* Instagram: @jake.the.bengal * Number of Followers on Instagram: 266K",
+                "pub_date": null,
+                "extra": {
+                  "cited_message_idx": 71,
+                  "cited_message_id": "d00ec8be-de22-48d5-bf02-4e06a50ef70e",
+                  "search_result_idx": null,
+                  "evidence_text": "",
+                  "start_line_num": 174,
+                  "end_line_num": 182,
+                  "connector_source": null
+                },
+                "og_tags": null
+              }
+            }
+          ],
+          "async_completion_id": "deepresch_694e54a09064819183f4394d5cdf58a4",
+          "async_completion_message": "Your detailed report on the cultural and media appearances of Bengal cats is ready. Feel free to review it whenever you’re ready.",
+          "parent_id": "224e4c2e-3640-4054-8377-6fa88581df2b",
+          "is_async_task_result_message": true,
+          "async_task_id": "deepresch_694e54a09064819183f4394d5cdf58a4",
+          "async_task_title": "Cultural and Media Appearances of Bengal Cats",
+          "async_task_type": "research",
+          "async_task_message_label": "Research completed",
+          "async_task_original_message_id": "67d3f2eb-98e9-4835-8255-fdeb5626183b",
+          "b1de6e2_rm": true,
+          "model_switcher_deny": [
+            {
+              "slug": "gpt-5-mini",
+              "context": "regenerate",
+              "reason": "unsupported_attachment",
+              "is_available": false,
+              "description": "This model doesn't support file attachments."
+            },
+            {
+              "slug": "gpt-5-mini",
+              "context": "conversation",
+              "reason": "unsupported_attachment",
+              "is_available": false,
+              "description": "This model doesn't support file attachments."
+            },
+            {
+              "slug": "auto",
+              "context": "regenerate",
+              "reason": "unsupported_attachment",
+              "is_available": false,
+              "description": "This model doesn't support file attachments."
+            },
+            {
+              "slug": "auto",
+              "context": "conversation",
+              "reason": "unsupported_attachment",
+              "is_available": false,
+              "description": "This model doesn't support file attachments."
+            }
+          ]
+        },
+        "recipient": "all",
+        "channel": "final"
+      },
+      "parent": "3a03a1d1-12bb-4e5b-8a4b-a388723b3958",
+      "children": []
+    }
+  },
+  "moderation_results": [],
+  "current_node": "7eddf1cd-58b1-4fe7-928a-f39157dd4bc2",
+  "plugin_ids": null,
+  "conversation_id": "694e53fd-e8e8-832d-a940-ff9749c51b6d",
+  "conversation_template_id": null,
+  "gizmo_id": null,
+  "gizmo_type": null,
+  "is_archived": false,
+  "is_starred": null,
+  "safe_urls": ["https://www.openai.com"],
+  "blocked_urls": [],
+  "default_model_slug": "research",
+  "conversation_origin": null,
+  "is_read_only": null,
+  "voice": null,
+  "async_status": null,
+  "disabled_tool_ids": [],
+  "is_do_not_remember": false,
+  "memory_scope": "global_enabled",
+  "context_scopes": null,
+  "sugar_item_id": null,
+  "sugar_item_visible": false,
+  "pinned_time": null,
+  "is_study_mode": false,
+  "owner": null
+}

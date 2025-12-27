@@ -1,16 +1,32 @@
 {
   "name": "ownyourchat",
   "version": "1.0.0",
-  "description": "An Electron application with React and TypeScript",
+  "description": "Sync your ChatGPT and Claude conversations to a local SQLite database",
   "main": "./out/main/index.js",
-  "author": "example.com",
-  "homepage": "https://electron-vite.org",
+  "author": "Misha Malyshev",
+  "homepage": "https://ownyour.chat",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mlshv/ownyourchat"
+  },
+  "bugs": {
+    "url": "https://github.com/mlshv/ownyourchat/issues"
+  },
+  "keywords": [
+    "chatgpt",
+    "claude",
+    "sync",
+    "sqlite"
+  ],
   "scripts": {
     "format": "prettier --write .",
     "lint": "eslint --cache .",
     "typecheck:node": "tsc --noEmit -p tsconfig.node.json --composite false",
     "typecheck:web": "tsc --noEmit -p tsconfig.web.json --composite false",
     "typecheck": "npm run typecheck:node && npm run typecheck:web",
+    "test": "vitest",
+    "test:run": "vitest run",
     "start": "electron-vite preview",
     "dev": "electron-vite dev",
     "build": "npm run typecheck && electron-vite build",
@@ -18,20 +34,30 @@
     "build:unpack": "npm run build && electron-builder --dir",
     "build:win": "npm run build && electron-builder --win",
     "build:mac": "electron-vite build && electron-builder --mac",
-    "build:linux": "electron-vite build && electron-builder --linux"
+    "build:linux": "electron-vite build && electron-builder --linux",
+    "db:studio": "ELECTRON_RUN_AS_NODE=1 pnpm exec electron node_modules/drizzle-kit/bin.cjs studio"
   },
   "dependencies": {
     "@electron-toolkit/preload": "^3.0.2",
-    "@electron-toolkit/utils": "^4.0.0"
+    "@electron-toolkit/utils": "^4.0.0",
+    "@zubridge/electron": "^2.1.1",
+    "better-sqlite3": "^12.5.0",
+    "drizzle-orm": "^0.45.1",
+    "vitest": "^4.0.16",
+    "zustand": "^5.0.9"
   },
   "devDependencies": {
     "@electron-toolkit/eslint-config-prettier": "^3.0.0",
     "@electron-toolkit/eslint-config-ts": "^3.1.0",
     "@electron-toolkit/tsconfig": "^2.0.0",
+    "@phosphor-icons/react": "^2.1.10",
+    "@tailwindcss/vite": "^4.1.18",
     "@types/node": "^22.19.1",
     "@types/react": "^19.2.7",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^5.1.1",
+    "clsx": "^2.1.1",
+    "drizzle-kit": "^0.31.8",
     "electron": "^39.2.6",
     "electron-builder": "^26.0.12",
     "electron-vite": "^5.0.0",
@@ -39,10 +65,21 @@
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^7.0.1",
     "eslint-plugin-react-refresh": "^0.4.24",
+    "hast-util-sanitize": "^5.0.2",
+    "katex": "^0.16.27",
+    "marked": "^17.0.1",
     "prettier": "^3.7.4",
     "react": "^19.2.1",
     "react-dom": "^19.2.1",
+    "react-markdown": "^10.1.0",
+    "rehype-katex": "^7.0.1",
+    "rehype-sanitize": "^6.0.0",
+    "remark-gfm": "^4.0.1",
+    "remark-math": "^6.0.0",
+    "tailwind-merge": "^3.4.0",
+    "tailwindcss": "^4.1.18",
     "typescript": "^5.9.3",
+    "virtua": "^0.48.2",
     "vite": "^7.2.6"
   },
   "pnpm": {
@@ -51,6 +88,7 @@
       "esbuild"
     ],
     "ignoredBuiltDependencies": [
+      "better-sqlite3",
       "electron-winstaller"
     ]
   }
