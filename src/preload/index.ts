@@ -85,10 +85,20 @@ const api: ElectronAPI = {
         syncIntervalMinutes: number
         autoSync: boolean
         exportPath: string
+        hindsightEnabled: boolean
+        hindsightServerUrl: string
+        hindsightBankId: string
+        hindsightAutoIndex: boolean
       }>,
-    set: (
-      settings: Partial<{ syncIntervalMinutes: number; autoSync: boolean; exportPath: string }>
-    ) => ipcRenderer.invoke(IPC_CHANNELS.SETTINGS_SET, settings)
+    set: (settings: Partial<{
+      syncIntervalMinutes: number
+      autoSync: boolean
+      exportPath: string
+      hindsightEnabled: boolean
+      hindsightServerUrl: string
+      hindsightBankId: string
+      hindsightAutoIndex: boolean
+    }>) => ipcRenderer.invoke(IPC_CHANNELS.SETTINGS_SET, settings)
   },
 
   // User preferences operations
@@ -151,6 +161,44 @@ const api: ElectronAPI = {
       ipcRenderer.on(IPC_CHANNELS.MENU_SETTINGS_CLICK, handler)
       return () => ipcRenderer.removeListener(IPC_CHANNELS.MENU_SETTINGS_CLICK, handler)
     }
+  },
+
+  // Hindsight operations
+  hindsight: {
+    indexConversation: (conversationId: string) =>
+      ipcRenderer.invoke(IPC_CHANNELS.HINDSIGHT_INDEX_CONVERSATION, conversationId) as Promise<{
+        success: boolean
+        error?: string
+      }>,
+    indexAll: () =>
+      ipcRenderer.invoke(IPC_CHANNELS.HINDSIGHT_INDEX_ALL) as Promise<{
+        success: boolean
+        indexed?: number
+        error?: string
+      }>,
+    recall: (query: string) =>
+      ipcRenderer.invoke(IPC_CHANNELS.HINDSIGHT_RECALL, query) as Promise<{
+        success: boolean
+        results?: Array<{
+          content: string
+          score: number
+          metadata?: Record<string, unknown>
+        }>
+        error?: string
+      }>,
+    reflect: (query: string) =>
+      ipcRenderer.invoke(IPC_CHANNELS.HINDSIGHT_REFLECT, query) as Promise<{
+        success: boolean
+        reflection?: string
+        error?: string
+      }>,
+    getStatus: () =>
+      ipcRenderer.invoke(IPC_CHANNELS.HINDSIGHT_STATUS) as Promise<{
+        connected: boolean
+        enabled: boolean
+        serverUrl: string
+        bankId: string
+      }>
   }
 }
 

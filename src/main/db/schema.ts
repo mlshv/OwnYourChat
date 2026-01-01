@@ -78,6 +78,21 @@ export const userPreferences = sqliteTable('user_preferences', {
   updatedAt: integer('updated_at', { mode: 'timestamp' })
 })
 
+export const hindsightIndex = sqliteTable('hindsight_index', {
+  conversationId: text('conversation_id')
+    .primaryKey()
+    .references(() => conversations.id, { onDelete: 'cascade' }),
+  memoryValueConfidence: integer('memory_value_confidence'), // 0-100 (stored as integer, divide by 100)
+  primaryTopic: text('primary_topic'),
+  latestMessageId: text('latest_message_id').references(() => messages.id, {
+    onDelete: 'set null'
+  }),
+  analyzedAt: integer('analyzed_at', { mode: 'timestamp' }),
+  retainedAt: integer('retained_at', { mode: 'timestamp' }),
+  retainSuccess: integer('retain_success', { mode: 'boolean' }),
+  retainError: text('retain_error')
+})
+
 // Type exports for convenience
 export type Conversation = typeof conversations.$inferSelect
 export type NewConversation = typeof conversations.$inferInsert
@@ -89,3 +104,5 @@ export type ProviderState = typeof providerState.$inferSelect
 export type NewProviderState = typeof providerState.$inferInsert
 export type UserPreferences = typeof userPreferences.$inferSelect
 export type NewUserPreferences = typeof userPreferences.$inferInsert
+export type HindsightIndex = typeof hindsightIndex.$inferSelect
+export type NewHindsightIndex = typeof hindsightIndex.$inferInsert

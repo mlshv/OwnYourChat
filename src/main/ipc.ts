@@ -4,6 +4,9 @@ import { getMainWindow, providerRegistry } from './index.js'
 import * as db from './db/operations'
 import { exportConversation, exportAllConversations } from './export'
 import { getSettings, updateSettings } from './settings'
+import { indexConversation, indexAllConversations } from './hindsight/indexer'
+import { recallMemories, reflectOnTopic } from './hindsight/search'
+import { checkConnection, getBankId } from './hindsight/client'
 import fs from 'fs'
 
 export function setupIpcHandlers(): void {
@@ -265,5 +268,33 @@ export function setupIpcHandlers(): void {
   // Open URL
   ipcMain.handle(IPC_CHANNELS.SHELL_OPEN_EXTERNAL, async (_event, url: string) => {
     await shell.openExternal(url)
+  })
+
+  // Hindsight handlers
+  ipcMain.handle(IPC_CHANNELS.HINDSIGHT_INDEX_CONVERSATION, async (_event, conversationId: string) => {
+    return indexConversation(conversationId)
+  })
+
+  ipcMain.handle(IPC_CHANNELS.HINDSIGHT_INDEX_ALL, async () => {
+    return indexAllConversations()
+  })
+
+  ipcMain.handle(IPC_CHANNELS.HINDSIGHT_RECALL, async (_event, query: string) => {
+    return recallMemories(query)
+  })
+
+  ipcMain.handle(IPC_CHANNELS.HINDSIGHT_REFLECT, async (_event, query: string) => {
+    return reflectOnTopic(query)
+  })
+
+  ipcMain.handle(IPC_CHANNELS.HINDSIGHT_STATUS, async () => {
+    const settings = getSettings()
+    const connected = await checkConnection()
+    return {
+      connected,
+      enabled: settings.hindsightEnabled,
+      serverUrl: settings.hindsightServerUrl,
+      bankId: getBankId()
+    }
   })
 }

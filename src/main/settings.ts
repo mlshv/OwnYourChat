@@ -6,12 +6,22 @@ export interface Settings {
   syncIntervalMinutes: number
   autoSync: boolean
   exportPath: string
+  hindsightEnabled: boolean
+  hindsightServerUrl: string
+  hindsightBankId: string
+  hindsightAutoIndex: boolean
+  hindsightMinConfidence: number
 }
 
 const defaultSettings: Settings = {
   syncIntervalMinutes: 1,
   autoSync: true,
-  exportPath: path.join(app.getPath('documents'), 'OwnYourChat')
+  exportPath: path.join(app.getPath('documents'), 'OwnYourChat'),
+  hindsightEnabled: false,
+  hindsightServerUrl: 'http://localhost:8888',
+  hindsightBankId: 'ownyourchat',
+  hindsightAutoIndex: true,
+  hindsightMinConfidence: 0.7
 }
 
 let currentSettings: Settings | null = null

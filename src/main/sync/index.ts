@@ -1,5 +1,7 @@
 import type { SyncStatus } from '../../shared/types'
 import { providerRegistry } from './providers/registry.js'
+import { getSettings } from '../settings.js'
+import { indexAllConversations } from '../hindsight/indexer.js'
 
 export type SyncProvider = 'chatgpt' | 'claude'
 
@@ -26,29 +28,54 @@ export function getSyncStatus(): SyncStatus {
 export async function startSync(
   provider?: SyncProvider
 ): Promise<{ success: boolean; error?: string; newChatsFound?: number }> {
+  let result
+
   if (!provider) {
     // Sync all providers
-    const result = await providerRegistry.syncAll()
-    const totalChats = result.results.reduce((sum, r) => sum + (r.newChatsFound || 0), 0)
-    return {
-      success: result.success,
-      error: result.success
+    const syncResult = await providerRegistry.syncAll()
+    const totalChats = syncResult.results.reduce((sum, r) => sum + (r.newChatsFound || 0), 0)
+    result = {
+      success: syncResult.success,
+      error: syncResult.success
         ? undefined
-        : result.results
+        : syncResult.results
             .map((r) => r.error)
             .filter(Boolean)
             .join('; '),
       newChatsFound: totalChats
     }
+  } else {
+    // Sync specific provider
+    const providerInstance = providerRegistry.getProvider(provider)
+    if (!providerInstance) {
+      return { success: false, error: `Provider ${provider} not found` }
+    }
+
+    result = await providerInstance.sync()
   }
 
-  // Sync specific provider
-  const providerInstance = providerRegistry.getProvider(provider)
-  if (!providerInstance) {
-    return { success: false, error: `Provider ${provider} not found` }
+  // Auto-index to hindsight if enabled and sync was successful
+  if (result.success && result.newChatsFound && result.newChatsFound > 0) {
+    const settings = getSettings()
+    if (settings.hindsightEnabled && settings.hindsightAutoIndex) {
+      // Run indexing in background - don't block sync completion
+      indexAllConversations()
+        .then((indexResult) => {
+          if (indexResult.success) {
+            console.log(
+              `[Hindsight] Auto-indexed: ${indexResult.analyzed} analyzed, ${indexResult.retained} retained`
+            )
+          } else {
+            console.error('[Hindsight] Auto-index failed:', indexResult.error)
+          }
+        })
+        .catch((error) => {
+          console.error('[Hindsight] Auto-index error:', error)
+        })
+    }
   }
 
-  return providerInstance.sync()
+  return result
 }
 
 export function stopSync(): { success: boolean } {

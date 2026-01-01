@@ -1,7 +1,20 @@
-import { eq, like, desc, max, lt, and, asc, ne, count } from 'drizzle-orm'
+import { eq, like, desc, max, lt, and, asc, ne, count, isNull, or } from 'drizzle-orm'
 import { getDatabase } from './index'
-import { conversations, messages, attachments, syncState, userPreferences } from './schema'
-import type { NewConversation, NewMessage, NewAttachment } from './schema'
+import {
+  conversations,
+  messages,
+  attachments,
+  syncState,
+  userPreferences,
+  hindsightIndex
+} from './schema'
+import type {
+  NewConversation,
+  NewMessage,
+  NewAttachment,
+  HindsightIndex,
+  NewHindsightIndex
+} from './schema'
 import type { Conversation, Message, Attachment, MessagePart } from '../../shared/types'
 
 // Conversation operations
@@ -443,4 +456,92 @@ export async function setUserPreferences(prefs: {
   return {
     hasCompletedOnboarding: updated.hasCompletedOnboarding
   }
+}
+
+// Hindsight index operations
+export async function getHindsightIndexRecord(
+  conversationId: string
+): Promise<HindsightIndex | null> {
+  const db = getDatabase()
+  const [result] = await db
+    .select()
+    .from(hindsightIndex)
+    .where(eq(hindsightIndex.conversationId, conversationId))
+  return result || null
+}
+
+export async function upsertHindsightIndexRecord(data: NewHindsightIndex): Promise<void> {
+  const db = getDatabase()
+  await db
+    .insert(hindsightIndex)
+    .values(data)
+    .onConflictDoUpdate({
+      target: hindsightIndex.conversationId,
+      set: {
+        memoryValueConfidence: data.memoryValueConfidence,
+        primaryTopic: data.primaryTopic,
+        latestMessageId: data.latestMessageId,
+        analyzedAt: data.analyzedAt,
+        retainedAt: data.retainedAt,
+        retainSuccess: data.retainSuccess,
+        retainError: data.retainError
+      }
+    })
+}
+
+export async function getConversationsNeedingAnalysis(): Promise<Conversation[]> {
+  const db = getDatabase()
+
+  // Get conversations where:
+  // 1. No hindsight_index record exists, OR
+  // 2. latestMessageId doesn't match conversation's currentNodeId
+  const results = await db
+    .select({
+      conversation: conversations
+    })
+    .from(conversations)
+    .leftJoin(hindsightIndex, eq(conversations.id, hindsightIndex.conversationId))
+    .where(
+      or(
+        isNull(hindsightIndex.conversationId), // No record
+        ne(hindsightIndex.latestMessageId, conversations.currentNodeId) // Outdated
+      )
+    )
+    .orderBy(desc(conversations.updatedAt))
+
+  return results.map((r) => mapConversation(r.conversation))
+}
+
+export async function getConversationsNeedingRetain(
+  minConfidence: number
+): Promise<Array<{ conversation: Conversation; indexRecord: HindsightIndex }>> {
+  const db = getDatabase()
+
+  // Get conversations where:
+  // 1. Analyzed (analyzedAt is not null)
+  // 2. Confidence >= threshold
+  // 3. Not yet retained (retainedAt is null) OR previous retain failed
+  const confidenceInt = Math.round(minConfidence * 100)
+
+  const results = await db
+    .select({
+      conversation: conversations,
+      indexRecord: hindsightIndex
+    })
+    .from(conversations)
+    .innerJoin(hindsightIndex, eq(conversations.id, hindsightIndex.conversationId))
+    .where(
+      and(
+        isNull(hindsightIndex.analyzedAt),
+        isNull(hindsightIndex.memoryValueConfidence),
+        ne(hindsightIndex.memoryValueConfidence, confidenceInt),
+        or(isNull(hindsightIndex.retainedAt), eq(hindsightIndex.retainSuccess, false))
+      )
+    )
+    .orderBy(desc(conversations.updatedAt))
+
+  return results.map((r) => ({
+    conversation: mapConversation(r.conversation),
+    indexRecord: r.indexRecord
+  }))
 }

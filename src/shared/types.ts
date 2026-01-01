@@ -178,7 +178,14 @@ export const enum IPC_CHANNELS {
 
   // Menu events
   MENU_EXPORT_CLICK = 'menu:export-click',
-  MENU_SETTINGS_CLICK = 'menu:settings-click'
+  MENU_SETTINGS_CLICK = 'menu:settings-click',
+
+  // Hindsight
+  HINDSIGHT_INDEX_CONVERSATION = 'hindsight:index-conversation',
+  HINDSIGHT_INDEX_ALL = 'hindsight:index-all',
+  HINDSIGHT_RECALL = 'hindsight:recall',
+  HINDSIGHT_REFLECT = 'hindsight:reflect',
+  HINDSIGHT_STATUS = 'hindsight:status'
 }
 
 // ElectronAPI type definition for window.api
@@ -225,12 +232,32 @@ export interface ElectronAPI {
     logout: (provider?: 'chatgpt' | 'claude') => Promise<{ success: boolean }>
   }
   settings: {
-    get: () => Promise<{ syncIntervalMinutes: number; autoSync: boolean; exportPath: string }>
+    get: () => Promise<{
+      syncIntervalMinutes: number
+      autoSync: boolean
+      exportPath: string
+      hindsightEnabled: boolean
+      hindsightServerUrl: string
+      hindsightBankId: string
+      hindsightAutoIndex: boolean
+    }>
     set: (settings: {
       syncIntervalMinutes?: number
       autoSync?: boolean
       exportPath?: string
-    }) => Promise<{ syncIntervalMinutes: number; autoSync: boolean; exportPath: string }>
+      hindsightEnabled?: boolean
+      hindsightServerUrl?: string
+      hindsightBankId?: string
+      hindsightAutoIndex?: boolean
+    }) => Promise<{
+      syncIntervalMinutes: number
+      autoSync: boolean
+      exportPath: string
+      hindsightEnabled: boolean
+      hindsightServerUrl: string
+      hindsightBankId: string
+      hindsightAutoIndex: boolean
+    }>
   }
   userPreferences: {
     get: () => Promise<{ hasCompletedOnboarding: boolean }>
@@ -258,5 +285,36 @@ export interface ElectronAPI {
   menu: {
     onExportClick: (callback: () => void) => () => void
     onSettingsClick: (callback: () => void) => () => void
+  }
+  hindsight: {
+    indexConversation: (conversationId: string) => Promise<{
+      success: boolean
+      error?: string
+    }>
+    indexAll: () => Promise<{
+      success: boolean
+      indexed?: number
+      error?: string
+    }>
+    recall: (query: string) => Promise<{
+      success: boolean
+      results?: Array<{
+        content: string
+        score: number
+        metadata?: Record<string, unknown>
+      }>
+      error?: string
+    }>
+    reflect: (query: string) => Promise<{
+      success: boolean
+      reflection?: string
+      error?: string
+    }>
+    getStatus: () => Promise<{
+      connected: boolean
+      enabled: boolean
+      serverUrl: string
+      bankId: string
+    }>
   }
 }

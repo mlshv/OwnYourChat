@@ -35,11 +35,13 @@
     "build:win": "npm run build && electron-builder --win",
     "build:mac": "electron-vite build && electron-builder --mac",
     "build:linux": "electron-vite build && electron-builder --linux",
-    "db:studio": "ELECTRON_RUN_AS_NODE=1 pnpm exec electron node_modules/drizzle-kit/bin.cjs studio"
+    "db:studio": "ELECTRON_RUN_AS_NODE=1 pnpm exec electron node_modules/drizzle-kit/bin.cjs studio",
+    "hindsight": "node scripts/run-hindsight.js"
   },
   "dependencies": {
     "@electron-toolkit/preload": "^3.0.2",
     "@electron-toolkit/utils": "^4.0.0",
+    "@vectorize-io/hindsight-client": "^0.1.16",
     "@zubridge/electron": "^2.1.1",
     "better-sqlite3": "^12.5.0",
     "drizzle-orm": "^0.45.1",
