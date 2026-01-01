@@ -6,12 +6,16 @@ export interface Settings {
   syncIntervalMinutes: number
   autoSync: boolean
   exportPath: string
+  mcpEnabled: boolean
+  mcpPort: number
 }
 
 const defaultSettings: Settings = {
   syncIntervalMinutes: 1,
   autoSync: true,
-  exportPath: path.join(app.getPath('documents'), 'OwnYourChat')
+  exportPath: path.join(app.getPath('documents'), 'OwnYourChat'),
+  mcpEnabled: false,
+  mcpPort: 3000
 }
 
 let currentSettings: Settings | null = null

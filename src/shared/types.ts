@@ -53,6 +53,8 @@ export interface AppState {
     syncIntervalMinutes: number
     autoSync: boolean
     exportPath: string
+    mcpEnabled: boolean
+    mcpPort: number
   }
 
   // Actions
@@ -225,12 +227,26 @@ export interface ElectronAPI {
     logout: (provider?: 'chatgpt' | 'claude') => Promise<{ success: boolean }>
   }
   settings: {
-    get: () => Promise<{ syncIntervalMinutes: number; autoSync: boolean; exportPath: string }>
+    get: () => Promise<{
+      syncIntervalMinutes: number
+      autoSync: boolean
+      exportPath: string
+      mcpEnabled: boolean
+      mcpPort: number
+    }>
     set: (settings: {
       syncIntervalMinutes?: number
       autoSync?: boolean
       exportPath?: string
-    }) => Promise<{ syncIntervalMinutes: number; autoSync: boolean; exportPath: string }>
+      mcpEnabled?: boolean
+      mcpPort?: number
+    }) => Promise<{
+      syncIntervalMinutes: number
+      autoSync: boolean
+      exportPath: string
+      mcpEnabled: boolean
+      mcpPort: number
+    }>
   }
   userPreferences: {
     get: () => Promise<{ hasCompletedOnboarding: boolean }>

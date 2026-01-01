@@ -35,7 +35,9 @@ export const store = create<AppState>((set) => ({
   settings: {
     syncIntervalMinutes: 1,
     autoSync: true,
-    exportPath: ''
+    exportPath: '',
+    mcpEnabled: false,
+    mcpPort: 3000
   },
 
   // Actions

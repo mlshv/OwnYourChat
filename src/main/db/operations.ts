@@ -1,4 +1,4 @@
-import { eq, like, desc, max, lt, and, asc, ne, count } from 'drizzle-orm'
+import { eq, like, desc, max, lt, and, asc, ne, count, or } from 'drizzle-orm'
 import { getDatabase } from './index'
 import { conversations, messages, attachments, syncState, userPreferences } from './schema'
 import type { NewConversation, NewMessage, NewAttachment } from './schema'
@@ -186,6 +186,87 @@ export async function searchConversations(
     items: results.map(mapConversation),
     total: results.length,
     hasMore: false // Search is always limited to 50
+  }
+}
+
+export async function searchConversationsByKeywords(
+  keywords: string[],
+  options?: { limit?: number }
+): Promise<{ items: Conversation[]; total: number }> {
+  const db = getDatabase()
+  const limit = options?.limit ?? 50
+
+  if (keywords.length === 0) {
+    return { items: [], total: 0 }
+  }
+
+  const conditions = keywords.map((kw) => like(conversations.title, `%${kw}%`))
+
+  const results = await db
+    .select()
+    .from(conversations)
+    .where(or(...conditions))
+    .orderBy(desc(conversations.updatedAt))
+    .limit(limit)
+
+  return {
+    items: results.map(mapConversation),
+    total: results.length
+  }
+}
+
+export async function searchMessagesByKeywords(
+  keywords: string[],
+  options?: { limit?: number }
+): Promise<{
+  items: Array<{
+    message: Message
+    conversation: Conversation
+    matchedKeywords: string[]
+  }>
+  total: number
+}> {
+  const db = getDatabase()
+  const limit = options?.limit ?? 50
+
+  if (keywords.length === 0) {
+    return { items: [], total: 0 }
+  }
+
+  const conditions = keywords.map((kw) => like(messages.parts, `%${kw}%`))
+
+  const results = await db
+    .select({
+      message: messages,
+      conversation: conversations
+    })
+    .from(messages)
+    .innerJoin(conversations, eq(messages.conversationId, conversations.id))
+    .where(or(...conditions))
+    .orderBy(desc(messages.createdAt))
+    .limit(limit)
+
+  const items = await Promise.all(
+    results.map(async (row) => {
+      const msgAttachments = await db
+        .select()
+        .from(attachments)
+        .where(eq(attachments.messageId, row.message.id))
+
+      const partsText = row.message.parts?.toLowerCase() ?? ''
+      const matchedKeywords = keywords.filter((kw) => partsText.includes(kw.toLowerCase()))
+
+      return {
+        message: mapMessage(row.message, msgAttachments.map(mapAttachment)),
+        conversation: mapConversation(row.conversation),
+        matchedKeywords
+      }
+    })
+  )
+
+  return {
+    items,
+    total: items.length
   }
 }
 

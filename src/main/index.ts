@@ -4,7 +4,7 @@ import fs from 'fs'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
 import { IPC_CHANNELS } from '../shared/types'
-import { getAttachmentsPath } from './settings'
+import { getAttachmentsPath, getSettings } from './settings'
 import { pathToFileURL } from 'url'
 import { initDatabase } from './db'
 import { setupIpcHandlers } from './ipc'
@@ -13,6 +13,7 @@ import { shell } from 'electron'
 import { providerRegistry } from './sync/providers/registry'
 import { store } from './store'
 import { createZustandBridge } from '@zubridge/electron/main'
+import { startMcpServer, stopMcpServer } from './mcp/server'
 
 let mainWindow: BrowserWindow | null = null
 
@@ -246,6 +247,18 @@ app.whenReady().then(async () => {
     console.log('[App] Zubridge subscribed to main window')
   }
 
+  // Initialize MCP server if enabled
+  const settings = getSettings()
+  if (settings.mcpEnabled) {
+    console.log('[App] Starting MCP server...')
+    try {
+      await startMcpServer(settings.mcpPort)
+      console.log(`[App] MCP server started on port ${settings.mcpPort}`)
+    } catch (error) {
+      console.error('[App] Failed to start MCP server:', error)
+    }
+  }
+
   // Initialize provider registry and start connected providers
   console.log('[App] Initializing provider registry...')
   await providerRegistry.init()
@@ -298,4 +311,5 @@ export function getMainWindow(): BrowserWindow | null {
 app.on('before-quit', async () => {
   await providerRegistry.stopAll()
   stopSyncScheduler()
+  await stopMcpServer()
 })

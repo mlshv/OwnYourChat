@@ -85,10 +85,16 @@ const api: ElectronAPI = {
         syncIntervalMinutes: number
         autoSync: boolean
         exportPath: string
+        mcpEnabled: boolean
+        mcpPort: number
       }>,
-    set: (
-      settings: Partial<{ syncIntervalMinutes: number; autoSync: boolean; exportPath: string }>
-    ) => ipcRenderer.invoke(IPC_CHANNELS.SETTINGS_SET, settings)
+    set: (settings: Partial<{
+      syncIntervalMinutes: number
+      autoSync: boolean
+      exportPath: string
+      mcpEnabled: boolean
+      mcpPort: number
+    }>) => ipcRenderer.invoke(IPC_CHANNELS.SETTINGS_SET, settings)
   },
 
   // User preferences operations

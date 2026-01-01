@@ -3,13 +3,12 @@
 import { useState, useEffect, useRef, useMemo, useCallback } from 'react'
 import { ChatList } from './components/ChatList'
 import { ChatView } from './components/ChatView'
-import { SyncStatus } from './components/SyncStatus'
 import { ExportModal } from './components/ExportModal'
 import { SettingsModal } from './components/SettingsModal'
 import { OnboardingScreen } from './components/OnboardingScreen'
 import type { Conversation, Message, ElectronAPI } from '@shared/types'
 import { buildMessageTree, getDisplayPath, updateBranchSelection } from './lib/branch-utils'
-import { useAuthState, useSyncState } from './lib/store'
+import { useAuthState } from './lib/store'
 
 // Type augmentation for window.api
 declare global {
@@ -21,7 +20,6 @@ declare global {
 export default function App() {
   // Store state
   const authState = useAuthState()
-  const syncState = useSyncState()
 
   // Local state
   const [conversations, setConversations] = useState<{
@@ -149,7 +147,7 @@ export default function App() {
 
   // Handle sync completion with scroll-aware updates
   useEffect(() => {
-    if (!isElectron || !syncState.lastSyncAt) return
+    if (!isElectron) return
 
     // If user is searching, don't auto-update (would be confusing)
     if (searchQuery.trim()) return
@@ -161,7 +159,7 @@ export default function App() {
       })
     }
     // If user scrolled down, do nothing (no jarring updates)
-  }, [isElectron, syncState.lastSyncAt, isUserAtTop, searchQuery])
+  }, [isElectron, isUserAtTop, searchQuery])
 
   const handleOnboardingComplete = async () => {
     if (!isElectron) return
@@ -335,23 +333,6 @@ export default function App() {
           <span className="font-semibold text-sm">Debug Mode</span>
         </div>
         <div className="no-drag flex items-center gap-2">
-          {/* Sync progress indicator */}
-          {syncState.isRunning && syncState.progress && (
-            <span className="text-xs text-f2">
-              Syncing {syncState.progress.current}/{syncState.progress.total}... (
-              {syncState.progress.newChatsFound} new)
-            </span>
-          )}
-          {syncState.isRunning && !syncState.progress && (
-            <span className="text-xs text-f2">Syncing...</span>
-          )}
-          {!syncState.isRunning && syncState.progress && (
-            <span className="text-xs text-f2">
-              Found {syncState.progress.newChatsFound} new chat
-              {syncState.progress.newChatsFound !== 1 ? 's' : ''}
-            </span>
-          )}
-          <SyncStatus />
           <button
             onClick={() => setShowExportModal(true)}
             className="text-xs px-2 py-1 bg-f1 text-b1 rounded active:bg-f2"

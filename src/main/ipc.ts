@@ -4,6 +4,7 @@ import { getMainWindow, providerRegistry } from './index.js'
 import * as db from './db/operations'
 import { exportConversation, exportAllConversations } from './export'
 import { getSettings, updateSettings } from './settings'
+import { startMcpServer, stopMcpServer, isMcpServerRunning } from './mcp/server'
 import fs from 'fs'
 
 export function setupIpcHandlers(): void {
@@ -152,7 +153,35 @@ export function setupIpcHandlers(): void {
   })
 
   ipcMain.handle(IPC_CHANNELS.SETTINGS_SET, async (_event, settings) => {
-    return updateSettings(settings)
+    const currentSettings = getSettings()
+    const newSettings = updateSettings(settings)
+
+    // Handle MCP server lifecycle based on settings changes
+    const mcpEnabledChanged =
+      settings.mcpEnabled !== undefined && settings.mcpEnabled !== currentSettings.mcpEnabled
+    const mcpPortChanged =
+      settings.mcpPort !== undefined && settings.mcpPort !== currentSettings.mcpPort
+
+    if (mcpEnabledChanged || mcpPortChanged) {
+      // Stop server if it's running
+      if (isMcpServerRunning()) {
+        console.log('[IPC] Stopping MCP server due to settings change...')
+        await stopMcpServer()
+      }
+
+      // Start server if enabled
+      if (newSettings.mcpEnabled) {
+        console.log('[IPC] Starting MCP server with new settings...')
+        try {
+          await startMcpServer(newSettings.mcpPort)
+          console.log(`[IPC] MCP server started on port ${newSettings.mcpPort}`)
+        } catch (error) {
+          console.error('[IPC] Failed to start MCP server:', error)
+        }
+      }
+    }
+
+    return newSettings
   })
 
   // User preferences handlers
