@@ -28,20 +28,17 @@ export function ChatView({
   onLoadMore
 }: ChatViewProps) {
   const listRef = useRef<VListHandle>(null)
-  const shouldStickToBottom = useRef(true)
-  const [isScrollReady, setIsScrollReady] = useState(false)
   // Track downloaded attachment paths: { attachmentId: localPath }
   const [downloadedPaths, setDownloadedPaths] = useState<Record<string, string>>({})
 
   // Track which attachment IDs are currently being downloaded to prevent duplicate requests
   const downloadingRef = useRef<Set<string>>(new Set())
 
-  // Reset downloaded paths and scroll state when conversation changes
+  // Reset downloaded paths when conversation changes
   useEffect(() => {
+    // eslint-disable-next-line
     setDownloadedPaths({})
     downloadingRef.current.clear()
-    shouldStickToBottom.current = true
-    setIsScrollReady(false)
   }, [conversation.id])
 
   // Download images when messages change
@@ -77,57 +74,9 @@ export function ChatView({
     }
   }, [conversation.id, messages, downloadedPaths])
 
-  // Auto-scroll to bottom when messages change (if already at bottom)
-  useEffect(() => {
-    if (!listRef.current || messages.length === 0) return
-    if (!shouldStickToBottom.current) {
-      console.log('Not sticking to bottom, shouldStickToBottom =', shouldStickToBottom.current)
-      return
-    }
-
-    // Scroll to the very end to include the footer button
-    // Wait for VList to fully measure both viewport and content
-    let attempts = 0
-    const maxAttempts = 50
-
-    const tryScroll = () => {
-      if (!listRef.current) return
-      attempts++
-
-      const { scrollSize, viewportSize } = listRef.current
-      console.log(
-        `Scroll attempt ${attempts}: scrollSize=${scrollSize}, viewportSize=${viewportSize}`
-      )
-
-      // Wait for BOTH viewport and scroll to be measured
-      if ((scrollSize === 0 || viewportSize === 0) && attempts < maxAttempts) {
-        requestAnimationFrame(tryScroll)
-        return
-      }
-
-      console.log(`Scrolling to ${scrollSize}`)
-      listRef.current.scrollTo(scrollSize)
-      setIsScrollReady(true)
-    }
-
-    requestAnimationFrame(tryScroll)
-  }, [messages])
-
   // Handle scroll events
   const handleScroll = useCallback(
     (offset: number) => {
-      if (!listRef.current) return
-
-      const { scrollSize, viewportSize } = listRef.current
-
-      // Track if user is at the bottom (with tolerance for sub-pixel rounding)
-      const atBottom = offset - scrollSize + viewportSize >= -1.5
-      const calculation = offset - scrollSize + viewportSize
-      console.log(
-        `Scroll: offset=${offset}, scrollSize=${scrollSize}, viewportSize=${viewportSize}, calculation=${calculation}, atBottom=${atBottom}`
-      )
-      shouldStickToBottom.current = atBottom
-
       // Trigger load more when scrolled near top
       if (offset < LOAD_MORE_THRESHOLD && hasMoreMessages && !isLoadingMore && onLoadMore) {
         onLoadMore()
@@ -150,13 +99,7 @@ export function ChatView({
       </div>
 
       {/* Messages */}
-      <VList
-        ref={listRef}
-        className="flex-1 px-4 transition-opacity duration-150"
-        style={{ overflowAnchor: 'none', opacity: isScrollReady ? 1 : 0 }}
-        onScroll={handleScroll}
-        shift={true}
-      >
+      <VList ref={listRef} className="flex-1 px-4" onScroll={handleScroll} shift={true}>
         {/* Loading indicator at top */}
         {hasMoreMessages && (
           <div className="py-4 text-center max-w-3xl mx-auto">
