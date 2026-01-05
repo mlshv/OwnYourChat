@@ -1,7 +1,7 @@
-import { create } from 'zustand'
+import { createStore } from 'zustand/vanilla'
 import type { AppState } from '../shared/types'
 
-export const store = create<AppState>((set) => ({
+export const store = createStore<AppState>((set) => ({
   // Initial state
   providers: {
     chatgpt: {

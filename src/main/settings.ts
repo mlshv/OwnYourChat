@@ -15,7 +15,7 @@ const defaultSettings: Settings = {
   autoSync: true,
   exportPath: path.join(app.getPath('documents'), 'OwnYourChat'),
   mcpEnabled: false,
-  mcpPort: 3000
+  mcpPort: 37777
 }
 
 let currentSettings: Settings | null = null

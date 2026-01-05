@@ -200,7 +200,7 @@ const parseBody = (req: IncomingMessage): Promise<unknown> =>
     req.on('error', reject)
   })
 
-export async function startMcpServer(port: number = 3000): Promise<void> {
+export async function startMcpServer(port: number = 37777): Promise<void> {
   if (isRunning) {
     console.log('[MCP] Server already running')
     return
@@ -318,8 +318,11 @@ export async function startMcpServer(port: number = 3000): Promise<void> {
       }
     })
 
-    await new Promise<void>((resolve) => {
+    await new Promise<void>((resolve, reject) => {
+      httpServer!.once('error', reject)
+
       httpServer!.listen(port, 'localhost', () => {
+        httpServer!.removeListener('error', reject)
         console.log(`[MCP] Server started on http://localhost:${port}`)
         resolve()
       })
