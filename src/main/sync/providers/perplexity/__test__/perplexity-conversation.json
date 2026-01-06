@@ -1,0 +1,1960 @@
+{
+  "status": "success",
+  "entries": [
+    {
+      "backend_uuid": "ef3bbca1-61fe-4f57-871d-139f24a8758e",
+      "context_uuid": "8c0c96b3-fa1f-4ceb-8487-6f859c4041d1",
+      "uuid": "adb6c455-ec2a-403d-a973-b6f71f77d318",
+      "frontend_context_uuid": "43eacba5-f21a-4f82-b0cd-2e5764bd2452",
+      "frontend_uuid": "adb6c455-ec2a-403d-a973-b6f71f77d318",
+      "status": "COMPLETED",
+      "thread_title": "What is this cat?",
+      "related_queries": [],
+      "display_model": "gemini30pro",
+      "user_selected_model": "gemini30pro",
+      "personalized": true,
+      "mode": "COPILOT",
+      "query_str": "What is this cat?",
+      "search_focus": "internet",
+      "source": "default",
+      "attachments": [
+        "https://ppl-ai-file-upload.s3.amazonaws.com/web/direct-files/attachments/images/64807259/48ba2321-8c41-4ee0-8ea3-a1272c566944/image.jpg?AWSAccessKeyId=ASIA2F3EMEYE36YWQQ7L&Signature=mpmf6PpyyZo%2FcnbKVRiFXN7hE7I%3D&x-amz-security-token=IQoJb3JpZ2luX2VjEJT%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLWVhc3QtMSJHMEUCIQCGnyfpQZPe%2BNNsDVigJ6gKepRuDQSRCfNQBfMHPaWbRwIgZ%2B0ZMOCatVy6q%2FSBUNSNY7Ro6oKeKe20uWH2qzxlvYMq8wQIXRABGgw2OTk3NTMzMDk3MDUiDKIpMmcKTad%2FmQK17SrQBA3DHn4eOQVG6NuVoklySleexDVTXQBNortDoj2kZN4OgAOCfcwje%2B6zg%2F1bGys8dghuIUfNlX2ZK40%2B2saXtaN3NnwbUQvx4ZXZ6UiVPaRdsKaLJYpmdxdP3tUrOU2XwU3er0nhn8jk1auf9yD%2B%2Ffg7nKaCPE4uc4j6nfBT9kf9tuT1ios94wX1a%2FoQOXXtSr8TIyLvGETUVxTTJXfkQa8bq2B%2BBq3fOpoZNAsKYU27PhvYNBlWeudYZv1kHQ3oFG7MlZKOVukZKKquNWrGiOPX5fmsmBIVBJ0KyRujPnAX6Pbz4ZSxfYkByvRN1To2BSD39Gpx3SWIzl9d80dJspSIhRHoKOOfgP62KUrJZpQminsDDh86tqOv7%2FEI0%2BNlKJ6jMuHDVcFKJkBObELKeGsNOWHMWj7BwSDzCACtEqM4U5OqFkS5rJyQliMq%2Bz847jbHJHKyD2te3XDmRzTWCoOR6kkuogUPAKHRrkkrWrGs5zpie6S%2F%2FcOaXCFE5lBCsHEpVPRpfqCN1uDUG%2Bt0g1XNdDYuptQ0AhKA2tmGP9c%2F0Yk5cI%2BG%2F5yQNcv1NH8lXMWLEbns57FRdm69zlR1bXbkHMqNDiyeuGgXStSgL%2FfhXDWcYL0o2YXWNCig1kp763Vllc1TV%2BQL3FuQc2O%2BJy3uf9aeDspvr09IDTbiZafww3NYw1cxPpGWQW2diQ7v2bWYKLgxYiVSKY4vrRD7NSTJM3VFUooLShmrBU3srSQ2UEAY%2FhFB0tqHdWzWDmimR8SKBVUnSFMAhEFMPiSUa8Ewm%2B3zygY6mAGQsE7VLzQBoxre8Zuc%2BipYoS%2BdqWWe15SFYpZBqhg1jisP1VT%2F0UQwByt9Od4RuzicT%2B5sRZU%2BVWQnE%2F6Xg0HFL6vHYlHYejtZI0AyN2BQgbjmxzStzaK3nDC63WxN0P0dUJ%2BK4du0YLhVqqmpvY6oA2Kt%2BXrmeZJPaQSE3DS8T3h3AHT3tNJu5vxJSl76EOY8q0etMMmxKA%3D%3D&Expires=1767701358"
+      ],
+      "updated_datetime": "2026-01-06T11:57:08.913523",
+      "read_write_token": "4899d75f-571e-491c-9cf9-a0a968843d60",
+      "is_pro_reasoning_mode": true,
+      "step_type": "FINAL",
+      "author_id": "dd53cdf5-5a1e-4959-a8d8-a98954055fbe",
+      "author_username": "misha10x",
+      "author_image": "https://imagedelivery.net/MPdwyYSWT8IY7lxgN3x3Uw/73ce9218-27ff-4240-aee0-0cfb02ab4400/thumbnail",
+      "bookmark_state": "NOT_BOOKMARKED",
+      "s3_social_preview_url": "https://ppl-ai-public.s3.amazonaws.com/static/img/pplx-default-preview.png",
+      "thread_access": 1,
+      "thread_url_slug": "what-is-this-cat-7zu8oWH.T1eHHROfJKh1jg",
+      "query_source": "default",
+      "privacy_state": "NONE",
+      "gpt4": false,
+      "sources": {
+        "sources": ["web"]
+      },
+      "entry_updated_datetime": "2026-01-06T11:56:28.498094+00:00",
+      "blocks": [
+        {
+          "intended_usage": "plan",
+          "plan_block": {
+            "progress": "DONE",
+            "goals": [
+              {
+                "id": "0",
+                "description": "Analyzing the attached image to identify the cat.",
+                "final": true,
+                "todo_task_status": "INCOMPLETE"
+              }
+            ],
+            "final": true
+          }
+        },
+        {
+          "intended_usage": "ask_text",
+          "markdown_block": {
+            "progress": "DONE",
+            "chunks": [
+              "Based on the visual evidence, this is a **Bengal cat**.\n\nIt is identifiable by the distinct **rosettes** on its coat—spots with a lighter center and a darker outline—which creates a \"leopard-like\" appearance. This pattern is unique to the Bengal breed among domestic cats.[1][2]\n\n### Visual Identification\n*   **Rosettes:** The most defining feature is the two-toned spots on its side. Unlike regular spotted tabbies or Savannah cats (which have solid black spots), Bengals have these open, jaguar-style markings.[2][3]\n*   **Coat Color:** The cat displays the classic \"Brown Rosetted\" coloration, featuring a golden-orange background with high contrast dark markings.[4]\n*   **Striping:** You can see distinct stripes on the legs and tail, which is typical for the breed, retaining the tabby patterns of its ancestors.[5]\n\n### Authenticity & Heritage\nThe Bengal was created by crossing domestic cats with the **Asian Leopard Cat** (*Prionailurus bengalensis*). This breeding gives them their \"glittered\" pelt and muscular, wild appearance while maintaining a domestic temperament. It is distinct from the **Toyger**, which has vertical tiger-like stripes, and the **Savannah**, which is taller with solid spots.[6][7][8]"
+            ],
+            "chunk_starting_offset": 0,
+            "answer": "Based on the visual evidence, this is a **Bengal cat**.\n\nIt is identifiable by the distinct **rosettes** on its coat—spots with a lighter center and a darker outline—which creates a \"leopard-like\" appearance. This pattern is unique to the Bengal breed among domestic cats.[1][2]\n\n### Visual Identification\n*   **Rosettes:** The most defining feature is the two-toned spots on its side. Unlike regular spotted tabbies or Savannah cats (which have solid black spots), Bengals have these open, jaguar-style markings.[2][3]\n*   **Coat Color:** The cat displays the classic \"Brown Rosetted\" coloration, featuring a golden-orange background with high contrast dark markings.[4]\n*   **Striping:** You can see distinct stripes on the legs and tail, which is typical for the breed, retaining the tabby patterns of its ancestors.[5]\n\n### Authenticity & Heritage\nThe Bengal was created by crossing domestic cats with the **Asian Leopard Cat** (*Prionailurus bengalensis*). This breeding gives them their \"glittered\" pelt and muscular, wild appearance while maintaining a domestic temperament. It is distinct from the **Toyger**, which has vertical tiger-like stripes, and the **Savannah**, which is taller with solid spots.[6][7][8]"
+          }
+        },
+        {
+          "intended_usage": "web_results",
+          "web_result_block": {
+            "progress": "DONE",
+            "web_results": [
+              {
+                "name": "Bengal Cat Breed Information | Purina US",
+                "snippet": "Bengal Cats are curious & confident with the tameness of a domestic tabby & the beauty of an Asian Leopard Cat. Find out about them from the experts at Purina.",
+                "timestamp": "2025-08-01T00:00:00",
+                "url": "https://www.purina.com/cats/cat-breeds/bengal",
+                "meta_data": {
+                  "citation_domain_name": "purina",
+                  "client": "web",
+                  "images": [
+                    "https://d2u1z1lopyfwlx.cloudfront.net/thumbnails/deabd8f3-7623-557d-b586-b39500d1c915/9f617233-2bd2-51c7-b8ea-76a964f00e32.jpg"
+                  ]
+                }
+              },
+              {
+                "name": "BENGAL CAT APPEARANCE",
+                "snippet": "Bengal cat appearance with photos",
+                "timestamp": "",
+                "url": "https://www.monterisbengalcats.com/appearance/",
+                "meta_data": {
+                  "citation_domain_name": "monterisbengalcats",
+                  "client": "web",
+                  "images": [
+                    "https://d2u1z1lopyfwlx.cloudfront.net/thumbnails/56aea351-adb1-5a08-bad8-a65e0a97d2f7/17fdeca1-47c4-5397-9ee8-b7255f868d61.jpg"
+                  ]
+                }
+              },
+              {
+                "name": "Bengal Cat vs Savannah Cat: Exotic Breeds Side-by-Side Comparison",
+                "snippet": "Bengal Cat vs Savannah Cat: Exotic Breeds Side-by-Side Comparison. Welcome to our comparison video of the Bengal cat vs. Savannah cat. The main difference between the Bengal cat and the Savannah cat is the size Bengal cats are smaller, and often medium-sized. On the other hand, Savannah cats are taller, and often larger, which is attributed to their African Serval ancestry. Savannah cats have long legs and bodies. Therefore, Bengal cats have shorter bodies than Savannah cats, which have longer...",
+                "timestamp": "2025-01-24T00:00:00",
+                "url": "https://www.youtube.com/watch?v=fGmAUEFInU4",
+                "meta_data": {
+                  "citation_domain_name": "youtube",
+                  "client": "web",
+                  "images": []
+                }
+              },
+              {
+                "name": "Bengal Cat Facts - ASPCA Pet Insurance",
+                "snippet": "Bengal cats look like mini leopards, and they have wild personalities to match. Catch up on Bengal cat facts from the ASPCA Pet Health Insurance program.",
+                "timestamp": "2023-02-02T00:00:00",
+                "url": "https://www.aspcapetinsurance.com/resources/bengal-cat-facts/",
+                "meta_data": {
+                  "citation_domain_name": "aspcapetinsurance",
+                  "client": "web",
+                  "images": [
+                    "https://d2u1z1lopyfwlx.cloudfront.net/thumbnails/84e88380-9c21-5664-8a60-355919af8ba9/f3556bf8-6614-5ee8-9333-f9d0a68152b5.jpg"
+                  ]
+                }
+              },
+              {
+                "name": "Cat Lovers guide to the Bengal Cat - Catnets UK",
+                "snippet": "Bengal cat, all about the cat with a leopard-like appearance The Bengal cat is also known as the leopard cat or small tiger, they are an exotic breed that was created from the cross between an Asian leopard cat and a domestic cat. They are currently one of the most popular cats among cat lovers because of the presence",
+                "timestamp": "2024-09-13T00:00:00",
+                "url": "https://catnets.co.uk/blogs/cat-demy/cat-lovers-guide-to-the-bengal-cat",
+                "meta_data": {
+                  "citation_domain_name": "catnets",
+                  "client": "web",
+                  "images": [
+                    "http://catnets.co.uk/cdn/shop/articles/Bengalcat_520x500_f79825f9-0b7a-4549-b918-551ff83238a3.webp?v=1720480107"
+                  ]
+                }
+              },
+              {
+                "name": "Savannah Cat vs. Bengal Cat - Exotic Breeds Side by Side",
+                "snippet": "Are you considering getting an exotic cat breed but can't decide between a Savannah Cat and a Bengal Cat? Look no further! In this article, we'll provide a comprehensive comparison of these two stunning cat breeds. By the end of this article, you'll have a better understanding of the main differences between Savannah c",
+                "timestamp": "2023-03-22T00:00:00",
+                "url": "https://www.outdoorbengal.com/blogs/cat-breeds/savannah-vs-bengal-cat",
+                "meta_data": {
+                  "citation_domain_name": "outdoorbengal",
+                  "client": "web",
+                  "images": [
+                    "http://www.outdoorbengal.com/cdn/shop/articles/savannah-cat-vs-bengal-cat-exotic-breeds-side-by-side-945634_034955a6-f822-49d2-9440-cb35271fe2e6.jpg?v=1753016925"
+                  ]
+                }
+              },
+              {
+                "name": "Bengal - TICA - The International Cat Association",
+                "snippet": "*Prionailurus bengalensis*), a small wildcat native to Asian forests, Bengals were bred to combine a wild look with the gentle temperament of a domestic cat. With its soft, pelt-like coat featuring dramatic rosettes or distinctive marbling, this unique breed is the only domestic breed with rosettes reminiscent of the breathtaking patterns seen on wild cats worldwide. While all Bengals are heavily muscled, they vary in size and weight based on gender.... *Prionailurus bengalensis*), a small...",
+                "timestamp": "2025-03-14T00:00:00",
+                "url": "https://tica.org/breed/bengal/",
+                "meta_data": {
+                  "citation_domain_name": "tica",
+                  "client": "web",
+                  "images": [
+                    "https://d2u1z1lopyfwlx.cloudfront.net/thumbnails/9b34ea8e-013b-5085-bda0-f8ec628286f0/5fccbbd4-b07b-5777-8be6-4e2a08a6c751.jpg"
+                  ]
+                }
+              },
+              {
+                "name": "Toyger vs Bengal - Breed Comparison | MyCatBreeds",
+                "snippet": "Toyger vs Bengal. Comparison between Toyger Cat and Bengal Cat. compare height, weight, life span, litter size and more",
+                "timestamp": "2007-01-01T00:00:00",
+                "url": "https://www.mycatbreeds.com/toyger-vs-bengal",
+                "meta_data": {
+                  "citation_domain_name": "mycatbreeds",
+                  "client": "web",
+                  "images": []
+                }
+              },
+              {
+                "name": "image.jpg",
+                "snippet": "",
+                "timestamp": "",
+                "url": "https://ppl-ai-file-upload.s3.amazonaws.com/web/direct-files/attachments/images/64807259/48ba2321-8c41-4ee0-8ea3-a1272c566944/image.jpg?AWSAccessKeyId=ASIA2F3EMEYE36YWQQ7L&Signature=mpmf6PpyyZo%2FcnbKVRiFXN7hE7I%3D&x-amz-security-token=IQoJb3JpZ2luX2VjEJT%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLWVhc3QtMSJHMEUCIQCGnyfpQZPe%2BNNsDVigJ6gKepRuDQSRCfNQBfMHPaWbRwIgZ%2B0ZMOCatVy6q%2FSBUNSNY7Ro6oKeKe20uWH2qzxlvYMq8wQIXRABGgw2OTk3NTMzMDk3MDUiDKIpMmcKTad%2FmQK17SrQBA3DHn4eOQVG6NuVoklySleexDVTXQBNortDoj2kZN4OgAOCfcwje%2B6zg%2F1bGys8dghuIUfNlX2ZK40%2B2saXtaN3NnwbUQvx4ZXZ6UiVPaRdsKaLJYpmdxdP3tUrOU2XwU3er0nhn8jk1auf9yD%2B%2Ffg7nKaCPE4uc4j6nfBT9kf9tuT1ios94wX1a%2FoQOXXtSr8TIyLvGETUVxTTJXfkQa8bq2B%2BBq3fOpoZNAsKYU27PhvYNBlWeudYZv1kHQ3oFG7MlZKOVukZKKquNWrGiOPX5fmsmBIVBJ0KyRujPnAX6Pbz4ZSxfYkByvRN1To2BSD39Gpx3SWIzl9d80dJspSIhRHoKOOfgP62KUrJZpQminsDDh86tqOv7%2FEI0%2BNlKJ6jMuHDVcFKJkBObELKeGsNOWHMWj7BwSDzCACtEqM4U5OqFkS5rJyQliMq%2Bz847jbHJHKyD2te3XDmRzTWCoOR6kkuogUPAKHRrkkrWrGs5zpie6S%2F%2FcOaXCFE5lBCsHEpVPRpfqCN1uDUG%2Bt0g1XNdDYuptQ0AhKA2tmGP9c%2F0Yk5cI%2BG%2F5yQNcv1NH8lXMWLEbns57FRdm69zlR1bXbkHMqNDiyeuGgXStSgL%2FfhXDWcYL0o2YXWNCig1kp763Vllc1TV%2BQL3FuQc2O%2BJy3uf9aeDspvr09IDTbiZafww3NYw1cxPpGWQW2diQ7v2bWYKLgxYiVSKY4vrRD7NSTJM3VFUooLShmrBU3srSQ2UEAY%2FhFB0tqHdWzWDmimR8SKBVUnSFMAhEFMPiSUa8Ewm%2B3zygY6mAGQsE7VLzQBoxre8Zuc%2BipYoS%2BdqWWe15SFYpZBqhg1jisP1VT%2F0UQwByt9Od4RuzicT%2B5sRZU%2BVWQnE%2F6Xg0HFL6vHYlHYejtZI0AyN2BQgbjmxzStzaK3nDC63WxN0P0dUJ%2BK4du0YLhVqqmpvY6oA2Kt%2BXrmeZJPaQSE3DS8T3h3AHT3tNJu5vxJSl76EOY8q0etMMmxKA%3D%3D&Expires=1767701358",
+                "file_metadata": {
+                  "connector_type": "LOCAL",
+                  "raw_file_s3_key": "web/direct-files/attachments/images/64807259/48ba2321-8c41-4ee0-8ea3-a1272c566944/image.jpg",
+                  "file_repository_type": "CONTEXT"
+                },
+                "is_attachment": true,
+                "is_image": true,
+                "is_code_interpreter": false,
+                "is_knowledge_card": false,
+                "is_navigational": false,
+                "is_widget": false,
+                "is_focused_web": false,
+                "is_client_context": false,
+                "is_memory": false,
+                "is_conversation_history": false
+              },
+              {
+                "name": "Bengal cat - Wikipedia",
+                "snippet": "",
+                "timestamp": "2002-07-21T00:00:00",
+                "url": "https://en.wikipedia.org/wiki/Bengal_cat",
+                "meta_data": {
+                  "citation_domain_name": "wikipedia",
+                  "client": "web",
+                  "images": [
+                    "https://d2u1z1lopyfwlx.cloudfront.net/thumbnails/005c6ddb-98a9-5c8b-8d8f-c4cc0ad46e9e/01a84265-e09c-5682-92ce-681c89a1afe2.jpg"
+                  ]
+                },
+                "is_attachment": false,
+                "is_image": false,
+                "is_code_interpreter": false,
+                "is_knowledge_card": false,
+                "is_navigational": false,
+                "is_widget": false,
+                "sitelinks": [
+                  {
+                    "title": "Leopard cat",
+                    "url": "https://en.wikipedia.org/wiki/Leopard_cat"
+                  },
+                  {
+                    "title": "Egyptian Mau",
+                    "url": "https://en.wikipedia.org/wiki/Egyptian_Mau"
+                  },
+                  {
+                    "title": "Jean Mill",
+                    "url": "https://en.wikipedia.org/wiki/Jean_Mill"
+                  }
+                ],
+                "is_focused_web": false,
+                "is_client_context": false,
+                "is_memory": false,
+                "is_conversation_history": false
+              },
+              {
+                "name": "Bengals Colors and Patterns - Bengal Cats and Kittens",
+                "snippet": "",
+                "timestamp": "",
+                "url": "https://www.royalbengalcattery.com/about-bengals/bengals-colors-and-patterns.html",
+                "meta_data": {
+                  "citation_domain_name": "royalbengalcattery",
+                  "client": "web",
+                  "images": []
+                }
+              },
+              {
+                "name": "Savannah Cat Vs Bengal Cat – What’s the Difference?",
+                "snippet": "Discover the key differences between Savannah cats and Bengal cats, including their appearance, temperament, care needs, and suitability as pets.",
+                "timestamp": "2025-06-16T00:00:00",
+                "url": "https://www.kinship.co.uk/cat-lifestyle/savannah-cat-vs-bengal-cat",
+                "meta_data": {
+                  "citation_domain_name": "kinship",
+                  "client": "web",
+                  "images": [
+                    "https://d2u1z1lopyfwlx.cloudfront.net/thumbnails/5843d93e-9f78-5130-abf2-9be0cc6fe757/3cb059b3-e901-51c5-8425-e794cb6c299b.jpg"
+                  ]
+                }
+              },
+              {
+                "name": "What breed of cat has the coolest markings? The Bengal, ...",
+                "snippet": "What breed of cat has the coolest markings? The Bengal, Toyger, Tortie, Calico or Tabby?",
+                "timestamp": "2025-07-10T11:56:16",
+                "url": "https://www.instagram.com/p/DLzixYHuf8n/",
+                "meta_data": {
+                  "citation_domain_name": "instagram",
+                  "client": "web",
+                  "images": []
+                }
+              },
+              {
+                "name": "BENGAL PATTERNS | Bangkok Bengal Cats & Kittens",
+                "snippet": "Bengal’s have coat patterns unlike anything ever seen on a domestic cat before. Did you know that Bengals are the only cat breed that has rosettes like a wild cat? Their rosettes are inherited from their Asian Leopard cat relatives. Our kittens, just like Leopard cubs, are often born with solid spots. As they mature the middle of the spot lightens in the centre and becomes a rosette, just like wild leopards.",
+                "timestamp": "2024-05-13T00:00:00",
+                "url": "https://www.bangkokbengalcats.com/bengal-patterns/",
+                "meta_data": {
+                  "citation_domain_name": "bangkokbengalcats",
+                  "client": "web",
+                  "images": []
+                }
+              },
+              {
+                "name": "7 Cat Breeds With The Most Intricate Markings",
+                "snippet": "Explore cat breeds with the most intricate coat markings, unique patterns, and stunning color combinations shaped by genetics.",
+                "timestamp": "2026-01-04T00:00:00",
+                "url": "https://worldanimalfoundation.org/cats/cat-breeds-with-the-most-intricate-markings/",
+                "meta_data": {
+                  "citation_domain_name": "worldanimalfoundation",
+                  "client": "web",
+                  "images": [
+                    "https://d2u1z1lopyfwlx.cloudfront.net/thumbnails/148c0af5-d2b5-5011-8252-a1db82b9c085/efca8115-b44d-51fd-a984-e512cef2fc77.jpg"
+                  ]
+                }
+              },
+              {
+                "name": "Bengal Cat Breed Guide: Temperament, Training, Health. - Waggel",
+                "snippet": "Learn about the Bengal cat breed with our detailed profile! Learn about their unique traits, care tips, and history to find the perfect feline companion for you.",
+                "timestamp": "2024-01-01T00:00:00",
+                "url": "https://www.waggel.co.uk/bengal-cat-breed-guide",
+                "meta_data": {
+                  "citation_domain_name": "waggel",
+                  "client": "web",
+                  "images": [
+                    "https://d2u1z1lopyfwlx.cloudfront.net/thumbnails/73373760-b870-5e95-a84c-5ba78bd8be74/83b4e198-8fd1-59ac-8a3c-a577263ef7b8.jpg"
+                  ]
+                }
+              },
+              {
+                "name": "Savannah Cat vs Bengal Cat: Visual Differences & Overview (With ...",
+                "snippet": "Deciding what breed of cat to bring home can be challenging, especially when choosing between a Savannah or a Bengal cat. We hope our guide can help you!",
+                "timestamp": "2025-04-14T00:00:00",
+                "url": "https://articles.hepper.com/savannah-vs-bengal-cat/",
+                "meta_data": {
+                  "citation_domain_name": "articles.hepper",
+                  "client": "web",
+                  "images": [
+                    "https://d2u1z1lopyfwlx.cloudfront.net/thumbnails/3972c55f-00c4-55e5-b1db-5b44b875ad8b/bbe4bd86-846d-5547-918f-bdd6e4f85275.jpg"
+                  ]
+                }
+              },
+              {
+                "name": "Breed-related disease: Toyger cat",
+                "snippet": "John K. Rosembert Lots of cats are named Tiger, but it wasn’t until Judy Sugden was struck by the two spots of tabby markings on the temple of her cat Millwood Sharp Shooter that it occurred to her that they could be the secret to developing a domestic cat that truly resembled the lord of the jungle. Starting with a striped domestic shorthair named Scrapmetal and a Bengal cat named Millwood Rumpled Spotskin, and later importing a street cat from Kashmir, India, who had spots instead of tabby...",
+                "timestamp": "2025-02-10T00:00:00",
+                "url": "https://www.bioguardlabs.com/breed-related-disease-toyger-cat/",
+                "meta_data": {
+                  "citation_domain_name": "bioguardlabs",
+                  "client": "web",
+                  "images": [
+                    "https://d2u1z1lopyfwlx.cloudfront.net/thumbnails/3f5e2622-c44d-5051-8fd1-0fa0f7e45974/d07cd5c9-09fb-50ba-911e-72d44321c651.jpg"
+                  ]
+                }
+              },
+              {
+                "name": "Bengal vs. Savannah Cat: What’s the Difference?",
+                "snippet": "The Bengal and Savannah cats look similar, but are two very different breeds with unique traits. Learn about each and find out which is best suited for you!",
+                "timestamp": "2025-06-19T00:00:00",
+                "url": "https://www.catster.com/cat-breeds/bengal-vs-savannah-cat/",
+                "meta_data": {
+                  "citation_domain_name": "catster",
+                  "client": "web",
+                  "images": [
+                    "https://d2u1z1lopyfwlx.cloudfront.net/thumbnails/59105176-69e6-5f2a-842a-2c27ec95a150/0f3a91ec-fccb-5a03-baa0-276d80e87806.jpg"
+                  ]
+                }
+              },
+              {
+                "name": "Is my cat part Bengal or Toyger? Have to ask because of ...",
+                "snippet": "Is my cat part Bengal or Toyger? Have to ask because of the coloration and markings.",
+                "timestamp": "2020-11-27T00:51:57",
+                "url": "https://www.reddit.com/r/catquestions/comments/k1r6rw/is_my_cat_part_bengal_or_toyger_have_to_ask/",
+                "meta_data": {
+                  "citation_domain_name": "reddit",
+                  "client": "web",
+                  "images": []
+                }
+              },
+              {
+                "name": "Bengal cat - Students | Britannica Kids | Homework Help",
+                "snippet": "The Bengal cat is a breed of shorthaired domestic cat developed in the United States in the 1970s and ’80s by breeding an Asian leopard cat with a domesticated tabby cat. The…",
+                "timestamp": "",
+                "url": "https://kids.britannica.com/students/article/Bengal-cat/310161",
+                "meta_data": {
+                  "citation_domain_name": "kids.britannica",
+                  "client": "web",
+                  "images": [
+                    "https://d2u1z1lopyfwlx.cloudfront.net/thumbnails/5358066c-db6f-568f-947b-e208db8801bf/ad665128-feff-5c11-8643-77e2bc3b1b82.jpg"
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "intended_usage": "sources_answer_mode",
+          "sources_mode_block": {
+            "answer_mode_type": "SOURCES",
+            "progress": "DONE",
+            "web_results": [
+              {
+                "name": "Bengal Cat Breed Information | Purina US",
+                "snippet": "Bengal Cats are curious & confident with the tameness of a domestic tabby & the beauty of an Asian Leopard Cat. Find out about them from the experts at Purina.",
+                "timestamp": "2025-08-01T00:00:00",
+                "url": "https://www.purina.com/cats/cat-breeds/bengal",
+                "meta_data": {
+                  "citation_domain_name": "purina",
+                  "client": "web",
+                  "images": [
+                    "https://d2u1z1lopyfwlx.cloudfront.net/thumbnails/deabd8f3-7623-557d-b586-b39500d1c915/9f617233-2bd2-51c7-b8ea-76a964f00e32.jpg"
+                  ]
+                }
+              },
+              {
+                "name": "BENGAL CAT APPEARANCE",
+                "snippet": "Bengal cat appearance with photos",
+                "timestamp": "",
+                "url": "https://www.monterisbengalcats.com/appearance/",
+                "meta_data": {
+                  "citation_domain_name": "monterisbengalcats",
+                  "client": "web",
+                  "images": [
+                    "https://d2u1z1lopyfwlx.cloudfront.net/thumbnails/56aea351-adb1-5a08-bad8-a65e0a97d2f7/17fdeca1-47c4-5397-9ee8-b7255f868d61.jpg"
+                  ]
+                }
+              },
+              {
+                "name": "Bengal Cat vs Savannah Cat: Exotic Breeds Side-by-Side Comparison",
+                "snippet": "Bengal Cat vs Savannah Cat: Exotic Breeds Side-by-Side Comparison. Welcome to our comparison video of the Bengal cat vs. Savannah cat. The main difference between the Bengal cat and the Savannah cat is the size Bengal cats are smaller, and often medium-sized. On the other hand, Savannah cats are taller, and often larger, which is attributed to their African Serval ancestry. Savannah cats have long legs and bodies. Therefore, Bengal cats have shorter bodies than Savannah cats, which have longer...",
+                "timestamp": "2025-01-24T00:00:00",
+                "url": "https://www.youtube.com/watch?v=fGmAUEFInU4",
+                "meta_data": {
+                  "citation_domain_name": "youtube",
+                  "client": "web",
+                  "images": []
+                }
+              },
+              {
+                "name": "Bengal Cat Facts - ASPCA Pet Insurance",
+                "snippet": "Bengal cats look like mini leopards, and they have wild personalities to match. Catch up on Bengal cat facts from the ASPCA Pet Health Insurance program.",
+                "timestamp": "2023-02-02T00:00:00",
+                "url": "https://www.aspcapetinsurance.com/resources/bengal-cat-facts/",
+                "meta_data": {
+                  "citation_domain_name": "aspcapetinsurance",
+                  "client": "web",
+                  "images": [
+                    "https://d2u1z1lopyfwlx.cloudfront.net/thumbnails/84e88380-9c21-5664-8a60-355919af8ba9/f3556bf8-6614-5ee8-9333-f9d0a68152b5.jpg"
+                  ]
+                }
+              },
+              {
+                "name": "Cat Lovers guide to the Bengal Cat - Catnets UK",
+                "snippet": "Bengal cat, all about the cat with a leopard-like appearance The Bengal cat is also known as the leopard cat or small tiger, they are an exotic breed that was created from the cross between an Asian leopard cat and a domestic cat. They are currently one of the most popular cats among cat lovers because of the presence",
+                "timestamp": "2024-09-13T00:00:00",
+                "url": "https://catnets.co.uk/blogs/cat-demy/cat-lovers-guide-to-the-bengal-cat",
+                "meta_data": {
+                  "citation_domain_name": "catnets",
+                  "client": "web",
+                  "images": [
+                    "http://catnets.co.uk/cdn/shop/articles/Bengalcat_520x500_f79825f9-0b7a-4549-b918-551ff83238a3.webp?v=1720480107"
+                  ]
+                }
+              },
+              {
+                "name": "Savannah Cat vs. Bengal Cat - Exotic Breeds Side by Side",
+                "snippet": "Are you considering getting an exotic cat breed but can't decide between a Savannah Cat and a Bengal Cat? Look no further! In this article, we'll provide a comprehensive comparison of these two stunning cat breeds. By the end of this article, you'll have a better understanding of the main differences between Savannah c",
+                "timestamp": "2023-03-22T00:00:00",
+                "url": "https://www.outdoorbengal.com/blogs/cat-breeds/savannah-vs-bengal-cat",
+                "meta_data": {
+                  "citation_domain_name": "outdoorbengal",
+                  "client": "web",
+                  "images": [
+                    "http://www.outdoorbengal.com/cdn/shop/articles/savannah-cat-vs-bengal-cat-exotic-breeds-side-by-side-945634_034955a6-f822-49d2-9440-cb35271fe2e6.jpg?v=1753016925"
+                  ]
+                }
+              },
+              {
+                "name": "Bengal - TICA - The International Cat Association",
+                "snippet": "*Prionailurus bengalensis*), a small wildcat native to Asian forests, Bengals were bred to combine a wild look with the gentle temperament of a domestic cat. With its soft, pelt-like coat featuring dramatic rosettes or distinctive marbling, this unique breed is the only domestic breed with rosettes reminiscent of the breathtaking patterns seen on wild cats worldwide. While all Bengals are heavily muscled, they vary in size and weight based on gender.... *Prionailurus bengalensis*), a small...",
+                "timestamp": "2025-03-14T00:00:00",
+                "url": "https://tica.org/breed/bengal/",
+                "meta_data": {
+                  "citation_domain_name": "tica",
+                  "client": "web",
+                  "images": [
+                    "https://d2u1z1lopyfwlx.cloudfront.net/thumbnails/9b34ea8e-013b-5085-bda0-f8ec628286f0/5fccbbd4-b07b-5777-8be6-4e2a08a6c751.jpg"
+                  ]
+                }
+              },
+              {
+                "name": "Toyger vs Bengal - Breed Comparison | MyCatBreeds",
+                "snippet": "Toyger vs Bengal. Comparison between Toyger Cat and Bengal Cat. compare height, weight, life span, litter size and more",
+                "timestamp": "2007-01-01T00:00:00",
+                "url": "https://www.mycatbreeds.com/toyger-vs-bengal",
+                "meta_data": {
+                  "citation_domain_name": "mycatbreeds",
+                  "client": "web",
+                  "images": []
+                }
+              },
+              {
+                "name": "image.jpg",
+                "snippet": "",
+                "timestamp": "",
+                "url": "https://ppl-ai-file-upload.s3.amazonaws.com/web/direct-files/attachments/images/64807259/48ba2321-8c41-4ee0-8ea3-a1272c566944/image.jpg?AWSAccessKeyId=ASIA2F3EMEYE36YWQQ7L&Signature=mpmf6PpyyZo%2FcnbKVRiFXN7hE7I%3D&x-amz-security-token=IQoJb3JpZ2luX2VjEJT%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLWVhc3QtMSJHMEUCIQCGnyfpQZPe%2BNNsDVigJ6gKepRuDQSRCfNQBfMHPaWbRwIgZ%2B0ZMOCatVy6q%2FSBUNSNY7Ro6oKeKe20uWH2qzxlvYMq8wQIXRABGgw2OTk3NTMzMDk3MDUiDKIpMmcKTad%2FmQK17SrQBA3DHn4eOQVG6NuVoklySleexDVTXQBNortDoj2kZN4OgAOCfcwje%2B6zg%2F1bGys8dghuIUfNlX2ZK40%2B2saXtaN3NnwbUQvx4ZXZ6UiVPaRdsKaLJYpmdxdP3tUrOU2XwU3er0nhn8jk1auf9yD%2B%2Ffg7nKaCPE4uc4j6nfBT9kf9tuT1ios94wX1a%2FoQOXXtSr8TIyLvGETUVxTTJXfkQa8bq2B%2BBq3fOpoZNAsKYU27PhvYNBlWeudYZv1kHQ3oFG7MlZKOVukZKKquNWrGiOPX5fmsmBIVBJ0KyRujPnAX6Pbz4ZSxfYkByvRN1To2BSD39Gpx3SWIzl9d80dJspSIhRHoKOOfgP62KUrJZpQminsDDh86tqOv7%2FEI0%2BNlKJ6jMuHDVcFKJkBObELKeGsNOWHMWj7BwSDzCACtEqM4U5OqFkS5rJyQliMq%2Bz847jbHJHKyD2te3XDmRzTWCoOR6kkuogUPAKHRrkkrWrGs5zpie6S%2F%2FcOaXCFE5lBCsHEpVPRpfqCN1uDUG%2Bt0g1XNdDYuptQ0AhKA2tmGP9c%2F0Yk5cI%2BG%2F5yQNcv1NH8lXMWLEbns57FRdm69zlR1bXbkHMqNDiyeuGgXStSgL%2FfhXDWcYL0o2YXWNCig1kp763Vllc1TV%2BQL3FuQc2O%2BJy3uf9aeDspvr09IDTbiZafww3NYw1cxPpGWQW2diQ7v2bWYKLgxYiVSKY4vrRD7NSTJM3VFUooLShmrBU3srSQ2UEAY%2FhFB0tqHdWzWDmimR8SKBVUnSFMAhEFMPiSUa8Ewm%2B3zygY6mAGQsE7VLzQBoxre8Zuc%2BipYoS%2BdqWWe15SFYpZBqhg1jisP1VT%2F0UQwByt9Od4RuzicT%2B5sRZU%2BVWQnE%2F6Xg0HFL6vHYlHYejtZI0AyN2BQgbjmxzStzaK3nDC63WxN0P0dUJ%2BK4du0YLhVqqmpvY6oA2Kt%2BXrmeZJPaQSE3DS8T3h3AHT3tNJu5vxJSl76EOY8q0etMMmxKA%3D%3D&Expires=1767701358",
+                "file_metadata": {
+                  "connector_type": "LOCAL",
+                  "raw_file_s3_key": "web/direct-files/attachments/images/64807259/48ba2321-8c41-4ee0-8ea3-a1272c566944/image.jpg",
+                  "file_repository_type": "CONTEXT"
+                },
+                "is_attachment": true,
+                "is_image": true,
+                "is_code_interpreter": false,
+                "is_knowledge_card": false,
+                "is_navigational": false,
+                "is_widget": false,
+                "is_focused_web": false,
+                "is_client_context": false,
+                "is_memory": false,
+                "is_conversation_history": false
+              },
+              {
+                "name": "Bengal cat - Wikipedia",
+                "snippet": "",
+                "timestamp": "2002-07-21T00:00:00",
+                "url": "https://en.wikipedia.org/wiki/Bengal_cat",
+                "meta_data": {
+                  "citation_domain_name": "wikipedia",
+                  "client": "web",
+                  "images": [
+                    "https://d2u1z1lopyfwlx.cloudfront.net/thumbnails/005c6ddb-98a9-5c8b-8d8f-c4cc0ad46e9e/01a84265-e09c-5682-92ce-681c89a1afe2.jpg"
+                  ]
+                },
+                "is_attachment": false,
+                "is_image": false,
+                "is_code_interpreter": false,
+                "is_knowledge_card": false,
+                "is_navigational": false,
+                "is_widget": false,
+                "sitelinks": [
+                  {
+                    "title": "Leopard cat",
+                    "url": "https://en.wikipedia.org/wiki/Leopard_cat"
+                  },
+                  {
+                    "title": "Egyptian Mau",
+                    "url": "https://en.wikipedia.org/wiki/Egyptian_Mau"
+                  },
+                  {
+                    "title": "Jean Mill",
+                    "url": "https://en.wikipedia.org/wiki/Jean_Mill"
+                  }
+                ],
+                "is_focused_web": false,
+                "is_client_context": false,
+                "is_memory": false,
+                "is_conversation_history": false
+              },
+              {
+                "name": "Bengals Colors and Patterns - Bengal Cats and Kittens",
+                "snippet": "",
+                "timestamp": "",
+                "url": "https://www.royalbengalcattery.com/about-bengals/bengals-colors-and-patterns.html",
+                "meta_data": {
+                  "citation_domain_name": "royalbengalcattery",
+                  "client": "web",
+                  "images": []
+                }
+              },
+              {
+                "name": "Savannah Cat Vs Bengal Cat – What’s the Difference?",
+                "snippet": "Discover the key differences between Savannah cats and Bengal cats, including their appearance, temperament, care needs, and suitability as pets.",
+                "timestamp": "2025-06-16T00:00:00",
+                "url": "https://www.kinship.co.uk/cat-lifestyle/savannah-cat-vs-bengal-cat",
+                "meta_data": {
+                  "citation_domain_name": "kinship",
+                  "client": "web",
+                  "images": [
+                    "https://d2u1z1lopyfwlx.cloudfront.net/thumbnails/5843d93e-9f78-5130-abf2-9be0cc6fe757/3cb059b3-e901-51c5-8425-e794cb6c299b.jpg"
+                  ]
+                }
+              },
+              {
+                "name": "What breed of cat has the coolest markings? The Bengal, ...",
+                "snippet": "What breed of cat has the coolest markings? The Bengal, Toyger, Tortie, Calico or Tabby?",
+                "timestamp": "2025-07-10T11:56:16",
+                "url": "https://www.instagram.com/p/DLzixYHuf8n/",
+                "meta_data": {
+                  "citation_domain_name": "instagram",
+                  "client": "web",
+                  "images": []
+                }
+              },
+              {
+                "name": "BENGAL PATTERNS | Bangkok Bengal Cats & Kittens",
+                "snippet": "Bengal’s have coat patterns unlike anything ever seen on a domestic cat before. Did you know that Bengals are the only cat breed that has rosettes like a wild cat? Their rosettes are inherited from their Asian Leopard cat relatives. Our kittens, just like Leopard cubs, are often born with solid spots. As they mature the middle of the spot lightens in the centre and becomes a rosette, just like wild leopards.",
+                "timestamp": "2024-05-13T00:00:00",
+                "url": "https://www.bangkokbengalcats.com/bengal-patterns/",
+                "meta_data": {
+                  "citation_domain_name": "bangkokbengalcats",
+                  "client": "web",
+                  "images": []
+                }
+              },
+              {
+                "name": "7 Cat Breeds With The Most Intricate Markings",
+                "snippet": "Explore cat breeds with the most intricate coat markings, unique patterns, and stunning color combinations shaped by genetics.",
+                "timestamp": "2026-01-04T00:00:00",
+                "url": "https://worldanimalfoundation.org/cats/cat-breeds-with-the-most-intricate-markings/",
+                "meta_data": {
+                  "citation_domain_name": "worldanimalfoundation",
+                  "client": "web",
+                  "images": [
+                    "https://d2u1z1lopyfwlx.cloudfront.net/thumbnails/148c0af5-d2b5-5011-8252-a1db82b9c085/efca8115-b44d-51fd-a984-e512cef2fc77.jpg"
+                  ]
+                }
+              },
+              {
+                "name": "Bengal Cat Breed Guide: Temperament, Training, Health. - Waggel",
+                "snippet": "Learn about the Bengal cat breed with our detailed profile! Learn about their unique traits, care tips, and history to find the perfect feline companion for you.",
+                "timestamp": "2024-01-01T00:00:00",
+                "url": "https://www.waggel.co.uk/bengal-cat-breed-guide",
+                "meta_data": {
+                  "citation_domain_name": "waggel",
+                  "client": "web",
+                  "images": [
+                    "https://d2u1z1lopyfwlx.cloudfront.net/thumbnails/73373760-b870-5e95-a84c-5ba78bd8be74/83b4e198-8fd1-59ac-8a3c-a577263ef7b8.jpg"
+                  ]
+                }
+              },
+              {
+                "name": "Savannah Cat vs Bengal Cat: Visual Differences & Overview (With ...",
+                "snippet": "Deciding what breed of cat to bring home can be challenging, especially when choosing between a Savannah or a Bengal cat. We hope our guide can help you!",
+                "timestamp": "2025-04-14T00:00:00",
+                "url": "https://articles.hepper.com/savannah-vs-bengal-cat/",
+                "meta_data": {
+                  "citation_domain_name": "articles.hepper",
+                  "client": "web",
+                  "images": [
+                    "https://d2u1z1lopyfwlx.cloudfront.net/thumbnails/3972c55f-00c4-55e5-b1db-5b44b875ad8b/bbe4bd86-846d-5547-918f-bdd6e4f85275.jpg"
+                  ]
+                }
+              },
+              {
+                "name": "Breed-related disease: Toyger cat",
+                "snippet": "John K. Rosembert Lots of cats are named Tiger, but it wasn’t until Judy Sugden was struck by the two spots of tabby markings on the temple of her cat Millwood Sharp Shooter that it occurred to her that they could be the secret to developing a domestic cat that truly resembled the lord of the jungle. Starting with a striped domestic shorthair named Scrapmetal and a Bengal cat named Millwood Rumpled Spotskin, and later importing a street cat from Kashmir, India, who had spots instead of tabby...",
+                "timestamp": "2025-02-10T00:00:00",
+                "url": "https://www.bioguardlabs.com/breed-related-disease-toyger-cat/",
+                "meta_data": {
+                  "citation_domain_name": "bioguardlabs",
+                  "client": "web",
+                  "images": [
+                    "https://d2u1z1lopyfwlx.cloudfront.net/thumbnails/3f5e2622-c44d-5051-8fd1-0fa0f7e45974/d07cd5c9-09fb-50ba-911e-72d44321c651.jpg"
+                  ]
+                }
+              },
+              {
+                "name": "Bengal vs. Savannah Cat: What’s the Difference?",
+                "snippet": "The Bengal and Savannah cats look similar, but are two very different breeds with unique traits. Learn about each and find out which is best suited for you!",
+                "timestamp": "2025-06-19T00:00:00",
+                "url": "https://www.catster.com/cat-breeds/bengal-vs-savannah-cat/",
+                "meta_data": {
+                  "citation_domain_name": "catster",
+                  "client": "web",
+                  "images": [
+                    "https://d2u1z1lopyfwlx.cloudfront.net/thumbnails/59105176-69e6-5f2a-842a-2c27ec95a150/0f3a91ec-fccb-5a03-baa0-276d80e87806.jpg"
+                  ]
+                }
+              },
+              {
+                "name": "Is my cat part Bengal or Toyger? Have to ask because of ...",
+                "snippet": "Is my cat part Bengal or Toyger? Have to ask because of the coloration and markings.",
+                "timestamp": "2020-11-27T00:51:57",
+                "url": "https://www.reddit.com/r/catquestions/comments/k1r6rw/is_my_cat_part_bengal_or_toyger_have_to_ask/",
+                "meta_data": {
+                  "citation_domain_name": "reddit",
+                  "client": "web",
+                  "images": []
+                }
+              },
+              {
+                "name": "Bengal cat - Students | Britannica Kids | Homework Help",
+                "snippet": "The Bengal cat is a breed of shorthaired domestic cat developed in the United States in the 1970s and ’80s by breeding an Asian leopard cat with a domesticated tabby cat. The…",
+                "timestamp": "",
+                "url": "https://kids.britannica.com/students/article/Bengal-cat/310161",
+                "meta_data": {
+                  "citation_domain_name": "kids.britannica",
+                  "client": "web",
+                  "images": [
+                    "https://d2u1z1lopyfwlx.cloudfront.net/thumbnails/5358066c-db6f-568f-947b-e208db8801bf/ad665128-feff-5c11-8643-77e2bc3b1b82.jpg"
+                  ]
+                }
+              }
+            ],
+            "result_count": 21,
+            "rows": [
+              {
+                "web_result": {
+                  "name": "Bengal Cat Breed Information | Purina US",
+                  "snippet": "Bengal Cats are curious & confident with the tameness of a domestic tabby & the beauty of an Asian Leopard Cat. Find out about them from the experts at Purina.",
+                  "timestamp": "2025-08-01T00:00:00",
+                  "url": "https://www.purina.com/cats/cat-breeds/bengal",
+                  "meta_data": {
+                    "citation_domain_name": "purina",
+                    "client": "web",
+                    "images": [
+                      "https://d2u1z1lopyfwlx.cloudfront.net/thumbnails/deabd8f3-7623-557d-b586-b39500d1c915/9f617233-2bd2-51c7-b8ea-76a964f00e32.jpg"
+                    ]
+                  }
+                },
+                "status": "SELECTED",
+                "citation": 1
+              },
+              {
+                "web_result": {
+                  "name": "BENGAL CAT APPEARANCE",
+                  "snippet": "Bengal cat appearance with photos",
+                  "timestamp": "",
+                  "url": "https://www.monterisbengalcats.com/appearance/",
+                  "meta_data": {
+                    "citation_domain_name": "monterisbengalcats",
+                    "client": "web",
+                    "images": [
+                      "https://d2u1z1lopyfwlx.cloudfront.net/thumbnails/56aea351-adb1-5a08-bad8-a65e0a97d2f7/17fdeca1-47c4-5397-9ee8-b7255f868d61.jpg"
+                    ]
+                  }
+                },
+                "status": "SELECTED",
+                "citation": 2
+              },
+              {
+                "web_result": {
+                  "name": "Bengal Cat vs Savannah Cat: Exotic Breeds Side-by-Side Comparison",
+                  "snippet": "Bengal Cat vs Savannah Cat: Exotic Breeds Side-by-Side Comparison. Welcome to our comparison video of the Bengal cat vs. Savannah cat. The main difference between the Bengal cat and the Savannah cat is the size Bengal cats are smaller, and often medium-sized. On the other hand, Savannah cats are taller, and often larger, which is attributed to their African Serval ancestry. Savannah cats have long legs and bodies. Therefore, Bengal cats have shorter bodies than Savannah cats, which have longer...",
+                  "timestamp": "2025-01-24T00:00:00",
+                  "url": "https://www.youtube.com/watch?v=fGmAUEFInU4",
+                  "meta_data": {
+                    "citation_domain_name": "youtube",
+                    "client": "web",
+                    "images": []
+                  }
+                },
+                "status": "SELECTED",
+                "citation": 3
+              },
+              {
+                "web_result": {
+                  "name": "Bengal Cat Facts - ASPCA Pet Insurance",
+                  "snippet": "Bengal cats look like mini leopards, and they have wild personalities to match. Catch up on Bengal cat facts from the ASPCA Pet Health Insurance program.",
+                  "timestamp": "2023-02-02T00:00:00",
+                  "url": "https://www.aspcapetinsurance.com/resources/bengal-cat-facts/",
+                  "meta_data": {
+                    "citation_domain_name": "aspcapetinsurance",
+                    "client": "web",
+                    "images": [
+                      "https://d2u1z1lopyfwlx.cloudfront.net/thumbnails/84e88380-9c21-5664-8a60-355919af8ba9/f3556bf8-6614-5ee8-9333-f9d0a68152b5.jpg"
+                    ]
+                  }
+                },
+                "status": "SELECTED",
+                "citation": 4
+              },
+              {
+                "web_result": {
+                  "name": "Cat Lovers guide to the Bengal Cat - Catnets UK",
+                  "snippet": "Bengal cat, all about the cat with a leopard-like appearance The Bengal cat is also known as the leopard cat or small tiger, they are an exotic breed that was created from the cross between an Asian leopard cat and a domestic cat. They are currently one of the most popular cats among cat lovers because of the presence",
+                  "timestamp": "2024-09-13T00:00:00",
+                  "url": "https://catnets.co.uk/blogs/cat-demy/cat-lovers-guide-to-the-bengal-cat",
+                  "meta_data": {
+                    "citation_domain_name": "catnets",
+                    "client": "web",
+                    "images": [
+                      "http://catnets.co.uk/cdn/shop/articles/Bengalcat_520x500_f79825f9-0b7a-4549-b918-551ff83238a3.webp?v=1720480107"
+                    ]
+                  }
+                },
+                "status": "SELECTED",
+                "citation": 5
+              },
+              {
+                "web_result": {
+                  "name": "Savannah Cat vs. Bengal Cat - Exotic Breeds Side by Side",
+                  "snippet": "Are you considering getting an exotic cat breed but can't decide between a Savannah Cat and a Bengal Cat? Look no further! In this article, we'll provide a comprehensive comparison of these two stunning cat breeds. By the end of this article, you'll have a better understanding of the main differences between Savannah c",
+                  "timestamp": "2023-03-22T00:00:00",
+                  "url": "https://www.outdoorbengal.com/blogs/cat-breeds/savannah-vs-bengal-cat",
+                  "meta_data": {
+                    "citation_domain_name": "outdoorbengal",
+                    "client": "web",
+                    "images": [
+                      "http://www.outdoorbengal.com/cdn/shop/articles/savannah-cat-vs-bengal-cat-exotic-breeds-side-by-side-945634_034955a6-f822-49d2-9440-cb35271fe2e6.jpg?v=1753016925"
+                    ]
+                  }
+                },
+                "status": "SELECTED",
+                "citation": 6
+              },
+              {
+                "web_result": {
+                  "name": "Bengal - TICA - The International Cat Association",
+                  "snippet": "*Prionailurus bengalensis*), a small wildcat native to Asian forests, Bengals were bred to combine a wild look with the gentle temperament of a domestic cat. With its soft, pelt-like coat featuring dramatic rosettes or distinctive marbling, this unique breed is the only domestic breed with rosettes reminiscent of the breathtaking patterns seen on wild cats worldwide. While all Bengals are heavily muscled, they vary in size and weight based on gender.... *Prionailurus bengalensis*), a small...",
+                  "timestamp": "2025-03-14T00:00:00",
+                  "url": "https://tica.org/breed/bengal/",
+                  "meta_data": {
+                    "citation_domain_name": "tica",
+                    "client": "web",
+                    "images": [
+                      "https://d2u1z1lopyfwlx.cloudfront.net/thumbnails/9b34ea8e-013b-5085-bda0-f8ec628286f0/5fccbbd4-b07b-5777-8be6-4e2a08a6c751.jpg"
+                    ]
+                  }
+                },
+                "status": "SELECTED",
+                "citation": 7
+              },
+              {
+                "web_result": {
+                  "name": "Toyger vs Bengal - Breed Comparison | MyCatBreeds",
+                  "snippet": "Toyger vs Bengal. Comparison between Toyger Cat and Bengal Cat. compare height, weight, life span, litter size and more",
+                  "timestamp": "2007-01-01T00:00:00",
+                  "url": "https://www.mycatbreeds.com/toyger-vs-bengal",
+                  "meta_data": {
+                    "citation_domain_name": "mycatbreeds",
+                    "client": "web",
+                    "images": []
+                  }
+                },
+                "status": "SELECTED",
+                "citation": 8
+              },
+              {
+                "web_result": {
+                  "name": "image.jpg",
+                  "snippet": "",
+                  "timestamp": "",
+                  "url": "https://ppl-ai-file-upload.s3.amazonaws.com/web/direct-files/attachments/images/64807259/48ba2321-8c41-4ee0-8ea3-a1272c566944/image.jpg?AWSAccessKeyId=ASIA2F3EMEYE36YWQQ7L&Signature=mpmf6PpyyZo%2FcnbKVRiFXN7hE7I%3D&x-amz-security-token=IQoJb3JpZ2luX2VjEJT%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLWVhc3QtMSJHMEUCIQCGnyfpQZPe%2BNNsDVigJ6gKepRuDQSRCfNQBfMHPaWbRwIgZ%2B0ZMOCatVy6q%2FSBUNSNY7Ro6oKeKe20uWH2qzxlvYMq8wQIXRABGgw2OTk3NTMzMDk3MDUiDKIpMmcKTad%2FmQK17SrQBA3DHn4eOQVG6NuVoklySleexDVTXQBNortDoj2kZN4OgAOCfcwje%2B6zg%2F1bGys8dghuIUfNlX2ZK40%2B2saXtaN3NnwbUQvx4ZXZ6UiVPaRdsKaLJYpmdxdP3tUrOU2XwU3er0nhn8jk1auf9yD%2B%2Ffg7nKaCPE4uc4j6nfBT9kf9tuT1ios94wX1a%2FoQOXXtSr8TIyLvGETUVxTTJXfkQa8bq2B%2BBq3fOpoZNAsKYU27PhvYNBlWeudYZv1kHQ3oFG7MlZKOVukZKKquNWrGiOPX5fmsmBIVBJ0KyRujPnAX6Pbz4ZSxfYkByvRN1To2BSD39Gpx3SWIzl9d80dJspSIhRHoKOOfgP62KUrJZpQminsDDh86tqOv7%2FEI0%2BNlKJ6jMuHDVcFKJkBObELKeGsNOWHMWj7BwSDzCACtEqM4U5OqFkS5rJyQliMq%2Bz847jbHJHKyD2te3XDmRzTWCoOR6kkuogUPAKHRrkkrWrGs5zpie6S%2F%2FcOaXCFE5lBCsHEpVPRpfqCN1uDUG%2Bt0g1XNdDYuptQ0AhKA2tmGP9c%2F0Yk5cI%2BG%2F5yQNcv1NH8lXMWLEbns57FRdm69zlR1bXbkHMqNDiyeuGgXStSgL%2FfhXDWcYL0o2YXWNCig1kp763Vllc1TV%2BQL3FuQc2O%2BJy3uf9aeDspvr09IDTbiZafww3NYw1cxPpGWQW2diQ7v2bWYKLgxYiVSKY4vrRD7NSTJM3VFUooLShmrBU3srSQ2UEAY%2FhFB0tqHdWzWDmimR8SKBVUnSFMAhEFMPiSUa8Ewm%2B3zygY6mAGQsE7VLzQBoxre8Zuc%2BipYoS%2BdqWWe15SFYpZBqhg1jisP1VT%2F0UQwByt9Od4RuzicT%2B5sRZU%2BVWQnE%2F6Xg0HFL6vHYlHYejtZI0AyN2BQgbjmxzStzaK3nDC63WxN0P0dUJ%2BK4du0YLhVqqmpvY6oA2Kt%2BXrmeZJPaQSE3DS8T3h3AHT3tNJu5vxJSl76EOY8q0etMMmxKA%3D%3D&Expires=1767701358",
+                  "file_metadata": {
+                    "connector_type": "LOCAL",
+                    "raw_file_s3_key": "web/direct-files/attachments/images/64807259/48ba2321-8c41-4ee0-8ea3-a1272c566944/image.jpg",
+                    "file_repository_type": "CONTEXT"
+                  },
+                  "is_attachment": true,
+                  "is_image": true,
+                  "is_code_interpreter": false,
+                  "is_knowledge_card": false,
+                  "is_navigational": false,
+                  "is_widget": false,
+                  "is_focused_web": false,
+                  "is_client_context": false,
+                  "is_memory": false,
+                  "is_conversation_history": false
+                },
+                "status": "REVIEWED"
+              },
+              {
+                "web_result": {
+                  "name": "Bengal cat - Wikipedia",
+                  "snippet": "",
+                  "timestamp": "2002-07-21T00:00:00",
+                  "url": "https://en.wikipedia.org/wiki/Bengal_cat",
+                  "meta_data": {
+                    "citation_domain_name": "wikipedia",
+                    "client": "web",
+                    "images": [
+                      "https://d2u1z1lopyfwlx.cloudfront.net/thumbnails/005c6ddb-98a9-5c8b-8d8f-c4cc0ad46e9e/01a84265-e09c-5682-92ce-681c89a1afe2.jpg"
+                    ]
+                  },
+                  "is_attachment": false,
+                  "is_image": false,
+                  "is_code_interpreter": false,
+                  "is_knowledge_card": false,
+                  "is_navigational": false,
+                  "is_widget": false,
+                  "sitelinks": [
+                    {
+                      "title": "Leopard cat",
+                      "url": "https://en.wikipedia.org/wiki/Leopard_cat"
+                    },
+                    {
+                      "title": "Egyptian Mau",
+                      "url": "https://en.wikipedia.org/wiki/Egyptian_Mau"
+                    },
+                    {
+                      "title": "Jean Mill",
+                      "url": "https://en.wikipedia.org/wiki/Jean_Mill"
+                    }
+                  ],
+                  "is_focused_web": false,
+                  "is_client_context": false,
+                  "is_memory": false,
+                  "is_conversation_history": false
+                },
+                "status": "REVIEWED"
+              },
+              {
+                "web_result": {
+                  "name": "Bengals Colors and Patterns - Bengal Cats and Kittens",
+                  "snippet": "",
+                  "timestamp": "",
+                  "url": "https://www.royalbengalcattery.com/about-bengals/bengals-colors-and-patterns.html",
+                  "meta_data": {
+                    "citation_domain_name": "royalbengalcattery",
+                    "client": "web",
+                    "images": []
+                  }
+                },
+                "status": "REVIEWED"
+              },
+              {
+                "web_result": {
+                  "name": "Savannah Cat Vs Bengal Cat – What’s the Difference?",
+                  "snippet": "Discover the key differences between Savannah cats and Bengal cats, including their appearance, temperament, care needs, and suitability as pets.",
+                  "timestamp": "2025-06-16T00:00:00",
+                  "url": "https://www.kinship.co.uk/cat-lifestyle/savannah-cat-vs-bengal-cat",
+                  "meta_data": {
+                    "citation_domain_name": "kinship",
+                    "client": "web",
+                    "images": [
+                      "https://d2u1z1lopyfwlx.cloudfront.net/thumbnails/5843d93e-9f78-5130-abf2-9be0cc6fe757/3cb059b3-e901-51c5-8425-e794cb6c299b.jpg"
+                    ]
+                  }
+                },
+                "status": "REVIEWED"
+              },
+              {
+                "web_result": {
+                  "name": "What breed of cat has the coolest markings? The Bengal, ...",
+                  "snippet": "What breed of cat has the coolest markings? The Bengal, Toyger, Tortie, Calico or Tabby?",
+                  "timestamp": "2025-07-10T11:56:16",
+                  "url": "https://www.instagram.com/p/DLzixYHuf8n/",
+                  "meta_data": {
+                    "citation_domain_name": "instagram",
+                    "client": "web",
+                    "images": []
+                  }
+                },
+                "status": "REVIEWED"
+              },
+              {
+                "web_result": {
+                  "name": "BENGAL PATTERNS | Bangkok Bengal Cats & Kittens",
+                  "snippet": "Bengal’s have coat patterns unlike anything ever seen on a domestic cat before. Did you know that Bengals are the only cat breed that has rosettes like a wild cat? Their rosettes are inherited from their Asian Leopard cat relatives. Our kittens, just like Leopard cubs, are often born with solid spots. As they mature the middle of the spot lightens in the centre and becomes a rosette, just like wild leopards.",
+                  "timestamp": "2024-05-13T00:00:00",
+                  "url": "https://www.bangkokbengalcats.com/bengal-patterns/",
+                  "meta_data": {
+                    "citation_domain_name": "bangkokbengalcats",
+                    "client": "web",
+                    "images": []
+                  }
+                },
+                "status": "REVIEWED"
+              },
+              {
+                "web_result": {
+                  "name": "7 Cat Breeds With The Most Intricate Markings",
+                  "snippet": "Explore cat breeds with the most intricate coat markings, unique patterns, and stunning color combinations shaped by genetics.",
+                  "timestamp": "2026-01-04T00:00:00",
+                  "url": "https://worldanimalfoundation.org/cats/cat-breeds-with-the-most-intricate-markings/",
+                  "meta_data": {
+                    "citation_domain_name": "worldanimalfoundation",
+                    "client": "web",
+                    "images": [
+                      "https://d2u1z1lopyfwlx.cloudfront.net/thumbnails/148c0af5-d2b5-5011-8252-a1db82b9c085/efca8115-b44d-51fd-a984-e512cef2fc77.jpg"
+                    ]
+                  }
+                },
+                "status": "REVIEWED"
+              },
+              {
+                "web_result": {
+                  "name": "Bengal Cat Breed Guide: Temperament, Training, Health. - Waggel",
+                  "snippet": "Learn about the Bengal cat breed with our detailed profile! Learn about their unique traits, care tips, and history to find the perfect feline companion for you.",
+                  "timestamp": "2024-01-01T00:00:00",
+                  "url": "https://www.waggel.co.uk/bengal-cat-breed-guide",
+                  "meta_data": {
+                    "citation_domain_name": "waggel",
+                    "client": "web",
+                    "images": [
+                      "https://d2u1z1lopyfwlx.cloudfront.net/thumbnails/73373760-b870-5e95-a84c-5ba78bd8be74/83b4e198-8fd1-59ac-8a3c-a577263ef7b8.jpg"
+                    ]
+                  }
+                },
+                "status": "REVIEWED"
+              },
+              {
+                "web_result": {
+                  "name": "Savannah Cat vs Bengal Cat: Visual Differences & Overview (With ...",
+                  "snippet": "Deciding what breed of cat to bring home can be challenging, especially when choosing between a Savannah or a Bengal cat. We hope our guide can help you!",
+                  "timestamp": "2025-04-14T00:00:00",
+                  "url": "https://articles.hepper.com/savannah-vs-bengal-cat/",
+                  "meta_data": {
+                    "citation_domain_name": "articles.hepper",
+                    "client": "web",
+                    "images": [
+                      "https://d2u1z1lopyfwlx.cloudfront.net/thumbnails/3972c55f-00c4-55e5-b1db-5b44b875ad8b/bbe4bd86-846d-5547-918f-bdd6e4f85275.jpg"
+                    ]
+                  }
+                },
+                "status": "REVIEWED"
+              },
+              {
+                "web_result": {
+                  "name": "Breed-related disease: Toyger cat",
+                  "snippet": "John K. Rosembert Lots of cats are named Tiger, but it wasn’t until Judy Sugden was struck by the two spots of tabby markings on the temple of her cat Millwood Sharp Shooter that it occurred to her that they could be the secret to developing a domestic cat that truly resembled the lord of the jungle. Starting with a striped domestic shorthair named Scrapmetal and a Bengal cat named Millwood Rumpled Spotskin, and later importing a street cat from Kashmir, India, who had spots instead of tabby...",
+                  "timestamp": "2025-02-10T00:00:00",
+                  "url": "https://www.bioguardlabs.com/breed-related-disease-toyger-cat/",
+                  "meta_data": {
+                    "citation_domain_name": "bioguardlabs",
+                    "client": "web",
+                    "images": [
+                      "https://d2u1z1lopyfwlx.cloudfront.net/thumbnails/3f5e2622-c44d-5051-8fd1-0fa0f7e45974/d07cd5c9-09fb-50ba-911e-72d44321c651.jpg"
+                    ]
+                  }
+                },
+                "status": "REVIEWED"
+              },
+              {
+                "web_result": {
+                  "name": "Bengal vs. Savannah Cat: What’s the Difference?",
+                  "snippet": "The Bengal and Savannah cats look similar, but are two very different breeds with unique traits. Learn about each and find out which is best suited for you!",
+                  "timestamp": "2025-06-19T00:00:00",
+                  "url": "https://www.catster.com/cat-breeds/bengal-vs-savannah-cat/",
+                  "meta_data": {
+                    "citation_domain_name": "catster",
+                    "client": "web",
+                    "images": [
+                      "https://d2u1z1lopyfwlx.cloudfront.net/thumbnails/59105176-69e6-5f2a-842a-2c27ec95a150/0f3a91ec-fccb-5a03-baa0-276d80e87806.jpg"
+                    ]
+                  }
+                },
+                "status": "REVIEWED"
+              },
+              {
+                "web_result": {
+                  "name": "Is my cat part Bengal or Toyger? Have to ask because of ...",
+                  "snippet": "Is my cat part Bengal or Toyger? Have to ask because of the coloration and markings.",
+                  "timestamp": "2020-11-27T00:51:57",
+                  "url": "https://www.reddit.com/r/catquestions/comments/k1r6rw/is_my_cat_part_bengal_or_toyger_have_to_ask/",
+                  "meta_data": {
+                    "citation_domain_name": "reddit",
+                    "client": "web",
+                    "images": []
+                  }
+                },
+                "status": "REVIEWED"
+              },
+              {
+                "web_result": {
+                  "name": "Bengal cat - Students | Britannica Kids | Homework Help",
+                  "snippet": "The Bengal cat is a breed of shorthaired domestic cat developed in the United States in the 1970s and ’80s by breeding an Asian leopard cat with a domesticated tabby cat. The…",
+                  "timestamp": "",
+                  "url": "https://kids.britannica.com/students/article/Bengal-cat/310161",
+                  "meta_data": {
+                    "citation_domain_name": "kids.britannica",
+                    "client": "web",
+                    "images": [
+                      "https://d2u1z1lopyfwlx.cloudfront.net/thumbnails/5358066c-db6f-568f-947b-e208db8801bf/ad665128-feff-5c11-8643-77e2bc3b1b82.jpg"
+                    ]
+                  }
+                },
+                "status": "REVIEWED"
+              }
+            ]
+          }
+        },
+        {
+          "intended_usage": "media_items",
+          "media_block": {
+            "media_items": [
+              {
+                "medium": "video",
+                "image": "https://img.youtube.com/vi/fGmAUEFInU4/maxresdefault.jpg",
+                "image_width": 1280,
+                "image_height": 720,
+                "url": "https://www.youtube.com/watch?v=fGmAUEFInU4",
+                "name": "Bengal Cat vs Savannah Cat: Exotic Breeds Side-by-Side Comparison",
+                "source": "youtube",
+                "thumbnail": "https://img.youtube.com/vi/fGmAUEFInU4/hqdefault.jpg",
+                "thumbnail_height": 360,
+                "thumbnail_width": 480,
+                "citation_info": {
+                  "url": "https://www.youtube.com/watch?v=fGmAUEFInU4",
+                  "domain_name": "youtube",
+                  "favicon_url": "https://www.google.com/s2/favicons?sz=32&domain=youtube.com"
+                }
+              }
+            ],
+            "generated_media_items": []
+          }
+        }
+      ]
+    },
+    {
+      "backend_uuid": "dd39ba95-a7d0-4e12-abb3-e25f11e0b415",
+      "context_uuid": "8c0c96b3-fa1f-4ceb-8487-6f859c4041d1",
+      "uuid": "3a2c21b1-b22b-432e-bdfc-400ce0da035f",
+      "frontend_context_uuid": "43eacba5-f21a-4f82-b0cd-2e5764bd2452",
+      "frontend_uuid": "3a2c21b1-b22b-432e-bdfc-400ce0da035f",
+      "status": "COMPLETED",
+      "thread_title": "What is this cat?",
+      "related_queries": [],
+      "display_model": "pplx_alpha",
+      "user_selected_model": "pplx_alpha",
+      "personalized": true,
+      "mode": "COPILOT",
+      "query_str": "Bengal cats in history",
+      "search_focus": "internet",
+      "source": "default",
+      "attachments": [],
+      "updated_datetime": "2026-01-06T11:57:08.913523",
+      "read_write_token": "4899d75f-571e-491c-9cf9-a0a968843d60",
+      "is_pro_reasoning_mode": true,
+      "step_type": "FINAL",
+      "s3_social_preview_url": "https://ppl-ai-public.s3.amazonaws.com/static/img/pplx-default-preview.png",
+      "thread_access": 1,
+      "thread_url_slug": "what-is-this-cat-7zu8oWH.T1eHHROfJKh1jg",
+      "query_source": "default",
+      "privacy_state": "NONE",
+      "gpt4": false,
+      "sources": {
+        "sources": ["web"]
+      },
+      "entry_updated_datetime": "2026-01-06T11:57:08.913523+00:00",
+      "blocks": [
+        {
+          "intended_usage": "plan",
+          "plan_block": {
+            "progress": "DONE",
+            "goals": [
+              {
+                "id": "0",
+                "description": "I will search the web for Bengal cats' breed origins, key historical figures, and timeline of development.",
+                "final": true,
+                "todo_task_status": "INCOMPLETE"
+              }
+            ],
+            "final": true,
+            "eta_seconds_remaining": 0,
+            "pct_complete": 100
+          }
+        },
+        {
+          "intended_usage": "ask_text",
+          "markdown_block": {
+            "progress": "DONE",
+            "chunks": [
+              "This is a comprehensive overview of Bengal cat history from their origins to modern recognition.\n\n## The Founding Vision (1960s)\n\nThe Bengal cat breed emerged from a deliberate conservation initiative. **Jean Mill** (née Sones, 1926–2018), an American breeder and geneticist, conceived the idea while on a business trip to Bangkok in 1961. She witnessed wild Asian Leopard Cats (*Prionailurus bengalensis*) being hunted to near-extinction for their pelts, while kittens were sold to tourists as souvenirs. Her vision was to create a domestic cat that preserved the wild beauty of the leopard cat, thereby reducing demand for the actual wild species.[1][2]\n\nIn 1963, Mill crossed a domestic black tomcat with a female Asian Leopard Cat—the first documented case of this specific felid hybrid. However, family circumstances interrupted her work until 1970, when she resumed breeding efforts.[3][4][1]\n\n## The Pivotal Collaboration (1975–1980s)\n\nThe critical turning point came in 1975 when **Willard Centerwall**, a geneticist at Loyola University, gifted Mill a group of F1 hybrid females. Centerwall had been conducting feline leukemia research using Asian Leopard Cat crossings and discovered that the hybrids showed partial immunity to the disease. This scientific foundation provided both practical value and credibility to the breeding program.[2][5][1]\n\nMill methodically developed the breed across multiple generations, incorporating other domestic breeds including the Burmese and Egyptian Mau to enhance temperament while preserving the exotic appearance. Crucially, she pushed the breeding to the F4+ generation—fully domesticated cats with stable, predictable behavior suited for household pets. A key individual in this era was **Bill Engler**, a zoo owner who produced F2 and F3 generations and established the breed's name with cat associations in the early 1970s.[4][6][3]\n\n## Official Recognition and Rise to Prominence (1980s–1990s)\n\nThe breed's institutional legitimization accelerated:\n\n- **1983**: TICA accepted the Bengal as an experimental breed[7][8]\n- **1986**: TICA formally placed Bengals on the registry, establishing a dedicated breed section[6]\n- **1991**: The brown spotted Bengal achieved championship status[9][6]\n- **1993**: Bengal cats became TICA's most registered breed—a remarkable ascent in just a decade[9]\n- **1997**: GCCF (Governing Council of the Cat Fancy) recognized the breed[10]\n- **1999**: FIFe (International Cat Federation) and Australian Cat Federation accepted Bengals[10]\n\nThe expansion in breeder numbers reflects this explosive growth: from 125 registered Bengal breeders in 1992 to over 2,400 by 2019.[6][10]\n\n| Year | TICA Registered Bengal Breeders |\n|------|----------------------------------|\n| 1992 | 125[10] |\n| 2000 | ~500+ (estimated jump)[6] |\n| 2019 | 2,492[10] |\n\n## Later Registry Acceptance\n\nDespite earlier reluctance from some breed associations, the Bengal eventually gained widespread acceptance:\n\n- **2016**: The Cat Fanciers' Association (CFA) accepted Bengals for registration, requiring F6+ generation status[11]\n- **2018**: CFA advanced Bengals to championship status[11]\n- **2017**: TICA accepted the long-haired variant (Bengal Longhair) into competitions[10]\n\n## Conservation Legacy\n\nMill's original conservation rationale remains central to the breed's narrative. By creating a domestic cat that satisfied the aesthetic appeal of wild leopard cats, she theoretically reduced pressure on actual wild populations. She continued active breeding until age 83 and lived to 92, dying in 2018—long enough to witness the Bengal become one of the world's most sought-after cat breeds.[5][1][6]\n\nThe Bengal cat represents a unique intersection of conservation biology, selective breeding, and exotic pet demand—a deliberate effort to preserve wildness within domesticity.[4]"
+            ],
+            "chunk_starting_offset": 0,
+            "answer": "This is a comprehensive overview of Bengal cat history from their origins to modern recognition.\n\n## The Founding Vision (1960s)\n\nThe Bengal cat breed emerged from a deliberate conservation initiative. **Jean Mill** (née Sones, 1926–2018), an American breeder and geneticist, conceived the idea while on a business trip to Bangkok in 1961. She witnessed wild Asian Leopard Cats (*Prionailurus bengalensis*) being hunted to near-extinction for their pelts, while kittens were sold to tourists as souvenirs. Her vision was to create a domestic cat that preserved the wild beauty of the leopard cat, thereby reducing demand for the actual wild species.[1][2]\n\nIn 1963, Mill crossed a domestic black tomcat with a female Asian Leopard Cat—the first documented case of this specific felid hybrid. However, family circumstances interrupted her work until 1970, when she resumed breeding efforts.[3][4][1]\n\n## The Pivotal Collaboration (1975–1980s)\n\nThe critical turning point came in 1975 when **Willard Centerwall**, a geneticist at Loyola University, gifted Mill a group of F1 hybrid females. Centerwall had been conducting feline leukemia research using Asian Leopard Cat crossings and discovered that the hybrids showed partial immunity to the disease. This scientific foundation provided both practical value and credibility to the breeding program.[2][5][1]\n\nMill methodically developed the breed across multiple generations, incorporating other domestic breeds including the Burmese and Egyptian Mau to enhance temperament while preserving the exotic appearance. Crucially, she pushed the breeding to the F4+ generation—fully domesticated cats with stable, predictable behavior suited for household pets. A key individual in this era was **Bill Engler**, a zoo owner who produced F2 and F3 generations and established the breed's name with cat associations in the early 1970s.[4][6][3]\n\n## Official Recognition and Rise to Prominence (1980s–1990s)\n\nThe breed's institutional legitimization accelerated:\n\n- **1983**: TICA accepted the Bengal as an experimental breed[7][8]\n- **1986**: TICA formally placed Bengals on the registry, establishing a dedicated breed section[6]\n- **1991**: The brown spotted Bengal achieved championship status[9][6]\n- **1993**: Bengal cats became TICA's most registered breed—a remarkable ascent in just a decade[9]\n- **1997**: GCCF (Governing Council of the Cat Fancy) recognized the breed[10]\n- **1999**: FIFe (International Cat Federation) and Australian Cat Federation accepted Bengals[10]\n\nThe expansion in breeder numbers reflects this explosive growth: from 125 registered Bengal breeders in 1992 to over 2,400 by 2019.[6][10]\n\n| Year | TICA Registered Bengal Breeders |\n|------|----------------------------------|\n| 1992 | 125[10] |\n| 2000 | ~500+ (estimated jump)[6] |\n| 2019 | 2,492[10] |\n\n## Later Registry Acceptance\n\nDespite earlier reluctance from some breed associations, the Bengal eventually gained widespread acceptance:\n\n- **2016**: The Cat Fanciers' Association (CFA) accepted Bengals for registration, requiring F6+ generation status[11]\n- **2018**: CFA advanced Bengals to championship status[11]\n- **2017**: TICA accepted the long-haired variant (Bengal Longhair) into competitions[10]\n\n## Conservation Legacy\n\nMill's original conservation rationale remains central to the breed's narrative. By creating a domestic cat that satisfied the aesthetic appeal of wild leopard cats, she theoretically reduced pressure on actual wild populations. She continued active breeding until age 83 and lived to 92, dying in 2018—long enough to witness the Bengal become one of the world's most sought-after cat breeds.[5][1][6]\n\nThe Bengal cat represents a unique intersection of conservation biology, selective breeding, and exotic pet demand—a deliberate effort to preserve wildness within domesticity.[4]"
+          }
+        },
+        {
+          "intended_usage": "web_results",
+          "web_result_block": {
+            "progress": "DONE",
+            "web_results": [
+              {
+                "name": "Jean Mill",
+                "snippet": "Jean Mill (née Sones; May 14, 1926 – June 6, 2018) was an American cat breeder, owner of Millwood cattery. She is best known as the founder of the Bengal cat breed, and also made contributions to the Himalayan and the standardized version of the Egyptian Mau. Mill and her first husband, Robert Sugden, were involved in a precedent-setting case about the United States government's power to monitor short wave radio communications. Jean Mill began work on the Himalayan cat in 1948, breeding...",
+                "timestamp": "2019-03-04T00:00:00",
+                "url": "https://en.wikipedia.org/wiki/Jean_Mill",
+                "meta_data": {
+                  "citation_domain_name": "wikipedia",
+                  "client": "web",
+                  "images": []
+                }
+              },
+              {
+                "name": "Bengal History",
+                "snippet": "In Royal Bengal cattery you can buy a Bengal kitten for breeding or as a pet.",
+                "timestamp": "2023-01-01T00:00:00",
+                "url": "https://royalbengalcattery.com/about-bengals/bengal-history.html",
+                "meta_data": {
+                  "citation_domain_name": "royalbengalcattery",
+                  "client": "web",
+                  "images": []
+                }
+              },
+              {
+                "name": "The History of Bengals - REGISTERED BENGALS",
+                "snippet": "The History of Bengals, Quoted from Wikipedia.",
+                "timestamp": "2025-01-06T00:00:00",
+                "url": "https://registeredbengals.com/the-history-of-bengals.html",
+                "meta_data": {
+                  "citation_domain_name": "registeredbengals",
+                  "client": "web",
+                  "images": [
+                    "https://d2u1z1lopyfwlx.cloudfront.net/thumbnails/30707d5c-251b-5e33-afc8-50bb7b5f6d0f/4daa12a6-3a87-5afd-9c07-dbccf1ff2b19.jpg"
+                  ]
+                }
+              },
+              {
+                "name": "Bengal Cat Breed: History, Personality, Appearance & ...",
+                "snippet": "Discover the Bengal cat breed—its history, striking appearance, playful personality, and essential health & care tips. Learn more about these exotic felines!",
+                "timestamp": "2025-08-05T00:00:00",
+                "url": "https://headsupfortails.com/blogs/cats/bengal-cat-breed",
+                "meta_data": {
+                  "citation_domain_name": "headsupfortails",
+                  "client": "web",
+                  "images": [
+                    "http://headsupfortails.com/cdn/shop/articles/Bengal_Cat_1_x630.jpg?v=1754376983",
+                    "https://d2u1z1lopyfwlx.cloudfront.net/thumbnails/765575d1-4c63-55a8-875c-1b8137cf50fe/e950f2e9-0a0e-5f68-a312-47dc86e35413.jpg"
+                  ]
+                }
+              },
+              {
+                "name": "Asian leopard Cat: history of the bengal cat",
+                "snippet": "Asian leopard cat and history of the bengal cat, read about the history, features of the asian leopard cat (felis bengalensis). History of the felis bengalensis.",
+                "timestamp": "",
+                "url": "https://www.gatobengali.com/asian-leopard-history.php",
+                "meta_data": {
+                  "citation_domain_name": "gatobengali",
+                  "client": "web",
+                  "images": []
+                }
+              },
+              {
+                "name": "The history of the bengal cat",
+                "snippet": "The history of the bengal breed. Jean Mill, Bill Engler and Willard Centerwall are the main players in the realization of the bengal race.",
+                "timestamp": "",
+                "url": "https://www.praslin.nl/en/history-of-the-bengal-cat/",
+                "meta_data": {
+                  "citation_domain_name": "praslin",
+                  "client": "web",
+                  "images": []
+                }
+              },
+              {
+                "name": "A Detailed History of the Bengal Cat Breed | Bengalcats.co",
+                "snippet": "",
+                "timestamp": "2016-01-14T00:00:00",
+                "url": "https://bengalcats.co/history-of-the-bengal-cat-breed/",
+                "meta_data": {
+                  "citation_domain_name": "bengalcats",
+                  "client": "web",
+                  "images": []
+                }
+              },
+              {
+                "name": "Bengal cat history",
+                "snippet": "Timeline of the history of hybrid bengal cat breeding and development through the years dating back to the 1800's",
+                "timestamp": "2016-01-01T00:00:00",
+                "url": "https://www.belleamibengals.com/bengal-cat-history",
+                "meta_data": {
+                  "citation_domain_name": "belleamibengals",
+                  "client": "web",
+                  "images": [
+                    "https://d2u1z1lopyfwlx.cloudfront.net/thumbnails/626f21e9-2c95-5401-9d79-f71600802be2/a5ba25bd-a056-5349-8481-97adf23c61e4.jpg"
+                  ]
+                }
+              },
+              {
+                "name": "Bengal Breed History - TICA - The International Cat ...",
+                "snippet": "The Bengal Cat Breed Formation & Breed Historical Milestones Compiled by Anthony Hutcherson June 16, 2021 Elected Breed Chairpersons: Jean Mill, Martha",
+                "timestamp": "2024-09-14T00:00:00",
+                "url": "https://tica.org/bengal-breed-history/",
+                "meta_data": {
+                  "citation_domain_name": "tica",
+                  "client": "web",
+                  "images": [
+                    "https://d2u1z1lopyfwlx.cloudfront.net/thumbnails/df135b77-089a-55cc-990a-4e9cc1217a53/5fccbbd4-b07b-5777-8be6-4e2a08a6c751.jpg"
+                  ]
+                }
+              },
+              {
+                "name": "Bengal cat - Wikipedia",
+                "snippet": "In 1986, the breed was accepted as a \"new breed\" by The International Cat Association; Bengals gained TICA championship status in 1991. The Governing Council of the Cat Fancy (GCCF) accepted Bengal cats in 1997. Fédération Internationale Féline (FIFe) in 1999 accepted the breed into their registry.... Also in 1999, Bengals were accepted into the Australian Cat Federation (ACF). The Cat Fanciers' Association accepted the Bengal in CFA's \"Miscellaneous\" in 2016, under the restrictions that \"it...",
+                "timestamp": "2002-07-21T00:00:00",
+                "url": "https://en.wikipedia.org/wiki/Bengal_cat",
+                "meta_data": {
+                  "citation_domain_name": "wikipedia",
+                  "client": "web",
+                  "images": [
+                    "https://d2u1z1lopyfwlx.cloudfront.net/thumbnails/005c6ddb-98a9-5c8b-8d8f-c4cc0ad46e9e/01a84265-e09c-5682-92ce-681c89a1afe2.jpg"
+                  ]
+                }
+              },
+              {
+                "name": "Bengal",
+                "snippet": "",
+                "timestamp": "2025-05-11T00:00:00",
+                "url": "https://cfa.org/breed/bengal/",
+                "meta_data": {
+                  "citation_domain_name": "cfa",
+                  "client": "web",
+                  "images": [
+                    "https://d2u1z1lopyfwlx.cloudfront.net/thumbnails/a207ef66-af77-5b72-a4dd-b13eca7dd30e/83ad96aa-b4e8-5352-ab8c-c08a62414cca.jpg"
+                  ]
+                }
+              },
+              {
+                "name": "image.jpg",
+                "snippet": "",
+                "timestamp": "2026-01-06T11:55:57.696929",
+                "url": "https://ppl-ai-file-upload.s3.amazonaws.com/web/direct-files/attachments/images/64807259/48ba2321-8c41-4ee0-8ea3-a1272c566944/image.jpg",
+                "file_metadata": {
+                  "connector_type": "LOCAL",
+                  "file_repository_type": "CONTEXT"
+                }
+              },
+              {
+                "name": "Bengal Cat History, Origins, Breeders & Bengals for Sale USA",
+                "snippet": "Discover Bengal cat history and find trusted breeders in California, Miami, NYC & across North America. Learn to get the best price on Bengal cats near you.",
+                "timestamp": "2025-07-21T00:00:00",
+                "url": "https://sanjosebengalcats.com/bengal-cat-history/",
+                "meta_data": {
+                  "citation_domain_name": "sanjosebengalcats",
+                  "client": "web",
+                  "images": [
+                    "https://d2u1z1lopyfwlx.cloudfront.net/thumbnails/68607ae5-dce4-51bf-ba05-16444126ed1d/b43d4e10-a1a5-5c05-8a6e-cf2add5455b3.jpg"
+                  ]
+                }
+              },
+              {
+                "name": "Leopard cat",
+                "snippet": "The leopard cat (Prionailurus bengalensis) is a small wild cat native to continental South, Southeast, and East Asia. Since 2002 it has been listed as Least Concern on the IUCN Red List as it is widely distributed although threatened by habitat loss and hunting in parts of its range. Historically, the leopard cat of continental Asia was considered the same species as the Sunda leopard cat. As of 2017, the latter is recognised as a distinct species, with the taxonomic name *Prionailurus...",
+                "timestamp": "2003-07-24T00:00:00",
+                "url": "https://en.wikipedia.org/wiki/Leopard_cat",
+                "meta_data": {
+                  "citation_domain_name": "wikipedia",
+                  "client": "web",
+                  "images": []
+                }
+              },
+              {
+                "name": "Leopard Cat - an overview",
+                "snippet": "*P. bengalensis euptilurus*). Even the wildcats of the small Japanese islands of Iriomote and Tsushima belong to this subspecies, but may have been introduced by humans. The most southern populations of China, Indochina, and India ( *P. bengalensis bengalensis*) are more variable and brightly colored, yellowish, or tawny with dark spots or large brown spots edged with black. The tail is always speckled, sometimes with two or three final rings.",
+                "timestamp": "",
+                "url": "https://www.sciencedirect.com/topics/agricultural-and-biological-sciences/leopard-cat",
+                "meta_data": {
+                  "citation_domain_name": "sciencedirect",
+                  "client": "web",
+                  "images": []
+                }
+              },
+              {
+                "name": "Brief History",
+                "snippet": "",
+                "timestamp": "2022-11-09T00:00:00",
+                "url": "https://www.bengalheritagecats.co.uk/bengal-info/tica-bengal-breed-seminar/brief-history",
+                "meta_data": {
+                  "citation_domain_name": "bengalheritagecats",
+                  "client": "web",
+                  "images": []
+                }
+              },
+              {
+                "name": "Bengal Cat Genetics: Stunning Results",
+                "snippet": "",
+                "timestamp": "2023-12-08T00:00:00",
+                "url": "https://www.divinuspridebengals.com/post/bengal-cat-genetics-stunning-results",
+                "meta_data": {
+                  "citation_domain_name": "divinuspridebengals",
+                  "client": "web",
+                  "images": []
+                }
+              },
+              {
+                "name": "Bengal cat history - how did the Bengal cat originatequality-bengal-kittens.com › bengal-cat-history",
+                "snippet": "",
+                "timestamp": "1999-01-01",
+                "url": "https://quality-bengal-kittens.com/bengal-cat-history",
+                "meta_data": {
+                  "citation_domain_name": "quality-bengal-kittens",
+                  "client": "web",
+                  "images": []
+                }
+              },
+              {
+                "name": "The Bengal Cat | KÜRE Encyclopedia",
+                "snippet": "",
+                "timestamp": "2025-06-25T00:00:00",
+                "url": "https://kureansiklopedi.com/en/detay/the-bengal-cat-20a09",
+                "meta_data": {
+                  "citation_domain_name": "kureansiklopedi",
+                  "client": "web",
+                  "images": []
+                }
+              },
+              {
+                "name": "Bengal Cat History: From Wild Origins to Beloved Household Pets",
+                "snippet": "",
+                "timestamp": "2025-02-21",
+                "url": "https://www.norcalbengals.com/post/bengal-cat-history",
+                "meta_data": {
+                  "citation_domain_name": "norcalbengals",
+                  "client": "web",
+                  "images": []
+                }
+              },
+              {
+                "name": "The story of the Bengal cat",
+                "snippet": "",
+                "timestamp": "",
+                "url": "https://nwkitty.com/the-story-of-the-bengal-cat/",
+                "meta_data": {
+                  "citation_domain_name": "nwkitty",
+                  "client": "web",
+                  "images": []
+                }
+              }
+            ]
+          }
+        },
+        {
+          "intended_usage": "sources_answer_mode",
+          "sources_mode_block": {
+            "answer_mode_type": "SOURCES",
+            "progress": "DONE",
+            "web_results": [
+              {
+                "name": "Jean Mill",
+                "snippet": "Jean Mill (née Sones; May 14, 1926 – June 6, 2018) was an American cat breeder, owner of Millwood cattery. She is best known as the founder of the Bengal cat breed, and also made contributions to the Himalayan and the standardized version of the Egyptian Mau. Mill and her first husband, Robert Sugden, were involved in a precedent-setting case about the United States government's power to monitor short wave radio communications. Jean Mill began work on the Himalayan cat in 1948, breeding...",
+                "timestamp": "2019-03-04T00:00:00",
+                "url": "https://en.wikipedia.org/wiki/Jean_Mill",
+                "meta_data": {
+                  "citation_domain_name": "wikipedia",
+                  "client": "web",
+                  "images": []
+                }
+              },
+              {
+                "name": "Bengal History",
+                "snippet": "In Royal Bengal cattery you can buy a Bengal kitten for breeding or as a pet.",
+                "timestamp": "2023-01-01T00:00:00",
+                "url": "https://royalbengalcattery.com/about-bengals/bengal-history.html",
+                "meta_data": {
+                  "citation_domain_name": "royalbengalcattery",
+                  "client": "web",
+                  "images": []
+                }
+              },
+              {
+                "name": "The History of Bengals - REGISTERED BENGALS",
+                "snippet": "The History of Bengals, Quoted from Wikipedia.",
+                "timestamp": "2025-01-06T00:00:00",
+                "url": "https://registeredbengals.com/the-history-of-bengals.html",
+                "meta_data": {
+                  "citation_domain_name": "registeredbengals",
+                  "client": "web",
+                  "images": [
+                    "https://d2u1z1lopyfwlx.cloudfront.net/thumbnails/30707d5c-251b-5e33-afc8-50bb7b5f6d0f/4daa12a6-3a87-5afd-9c07-dbccf1ff2b19.jpg"
+                  ]
+                }
+              },
+              {
+                "name": "Bengal Cat Breed: History, Personality, Appearance & ...",
+                "snippet": "Discover the Bengal cat breed—its history, striking appearance, playful personality, and essential health & care tips. Learn more about these exotic felines!",
+                "timestamp": "2025-08-05T00:00:00",
+                "url": "https://headsupfortails.com/blogs/cats/bengal-cat-breed",
+                "meta_data": {
+                  "citation_domain_name": "headsupfortails",
+                  "client": "web",
+                  "images": [
+                    "http://headsupfortails.com/cdn/shop/articles/Bengal_Cat_1_x630.jpg?v=1754376983",
+                    "https://d2u1z1lopyfwlx.cloudfront.net/thumbnails/765575d1-4c63-55a8-875c-1b8137cf50fe/e950f2e9-0a0e-5f68-a312-47dc86e35413.jpg"
+                  ]
+                }
+              },
+              {
+                "name": "Asian leopard Cat: history of the bengal cat",
+                "snippet": "Asian leopard cat and history of the bengal cat, read about the history, features of the asian leopard cat (felis bengalensis). History of the felis bengalensis.",
+                "timestamp": "",
+                "url": "https://www.gatobengali.com/asian-leopard-history.php",
+                "meta_data": {
+                  "citation_domain_name": "gatobengali",
+                  "client": "web",
+                  "images": []
+                }
+              },
+              {
+                "name": "The history of the bengal cat",
+                "snippet": "The history of the bengal breed. Jean Mill, Bill Engler and Willard Centerwall are the main players in the realization of the bengal race.",
+                "timestamp": "",
+                "url": "https://www.praslin.nl/en/history-of-the-bengal-cat/",
+                "meta_data": {
+                  "citation_domain_name": "praslin",
+                  "client": "web",
+                  "images": []
+                }
+              },
+              {
+                "name": "A Detailed History of the Bengal Cat Breed | Bengalcats.co",
+                "snippet": "",
+                "timestamp": "2016-01-14T00:00:00",
+                "url": "https://bengalcats.co/history-of-the-bengal-cat-breed/",
+                "meta_data": {
+                  "citation_domain_name": "bengalcats",
+                  "client": "web",
+                  "images": []
+                }
+              },
+              {
+                "name": "Bengal cat history",
+                "snippet": "Timeline of the history of hybrid bengal cat breeding and development through the years dating back to the 1800's",
+                "timestamp": "2016-01-01T00:00:00",
+                "url": "https://www.belleamibengals.com/bengal-cat-history",
+                "meta_data": {
+                  "citation_domain_name": "belleamibengals",
+                  "client": "web",
+                  "images": [
+                    "https://d2u1z1lopyfwlx.cloudfront.net/thumbnails/626f21e9-2c95-5401-9d79-f71600802be2/a5ba25bd-a056-5349-8481-97adf23c61e4.jpg"
+                  ]
+                }
+              },
+              {
+                "name": "Bengal Breed History - TICA - The International Cat ...",
+                "snippet": "The Bengal Cat Breed Formation & Breed Historical Milestones Compiled by Anthony Hutcherson June 16, 2021 Elected Breed Chairpersons: Jean Mill, Martha",
+                "timestamp": "2024-09-14T00:00:00",
+                "url": "https://tica.org/bengal-breed-history/",
+                "meta_data": {
+                  "citation_domain_name": "tica",
+                  "client": "web",
+                  "images": [
+                    "https://d2u1z1lopyfwlx.cloudfront.net/thumbnails/df135b77-089a-55cc-990a-4e9cc1217a53/5fccbbd4-b07b-5777-8be6-4e2a08a6c751.jpg"
+                  ]
+                }
+              },
+              {
+                "name": "Bengal cat - Wikipedia",
+                "snippet": "In 1986, the breed was accepted as a \"new breed\" by The International Cat Association; Bengals gained TICA championship status in 1991. The Governing Council of the Cat Fancy (GCCF) accepted Bengal cats in 1997. Fédération Internationale Féline (FIFe) in 1999 accepted the breed into their registry.... Also in 1999, Bengals were accepted into the Australian Cat Federation (ACF). The Cat Fanciers' Association accepted the Bengal in CFA's \"Miscellaneous\" in 2016, under the restrictions that \"it...",
+                "timestamp": "2002-07-21T00:00:00",
+                "url": "https://en.wikipedia.org/wiki/Bengal_cat",
+                "meta_data": {
+                  "citation_domain_name": "wikipedia",
+                  "client": "web",
+                  "images": [
+                    "https://d2u1z1lopyfwlx.cloudfront.net/thumbnails/005c6ddb-98a9-5c8b-8d8f-c4cc0ad46e9e/01a84265-e09c-5682-92ce-681c89a1afe2.jpg"
+                  ]
+                }
+              },
+              {
+                "name": "Bengal",
+                "snippet": "",
+                "timestamp": "2025-05-11T00:00:00",
+                "url": "https://cfa.org/breed/bengal/",
+                "meta_data": {
+                  "citation_domain_name": "cfa",
+                  "client": "web",
+                  "images": [
+                    "https://d2u1z1lopyfwlx.cloudfront.net/thumbnails/a207ef66-af77-5b72-a4dd-b13eca7dd30e/83ad96aa-b4e8-5352-ab8c-c08a62414cca.jpg"
+                  ]
+                }
+              },
+              {
+                "name": "image.jpg",
+                "snippet": "",
+                "timestamp": "2026-01-06T11:55:57.696929",
+                "url": "https://ppl-ai-file-upload.s3.amazonaws.com/web/direct-files/attachments/images/64807259/48ba2321-8c41-4ee0-8ea3-a1272c566944/image.jpg",
+                "file_metadata": {
+                  "connector_type": "LOCAL",
+                  "file_repository_type": "CONTEXT"
+                }
+              },
+              {
+                "name": "Bengal Cat History, Origins, Breeders & Bengals for Sale USA",
+                "snippet": "Discover Bengal cat history and find trusted breeders in California, Miami, NYC & across North America. Learn to get the best price on Bengal cats near you.",
+                "timestamp": "2025-07-21T00:00:00",
+                "url": "https://sanjosebengalcats.com/bengal-cat-history/",
+                "meta_data": {
+                  "citation_domain_name": "sanjosebengalcats",
+                  "client": "web",
+                  "images": [
+                    "https://d2u1z1lopyfwlx.cloudfront.net/thumbnails/68607ae5-dce4-51bf-ba05-16444126ed1d/b43d4e10-a1a5-5c05-8a6e-cf2add5455b3.jpg"
+                  ]
+                }
+              },
+              {
+                "name": "Leopard cat",
+                "snippet": "The leopard cat (Prionailurus bengalensis) is a small wild cat native to continental South, Southeast, and East Asia. Since 2002 it has been listed as Least Concern on the IUCN Red List as it is widely distributed although threatened by habitat loss and hunting in parts of its range. Historically, the leopard cat of continental Asia was considered the same species as the Sunda leopard cat. As of 2017, the latter is recognised as a distinct species, with the taxonomic name *Prionailurus...",
+                "timestamp": "2003-07-24T00:00:00",
+                "url": "https://en.wikipedia.org/wiki/Leopard_cat",
+                "meta_data": {
+                  "citation_domain_name": "wikipedia",
+                  "client": "web",
+                  "images": []
+                }
+              },
+              {
+                "name": "Leopard Cat - an overview",
+                "snippet": "*P. bengalensis euptilurus*). Even the wildcats of the small Japanese islands of Iriomote and Tsushima belong to this subspecies, but may have been introduced by humans. The most southern populations of China, Indochina, and India ( *P. bengalensis bengalensis*) are more variable and brightly colored, yellowish, or tawny with dark spots or large brown spots edged with black. The tail is always speckled, sometimes with two or three final rings.",
+                "timestamp": "",
+                "url": "https://www.sciencedirect.com/topics/agricultural-and-biological-sciences/leopard-cat",
+                "meta_data": {
+                  "citation_domain_name": "sciencedirect",
+                  "client": "web",
+                  "images": []
+                }
+              },
+              {
+                "name": "Brief History",
+                "snippet": "",
+                "timestamp": "2022-11-09T00:00:00",
+                "url": "https://www.bengalheritagecats.co.uk/bengal-info/tica-bengal-breed-seminar/brief-history",
+                "meta_data": {
+                  "citation_domain_name": "bengalheritagecats",
+                  "client": "web",
+                  "images": []
+                }
+              },
+              {
+                "name": "Bengal Cat Genetics: Stunning Results",
+                "snippet": "",
+                "timestamp": "2023-12-08T00:00:00",
+                "url": "https://www.divinuspridebengals.com/post/bengal-cat-genetics-stunning-results",
+                "meta_data": {
+                  "citation_domain_name": "divinuspridebengals",
+                  "client": "web",
+                  "images": []
+                }
+              },
+              {
+                "name": "Bengal cat history - how did the Bengal cat originatequality-bengal-kittens.com › bengal-cat-history",
+                "snippet": "",
+                "timestamp": "1999-01-01",
+                "url": "https://quality-bengal-kittens.com/bengal-cat-history",
+                "meta_data": {
+                  "citation_domain_name": "quality-bengal-kittens",
+                  "client": "web",
+                  "images": []
+                }
+              },
+              {
+                "name": "The Bengal Cat | KÜRE Encyclopedia",
+                "snippet": "",
+                "timestamp": "2025-06-25T00:00:00",
+                "url": "https://kureansiklopedi.com/en/detay/the-bengal-cat-20a09",
+                "meta_data": {
+                  "citation_domain_name": "kureansiklopedi",
+                  "client": "web",
+                  "images": []
+                }
+              },
+              {
+                "name": "Bengal Cat History: From Wild Origins to Beloved Household Pets",
+                "snippet": "",
+                "timestamp": "2025-02-21",
+                "url": "https://www.norcalbengals.com/post/bengal-cat-history",
+                "meta_data": {
+                  "citation_domain_name": "norcalbengals",
+                  "client": "web",
+                  "images": []
+                }
+              },
+              {
+                "name": "The story of the Bengal cat",
+                "snippet": "",
+                "timestamp": "",
+                "url": "https://nwkitty.com/the-story-of-the-bengal-cat/",
+                "meta_data": {
+                  "citation_domain_name": "nwkitty",
+                  "client": "web",
+                  "images": []
+                }
+              }
+            ],
+            "result_count": 21,
+            "rows": [
+              {
+                "web_result": {
+                  "name": "Jean Mill",
+                  "snippet": "Jean Mill (née Sones; May 14, 1926 – June 6, 2018) was an American cat breeder, owner of Millwood cattery. She is best known as the founder of the Bengal cat breed, and also made contributions to the Himalayan and the standardized version of the Egyptian Mau. Mill and her first husband, Robert Sugden, were involved in a precedent-setting case about the United States government's power to monitor short wave radio communications. Jean Mill began work on the Himalayan cat in 1948, breeding...",
+                  "timestamp": "2019-03-04T00:00:00",
+                  "url": "https://en.wikipedia.org/wiki/Jean_Mill",
+                  "meta_data": {
+                    "citation_domain_name": "wikipedia",
+                    "client": "web",
+                    "images": []
+                  }
+                },
+                "status": "SELECTED",
+                "citation": 1
+              },
+              {
+                "web_result": {
+                  "name": "Bengal History",
+                  "snippet": "In Royal Bengal cattery you can buy a Bengal kitten for breeding or as a pet.",
+                  "timestamp": "2023-01-01T00:00:00",
+                  "url": "https://royalbengalcattery.com/about-bengals/bengal-history.html",
+                  "meta_data": {
+                    "citation_domain_name": "royalbengalcattery",
+                    "client": "web",
+                    "images": []
+                  }
+                },
+                "status": "SELECTED",
+                "citation": 2
+              },
+              {
+                "web_result": {
+                  "name": "The History of Bengals - REGISTERED BENGALS",
+                  "snippet": "The History of Bengals, Quoted from Wikipedia.",
+                  "timestamp": "2025-01-06T00:00:00",
+                  "url": "https://registeredbengals.com/the-history-of-bengals.html",
+                  "meta_data": {
+                    "citation_domain_name": "registeredbengals",
+                    "client": "web",
+                    "images": [
+                      "https://d2u1z1lopyfwlx.cloudfront.net/thumbnails/30707d5c-251b-5e33-afc8-50bb7b5f6d0f/4daa12a6-3a87-5afd-9c07-dbccf1ff2b19.jpg"
+                    ]
+                  }
+                },
+                "status": "SELECTED",
+                "citation": 3
+              },
+              {
+                "web_result": {
+                  "name": "Bengal Cat Breed: History, Personality, Appearance & ...",
+                  "snippet": "Discover the Bengal cat breed—its history, striking appearance, playful personality, and essential health & care tips. Learn more about these exotic felines!",
+                  "timestamp": "2025-08-05T00:00:00",
+                  "url": "https://headsupfortails.com/blogs/cats/bengal-cat-breed",
+                  "meta_data": {
+                    "citation_domain_name": "headsupfortails",
+                    "client": "web",
+                    "images": [
+                      "http://headsupfortails.com/cdn/shop/articles/Bengal_Cat_1_x630.jpg?v=1754376983",
+                      "https://d2u1z1lopyfwlx.cloudfront.net/thumbnails/765575d1-4c63-55a8-875c-1b8137cf50fe/e950f2e9-0a0e-5f68-a312-47dc86e35413.jpg"
+                    ]
+                  }
+                },
+                "status": "SELECTED",
+                "citation": 4
+              },
+              {
+                "web_result": {
+                  "name": "Asian leopard Cat: history of the bengal cat",
+                  "snippet": "Asian leopard cat and history of the bengal cat, read about the history, features of the asian leopard cat (felis bengalensis). History of the felis bengalensis.",
+                  "timestamp": "",
+                  "url": "https://www.gatobengali.com/asian-leopard-history.php",
+                  "meta_data": {
+                    "citation_domain_name": "gatobengali",
+                    "client": "web",
+                    "images": []
+                  }
+                },
+                "status": "SELECTED",
+                "citation": 5
+              },
+              {
+                "web_result": {
+                  "name": "The history of the bengal cat",
+                  "snippet": "The history of the bengal breed. Jean Mill, Bill Engler and Willard Centerwall are the main players in the realization of the bengal race.",
+                  "timestamp": "",
+                  "url": "https://www.praslin.nl/en/history-of-the-bengal-cat/",
+                  "meta_data": {
+                    "citation_domain_name": "praslin",
+                    "client": "web",
+                    "images": []
+                  }
+                },
+                "status": "SELECTED",
+                "citation": 6
+              },
+              {
+                "web_result": {
+                  "name": "A Detailed History of the Bengal Cat Breed | Bengalcats.co",
+                  "snippet": "",
+                  "timestamp": "2016-01-14T00:00:00",
+                  "url": "https://bengalcats.co/history-of-the-bengal-cat-breed/",
+                  "meta_data": {
+                    "citation_domain_name": "bengalcats",
+                    "client": "web",
+                    "images": []
+                  }
+                },
+                "status": "SELECTED",
+                "citation": 7
+              },
+              {
+                "web_result": {
+                  "name": "Bengal cat history",
+                  "snippet": "Timeline of the history of hybrid bengal cat breeding and development through the years dating back to the 1800's",
+                  "timestamp": "2016-01-01T00:00:00",
+                  "url": "https://www.belleamibengals.com/bengal-cat-history",
+                  "meta_data": {
+                    "citation_domain_name": "belleamibengals",
+                    "client": "web",
+                    "images": [
+                      "https://d2u1z1lopyfwlx.cloudfront.net/thumbnails/626f21e9-2c95-5401-9d79-f71600802be2/a5ba25bd-a056-5349-8481-97adf23c61e4.jpg"
+                    ]
+                  }
+                },
+                "status": "SELECTED",
+                "citation": 8
+              },
+              {
+                "web_result": {
+                  "name": "Bengal Breed History - TICA - The International Cat ...",
+                  "snippet": "The Bengal Cat Breed Formation & Breed Historical Milestones Compiled by Anthony Hutcherson June 16, 2021 Elected Breed Chairpersons: Jean Mill, Martha",
+                  "timestamp": "2024-09-14T00:00:00",
+                  "url": "https://tica.org/bengal-breed-history/",
+                  "meta_data": {
+                    "citation_domain_name": "tica",
+                    "client": "web",
+                    "images": [
+                      "https://d2u1z1lopyfwlx.cloudfront.net/thumbnails/df135b77-089a-55cc-990a-4e9cc1217a53/5fccbbd4-b07b-5777-8be6-4e2a08a6c751.jpg"
+                    ]
+                  }
+                },
+                "status": "SELECTED",
+                "citation": 9
+              },
+              {
+                "web_result": {
+                  "name": "Bengal cat - Wikipedia",
+                  "snippet": "In 1986, the breed was accepted as a \"new breed\" by The International Cat Association; Bengals gained TICA championship status in 1991. The Governing Council of the Cat Fancy (GCCF) accepted Bengal cats in 1997. Fédération Internationale Féline (FIFe) in 1999 accepted the breed into their registry.... Also in 1999, Bengals were accepted into the Australian Cat Federation (ACF). The Cat Fanciers' Association accepted the Bengal in CFA's \"Miscellaneous\" in 2016, under the restrictions that \"it...",
+                  "timestamp": "2002-07-21T00:00:00",
+                  "url": "https://en.wikipedia.org/wiki/Bengal_cat",
+                  "meta_data": {
+                    "citation_domain_name": "wikipedia",
+                    "client": "web",
+                    "images": [
+                      "https://d2u1z1lopyfwlx.cloudfront.net/thumbnails/005c6ddb-98a9-5c8b-8d8f-c4cc0ad46e9e/01a84265-e09c-5682-92ce-681c89a1afe2.jpg"
+                    ]
+                  }
+                },
+                "status": "SELECTED",
+                "citation": 10
+              },
+              {
+                "web_result": {
+                  "name": "Bengal",
+                  "snippet": "",
+                  "timestamp": "2025-05-11T00:00:00",
+                  "url": "https://cfa.org/breed/bengal/",
+                  "meta_data": {
+                    "citation_domain_name": "cfa",
+                    "client": "web",
+                    "images": [
+                      "https://d2u1z1lopyfwlx.cloudfront.net/thumbnails/a207ef66-af77-5b72-a4dd-b13eca7dd30e/83ad96aa-b4e8-5352-ab8c-c08a62414cca.jpg"
+                    ]
+                  }
+                },
+                "status": "SELECTED",
+                "citation": 11
+              },
+              {
+                "web_result": {
+                  "name": "image.jpg",
+                  "snippet": "",
+                  "timestamp": "2026-01-06T11:55:57.696929",
+                  "url": "https://ppl-ai-file-upload.s3.amazonaws.com/web/direct-files/attachments/images/64807259/48ba2321-8c41-4ee0-8ea3-a1272c566944/image.jpg",
+                  "file_metadata": {
+                    "connector_type": "LOCAL",
+                    "file_repository_type": "CONTEXT"
+                  }
+                },
+                "status": "REVIEWED"
+              },
+              {
+                "web_result": {
+                  "name": "Bengal Cat History, Origins, Breeders & Bengals for Sale USA",
+                  "snippet": "Discover Bengal cat history and find trusted breeders in California, Miami, NYC & across North America. Learn to get the best price on Bengal cats near you.",
+                  "timestamp": "2025-07-21T00:00:00",
+                  "url": "https://sanjosebengalcats.com/bengal-cat-history/",
+                  "meta_data": {
+                    "citation_domain_name": "sanjosebengalcats",
+                    "client": "web",
+                    "images": [
+                      "https://d2u1z1lopyfwlx.cloudfront.net/thumbnails/68607ae5-dce4-51bf-ba05-16444126ed1d/b43d4e10-a1a5-5c05-8a6e-cf2add5455b3.jpg"
+                    ]
+                  }
+                },
+                "status": "REVIEWED"
+              },
+              {
+                "web_result": {
+                  "name": "Leopard cat",
+                  "snippet": "The leopard cat (Prionailurus bengalensis) is a small wild cat native to continental South, Southeast, and East Asia. Since 2002 it has been listed as Least Concern on the IUCN Red List as it is widely distributed although threatened by habitat loss and hunting in parts of its range. Historically, the leopard cat of continental Asia was considered the same species as the Sunda leopard cat. As of 2017, the latter is recognised as a distinct species, with the taxonomic name *Prionailurus...",
+                  "timestamp": "2003-07-24T00:00:00",
+                  "url": "https://en.wikipedia.org/wiki/Leopard_cat",
+                  "meta_data": {
+                    "citation_domain_name": "wikipedia",
+                    "client": "web",
+                    "images": []
+                  }
+                },
+                "status": "REVIEWED"
+              },
+              {
+                "web_result": {
+                  "name": "Leopard Cat - an overview",
+                  "snippet": "*P. bengalensis euptilurus*). Even the wildcats of the small Japanese islands of Iriomote and Tsushima belong to this subspecies, but may have been introduced by humans. The most southern populations of China, Indochina, and India ( *P. bengalensis bengalensis*) are more variable and brightly colored, yellowish, or tawny with dark spots or large brown spots edged with black. The tail is always speckled, sometimes with two or three final rings.",
+                  "timestamp": "",
+                  "url": "https://www.sciencedirect.com/topics/agricultural-and-biological-sciences/leopard-cat",
+                  "meta_data": {
+                    "citation_domain_name": "sciencedirect",
+                    "client": "web",
+                    "images": []
+                  }
+                },
+                "status": "REVIEWED"
+              },
+              {
+                "web_result": {
+                  "name": "Brief History",
+                  "snippet": "",
+                  "timestamp": "2022-11-09T00:00:00",
+                  "url": "https://www.bengalheritagecats.co.uk/bengal-info/tica-bengal-breed-seminar/brief-history",
+                  "meta_data": {
+                    "citation_domain_name": "bengalheritagecats",
+                    "client": "web",
+                    "images": []
+                  }
+                },
+                "status": "REVIEWED"
+              },
+              {
+                "web_result": {
+                  "name": "Bengal Cat Genetics: Stunning Results",
+                  "snippet": "",
+                  "timestamp": "2023-12-08T00:00:00",
+                  "url": "https://www.divinuspridebengals.com/post/bengal-cat-genetics-stunning-results",
+                  "meta_data": {
+                    "citation_domain_name": "divinuspridebengals",
+                    "client": "web",
+                    "images": []
+                  }
+                },
+                "status": "REVIEWED"
+              },
+              {
+                "web_result": {
+                  "name": "Bengal cat history - how did the Bengal cat originatequality-bengal-kittens.com › bengal-cat-history",
+                  "snippet": "",
+                  "timestamp": "1999-01-01",
+                  "url": "https://quality-bengal-kittens.com/bengal-cat-history",
+                  "meta_data": {
+                    "citation_domain_name": "quality-bengal-kittens",
+                    "client": "web",
+                    "images": []
+                  }
+                },
+                "status": "REVIEWED"
+              },
+              {
+                "web_result": {
+                  "name": "The Bengal Cat | KÜRE Encyclopedia",
+                  "snippet": "",
+                  "timestamp": "2025-06-25T00:00:00",
+                  "url": "https://kureansiklopedi.com/en/detay/the-bengal-cat-20a09",
+                  "meta_data": {
+                    "citation_domain_name": "kureansiklopedi",
+                    "client": "web",
+                    "images": []
+                  }
+                },
+                "status": "REVIEWED"
+              },
+              {
+                "web_result": {
+                  "name": "Bengal Cat History: From Wild Origins to Beloved Household Pets",
+                  "snippet": "",
+                  "timestamp": "2025-02-21",
+                  "url": "https://www.norcalbengals.com/post/bengal-cat-history",
+                  "meta_data": {
+                    "citation_domain_name": "norcalbengals",
+                    "client": "web",
+                    "images": []
+                  }
+                },
+                "status": "REVIEWED"
+              },
+              {
+                "web_result": {
+                  "name": "The story of the Bengal cat",
+                  "snippet": "",
+                  "timestamp": "",
+                  "url": "https://nwkitty.com/the-story-of-the-bengal-cat/",
+                  "meta_data": {
+                    "citation_domain_name": "nwkitty",
+                    "client": "web",
+                    "images": []
+                  }
+                },
+                "status": "REVIEWED"
+              }
+            ]
+          }
+        }
+      ],
+      "structured_answer_block_usages": ["ask_text_0_markdown"]
+    }
+  ],
+  "has_next_page": false,
+  "next_cursor": null
+}
