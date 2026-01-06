@@ -5,7 +5,7 @@ import { AI_PROVIDERS } from '@/constants'
 
 interface ProvidersListProps {
   showTitle?: boolean
-  onConnect?: (accountId: 'chatgpt' | 'claude') => void
+  onConnect?: (accountId: 'chatgpt' | 'claude' | 'perplexity') => void
 }
 
 export function ProvidersList({ showTitle = true, onConnect }: ProvidersListProps) {
@@ -20,7 +20,7 @@ export function ProvidersList({ showTitle = true, onConnect }: ProvidersListProp
     icon: provider.icon
   }))
 
-  const handleConnect = async (providerId: 'chatgpt' | 'claude') => {
+  const handleConnect = async (providerId: 'chatgpt' | 'claude' | 'perplexity') => {
     try {
       await window.api!.auth.login(providerId)
 

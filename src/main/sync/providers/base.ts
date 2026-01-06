@@ -3,7 +3,7 @@ import type { IStorage } from '../../storage/interface.js'
 import { store } from '../../store.js'
 import type { Conversation, Message } from '../../../shared/types'
 
-export type ProviderName = 'chatgpt' | 'claude'
+export type ProviderName = 'chatgpt' | 'claude' | 'perplexity'
 
 export type ProviderStatus =
   | 'connected'

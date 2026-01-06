@@ -83,7 +83,7 @@ export function SettingsModal({ onClose }: SettingsModalProps) {
                 }`}
               >
                 <span
-                  className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                  className={`inline-block h-4 w-4 transform rounded-full bg-green-500 transition-transform ${
                     mcpEnabled ? 'translate-x-6' : 'translate-x-1'
                   }`}
                 />

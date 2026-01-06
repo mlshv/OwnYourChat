@@ -222,6 +222,20 @@ export function setupIpcHandlers(): void {
     }
   })
 
+  ipcMain.handle(IPC_CHANNELS.DEBUG_TOGGLE_PERPLEXITY_VIEW, async () => {
+    const provider = providerRegistry.getProvider('perplexity')
+    const isVisible = provider?.toggleView() ?? false
+    return { isVisible }
+  })
+
+  ipcMain.handle(IPC_CHANNELS.DEBUG_OPEN_PERPLEXITY_DEVTOOLS, async () => {
+    const provider = providerRegistry.getProvider('perplexity')
+    const view = provider?.getView()
+    if (view) {
+      view.webContents.openDevTools({ mode: 'detach' })
+    }
+  })
+
   // Attachment handlers
   ipcMain.handle(
     IPC_CHANNELS.ATTACHMENT_DOWNLOAD,

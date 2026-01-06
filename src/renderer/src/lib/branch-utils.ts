@@ -81,6 +81,21 @@ export function getDisplayPath(
     return []
   }
 
+  // Special case: If we have multiple roots with no children (linear conversation like Perplexity),
+  // return all roots sorted by orderIndex
+  const hasOnlyIndependentRoots = tree.rootIds.every((rootId) => {
+    const children = tree.childrenMap.get(rootId) || []
+    return children.length === 0
+  })
+
+  if (hasOnlyIndependentRoots && tree.rootIds.length > 1) {
+    // Return all roots sorted by orderIndex (for linear conversations)
+    return tree.rootIds
+      .map((id) => tree.allMessages.get(id))
+      .filter((msg): msg is Message => msg !== undefined)
+      .sort((a, b) => a.orderIndex - b.orderIndex)
+  }
+
   // Start from root and follow selections (or first child when no selection)
   const path: Message[] = []
   let currentId: string | null = tree.rootIds[0] || null

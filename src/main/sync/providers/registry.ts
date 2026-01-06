@@ -1,6 +1,7 @@
 import type { IProvider, ProviderName, ProviderState } from './base.js'
 import { ChatGPTProvider } from './chatgpt-provider.js'
 import { ClaudeProvider } from './claude-provider.js'
+import { PerplexityProvider } from './perplexity-provider.js'
 import { DrizzleStorageAdapter } from '../../storage/drizzle-adapter.js'
 import type { IStorage } from '../../storage/interface.js'
 
@@ -24,14 +25,17 @@ class ProviderRegistry {
     // Create provider instances
     const chatgptProvider = new ChatGPTProvider(this.storage, 60000) // 1 minute polling
     const claudeProvider = new ClaudeProvider(this.storage, 60000)
+    const perplexityProvider = new PerplexityProvider(this.storage, 60000)
 
     // Initialize each provider
     await chatgptProvider.initialize()
     await claudeProvider.initialize()
+    await perplexityProvider.initialize()
 
     // Register providers
     this.providers.set('chatgpt', chatgptProvider)
     this.providers.set('claude', claudeProvider)
+    this.providers.set('perplexity', perplexityProvider)
 
     // Restore connections for providers that were previously connected
     console.log('[ProviderRegistry] Checking for providers to restore...')

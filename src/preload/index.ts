@@ -72,9 +72,9 @@ const api: ElectronAPI = {
 
   // Auth operations
   auth: {
-    login: (provider: 'chatgpt' | 'claude') =>
+    login: (provider: 'chatgpt' | 'claude' | 'perplexity') =>
       ipcRenderer.invoke(IPC_CHANNELS.AUTH_LOGIN, provider),
-    logout: (provider?: 'chatgpt' | 'claude') =>
+    logout: (provider?: 'chatgpt' | 'claude' | 'perplexity') =>
       ipcRenderer.invoke(IPC_CHANNELS.AUTH_LOGOUT, provider)
   },
 
@@ -116,7 +116,12 @@ const api: ElectronAPI = {
     openChatGPTDevTools: () => ipcRenderer.invoke(IPC_CHANNELS.DEBUG_OPEN_CHATGPT_DEVTOOLS),
     toggleClaudeView: () =>
       ipcRenderer.invoke(IPC_CHANNELS.DEBUG_TOGGLE_CLAUDE_VIEW) as Promise<{ isVisible: boolean }>,
-    openClaudeDevTools: () => ipcRenderer.invoke(IPC_CHANNELS.DEBUG_OPEN_CLAUDE_DEVTOOLS)
+    openClaudeDevTools: () => ipcRenderer.invoke(IPC_CHANNELS.DEBUG_OPEN_CLAUDE_DEVTOOLS),
+    togglePerplexityView: () =>
+      ipcRenderer.invoke(IPC_CHANNELS.DEBUG_TOGGLE_PERPLEXITY_VIEW) as Promise<{
+        isVisible: boolean
+      }>,
+    openPerplexityDevTools: () => ipcRenderer.invoke(IPC_CHANNELS.DEBUG_OPEN_PERPLEXITY_DEVTOOLS)
   },
 
   // Attachment operations

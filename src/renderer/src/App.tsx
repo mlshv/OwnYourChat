@@ -353,6 +353,13 @@ export default function App() {
           >
             View Claude
           </button>
+          <button
+            onClick={() => window.api?.debug.togglePerplexityView()}
+            className="text-xs px-2 py-1 bg-f1 text-b1 rounded active:bg-f2"
+            title="Toggle Perplexity WebContentsView visibility"
+          >
+            View Perplexity
+          </button>
 
           <button
             onClick={() => window.api?.debug.openChatGPTDevTools()}
@@ -365,9 +372,16 @@ export default function App() {
           <button
             onClick={() => window.api?.debug.openClaudeDevTools()}
             className="text-xs px-2 py-1 bg-f1 text-b1 rounded active:bg-f2"
-            title="Open DevTools for ChatGPT WebContentsView"
+            title="Open DevTools for Claude WebContentsView"
           >
             DevTools (Claude)
+          </button>
+          <button
+            onClick={() => window.api?.debug.openPerplexityDevTools()}
+            className="text-xs px-2 py-1 bg-f1 text-b1 rounded active:bg-f2"
+            title="Open DevTools for Perplexity WebContentsView"
+          >
+            DevTools (Perplexity)
           </button>
         </div>
       </div>

@@ -28,6 +28,7 @@ export interface AppState {
   providers: {
     chatgpt: ProviderState
     claude: ProviderState
+    perplexity: ProviderState
   }
 
   // Auth state (derived from providers)
@@ -58,7 +59,10 @@ export interface AppState {
   }
 
   // Actions
-  updateProviderState: (provider: 'chatgpt' | 'claude', state: Partial<ProviderState>) => void
+  updateProviderState: (
+    provider: 'chatgpt' | 'claude' | 'perplexity',
+    state: Partial<ProviderState>
+  ) => void
   updateSyncState: (state: Partial<AppState['sync']>) => void
   updateSettings: (settings: Partial<AppState['settings']>) => void
   setAuthState: (auth: Partial<AppState['auth']>) => void
@@ -67,7 +71,7 @@ export interface AppState {
 export interface Conversation {
   id: string
   title: string
-  provider: 'chatgpt' | 'claude'
+  provider: 'chatgpt' | 'claude' | 'perplexity'
   createdAt: Date
   updatedAt: Date
   syncedAt: Date
@@ -161,6 +165,8 @@ export const enum IPC_CHANNELS {
   DEBUG_OPEN_CHATGPT_DEVTOOLS = 'debug:open-chatgpt-devtools',
   DEBUG_TOGGLE_CLAUDE_VIEW = 'debug:toggle-claude-view',
   DEBUG_OPEN_CLAUDE_DEVTOOLS = 'debug:open-claude-devtools',
+  DEBUG_TOGGLE_PERPLEXITY_VIEW = 'debug:toggle-perplexity-view',
+  DEBUG_OPEN_PERPLEXITY_DEVTOOLS = 'debug:open-perplexity-devtools',
 
   // Settings
   SETTINGS_GET = 'settings:get',
@@ -223,8 +229,8 @@ export interface ElectronAPI {
     all: (options: ExportOptions) => Promise<{ success: boolean; path?: string; error?: string }>
   }
   auth: {
-    login: (provider: 'chatgpt' | 'claude') => Promise<{ success: boolean }>
-    logout: (provider?: 'chatgpt' | 'claude') => Promise<{ success: boolean }>
+    login: (provider: 'chatgpt' | 'claude' | 'perplexity') => Promise<{ success: boolean }>
+    logout: (provider?: 'chatgpt' | 'claude' | 'perplexity') => Promise<{ success: boolean }>
   }
   settings: {
     get: () => Promise<{
@@ -257,8 +263,10 @@ export interface ElectronAPI {
   debug: {
     toggleChatGPTView: () => Promise<{ isVisible: boolean }>
     toggleClaudeView: () => Promise<{ isVisible: boolean }>
+    togglePerplexityView: () => Promise<{ isVisible: boolean }>
     openChatGPTDevTools: () => Promise<void>
     openClaudeDevTools: () => Promise<void>
+    openPerplexityDevTools: () => Promise<void>
   }
   attachments: {
     download: (

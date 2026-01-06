@@ -97,6 +97,18 @@ body {
   @apply text-xl mb-1 mt-4 font-bold;
 }
 
+.prose h3 {
+  @apply text-lg mb-1 mt-4 font-bold;
+}
+
+.prose h4 {
+  @apply text-base mb-1 mt-4 font-bold;
+}
+
+.prose h5 {
+  @apply text-sm mb-1 mt-4 font-bold;
+}
+
 .prose p {
   margin-bottom: 0.5rem;
 }

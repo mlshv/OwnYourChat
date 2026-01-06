@@ -1,5 +1,4 @@
 import type { Schema } from 'hast-util-sanitize'
-import { marked } from 'marked'
 import { memo, Children, isValidElement, cloneElement } from 'react'
 import ReactMarkdown from 'react-markdown'
 import rehypeKatex from 'rehype-katex'
@@ -126,29 +125,14 @@ const MarkdownPart = memo(
 
 MarkdownPart.displayName = 'MarkdownPart'
 
-// Split markdown into blocks for better memoization
-function parseMarkdownIntoBlocks(markdown: string): string[] {
-  const tokens = marked.lexer(markdown)
-  return tokens.map((token) => token.raw)
-}
-
-export const PartsRenderer = memo(({ parts, messageId }: PartsRendererProps) => {
+export const PartsRenderer = memo(({ parts }: PartsRendererProps) => {
   // First filter out source-url parts, keeping only text parts
   const textParts = parts.filter((part) => part.type === 'text')
 
-  // Join all consecutive text parts into one string
-  const combinedText = textParts.map((part) => part.text).join('')
+  // Join all consecutive text parts into one string with newlines
+  const combinedText = textParts.map((part) => part.text).join('\n')
 
-  // Split into blocks for better memoization
-  const blocks = parseMarkdownIntoBlocks(combinedText)
-
-  return (
-    <>
-      {blocks.map((block, blockIndex) => (
-        <MarkdownPart key={`${messageId}-block-${blockIndex}`} content={block} />
-      ))}
-    </>
-  )
+  return <MarkdownPart content={combinedText} />
 })
 
 PartsRenderer.displayName = 'PartsRenderer'

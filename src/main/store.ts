@@ -17,6 +17,13 @@ export const store = createStore<AppState>((set) => ({
       lastSyncAt: null,
       errorMessage: null,
       isSyncing: false
+    },
+    perplexity: {
+      isOnline: false,
+      status: 'disconnected',
+      lastSyncAt: null,
+      errorMessage: null,
+      isSyncing: false
     }
   },
 
@@ -55,7 +62,10 @@ export const store = createStore<AppState>((set) => ({
       }
 
       // Update auth state based on provider connections
-      const anyConnected = updated.providers.chatgpt.isOnline || updated.providers.claude.isOnline
+      const anyConnected =
+        updated.providers.chatgpt.isOnline ||
+        updated.providers.claude.isOnline ||
+        updated.providers.perplexity.isOnline
       updated.auth = {
         isLoggedIn: anyConnected,
         errorReason: anyConnected ? null : state.auth.errorReason
