@@ -1,6 +1,6 @@
 {
   "name": "ownyourchat",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Sync your ChatGPT and Claude conversations to a local SQLite database",
   "main": "./out/main/index.js",
   "author": "Misha Malyshev",
