@@ -283,7 +283,7 @@ describe('transformPerplexityMessageToParts', () => {
 
   it('should handle multiple consecutive citations', () => {
     const input = {
-      markdown: 'Bengal cats are popular.[1][2][3] They are beautiful.',
+      markdown: 'Bengal cats are popular [1][2][3]. They are beautiful.',
       webResults: [
         { name: 'Source 1', url: 'https://one.com' },
         { name: 'Source 2', url: 'https://two.com' },
