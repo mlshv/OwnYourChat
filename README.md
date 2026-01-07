@@ -1,8 +1,10 @@
+![OwnYourChat](./hero.png)
+
 # OwnYourChat
 
-One app to sync all your AI chats — ChatGPT, Claude, Perplexity, Gemini, Grok — into a local database you own.
+One app to sync all your AI chats — ChatGPT, Claude, Perplexity — into a local database you own.
 
-Your data is scattered across five different silos, each one hoping you'll never leave. OwnYourChat syncs them all into a local SQLite database you control. Open source. Extensible. Local-first.
+Your data is scattered across multiple silos, each one hoping you'll never leave. OwnYourChat syncs them all into a local SQLite database you control. Open source. Extensible. Local-first.
 
 ## Why?
 
@@ -14,7 +16,7 @@ OwnYourChat is the fix. Think **Obsidian, but for AI chats** — open, hackable,
 
 ## Features
 
-- **🔄 Automatic Sync** — Syncs conversations from ChatGPT and Claude to a local SQLite database
+- **🔄 Automatic Sync** — Syncs conversations from ChatGPT, Claude, and Perplexity to a local SQLite database
 - **🔍 Search & Browse** — Search across all conversations and browse your chat history
 - **🌳 Branch Navigation** — Navigate through conversation branches (for chats with multiple response variations)
 - **📤 Export** — Export conversations to JSON or Markdown format
@@ -36,7 +38,6 @@ Enable the MCP server from Settings in the app.
 ## Roadmap
 
 **Coming soon:**
-- [ ] Perplexity support
 - [ ] Gemini support
 - [ ] Grok support
 

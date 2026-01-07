@@ -1,7 +1,7 @@
 {
   "name": "ownyourchat",
   "version": "1.1.0",
-  "description": "Sync your ChatGPT and Claude conversations to a local SQLite database",
+  "description": "Sync your ChatGPT, Claude, and Perplexity conversations to a local SQLite database",
   "main": "./out/main/index.js",
   "author": "Misha Malyshev",
   "homepage": "https://ownyour.chat",
@@ -16,6 +16,7 @@
   "keywords": [
     "chatgpt",
     "claude",
+    "perplexity",
     "sync",
     "sqlite"
   ],
