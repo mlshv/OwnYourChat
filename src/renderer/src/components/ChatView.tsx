@@ -157,13 +157,14 @@ export function ChatView({
           </div>
         ))}
         <div className="max-w-3xl mx-auto pt-4 pb-12 flex justify-center">
-          <button
+          <Button
             onClick={() => AI_PROVIDERS[conversation.provider].openConversation(conversation.id)}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl border border-border bg-muted active:bg-accent text-sm"
+            variant="outline"
+            className="gap-2 rounded-xl bg-muted active:bg-accent"
           >
             <Icon size={24} />
             <span>Continue conversation in {AI_PROVIDERS[conversation.provider].name}</span>
-          </button>
+          </Button>
         </div>
       </VList>
     </div>

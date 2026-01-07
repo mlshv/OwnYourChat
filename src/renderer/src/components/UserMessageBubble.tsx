@@ -193,7 +193,7 @@ export const UserMessageBubble = memo(function UserMessageBubble({
     <div className="flex flex-col items-end gap-1">
       {renderImageAttachments()}
       {renderFileAttachments()}
-      <div className="max-w-[80%] rounded-[1.125rem] rounded-tr-[0.5rem] px-4 py-1.5 bg-foreground text-background">
+      <div className="max-w-[80%] rounded-[1.125rem] rounded-tr-[0.5rem] px-4 py-1.5 bg-muted text-foreground">
         {message.parts.length > 0 && (
           <div className="prose prose-sm max-w-none prose-invert whitespace-pre-wrap">
             {message.parts.map((part) => (part.type === 'text' ? part.text : '')).join('')}

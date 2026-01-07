@@ -36,6 +36,7 @@ export default function App() {
   const [showSettingsModal, setShowSettingsModal] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
   const [hasCompletedOnboarding, setHasCompletedOnboarding] = useState(false)
+  const [showDebugPanel, setShowDebugPanel] = useState(false)
   const [isUserAtTop, setIsUserAtTop] = useState(true)
 
   // Pagination state
@@ -117,6 +118,7 @@ export default function App() {
         // Load user preferences from database
         const prefs = await window.api!.userPreferences.get()
         setHasCompletedOnboarding(prefs.hasCompletedOnboarding)
+        setShowDebugPanel(prefs.showDebugPanel)
 
         // Always load conversations from database (regardless of connection state)
         const result = await window.api!.conversations.list({ limit: 200 })
@@ -140,11 +142,19 @@ export default function App() {
       setShowSettingsModal(true)
     })
 
+    // Listen for menu debug panel toggle
+    const unsubscribeDebugPanelToggle = window.api!.menu.onDebugPanelToggle(async () => {
+      const newValue = !showDebugPanel
+      setShowDebugPanel(newValue)
+      await window.api!.userPreferences.set({ showDebugPanel: newValue })
+    })
+
     return () => {
       unsubscribeMenuExport()
       unsubscribeMenuSettings()
+      unsubscribeDebugPanelToggle()
     }
-  }, [isElectron]) // Only run once on mount
+  }, [isElectron, showDebugPanel]) // Only run once on mount
 
   // Handle sync completion with scroll-aware updates
   useEffect(() => {
@@ -328,7 +338,8 @@ export default function App() {
       </div>
 
       {/* Debug Toolbar */}
-      <div className="h-10 flex items-center justify-between px-4 bg-yellow-700 border-b border-border">
+      {showDebugPanel && (
+        <div className="h-10 flex items-center justify-between px-4 bg-yellow-700 border-b border-border">
         <div className="flex items-center gap-2">
           <span className="font-semibold text-sm">Debug Mode</span>
         </div>
@@ -378,7 +389,8 @@ export default function App() {
             DevTools (Perplexity)
           </button>
         </div>
-      </div>
+        </div>
+      )}
 
       {/* Export modal */}
       <ExportModal

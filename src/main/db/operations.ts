@@ -481,7 +481,7 @@ function mapAttachment(row: typeof attachments.$inferSelect): Attachment {
 }
 
 // User preferences operations
-export async function getUserPreferences(): Promise<{ hasCompletedOnboarding: boolean }> {
+export async function getUserPreferences(): Promise<{ hasCompletedOnboarding: boolean; showDebugPanel: boolean }> {
   const db = getDatabase()
   const [result] = await db.select().from(userPreferences).where(eq(userPreferences.id, 'default'))
 
@@ -489,19 +489,22 @@ export async function getUserPreferences(): Promise<{ hasCompletedOnboarding: bo
     // Create default preferences if they don't exist
     await db.insert(userPreferences).values({
       id: 'default',
-      hasCompletedOnboarding: false
+      hasCompletedOnboarding: false,
+      showDebugPanel: false
     })
-    return { hasCompletedOnboarding: false }
+    return { hasCompletedOnboarding: false, showDebugPanel: false }
   }
 
   return {
-    hasCompletedOnboarding: result.hasCompletedOnboarding
+    hasCompletedOnboarding: result.hasCompletedOnboarding,
+    showDebugPanel: result.showDebugPanel
   }
 }
 
 export async function setUserPreferences(prefs: {
   hasCompletedOnboarding?: boolean
-}): Promise<{ hasCompletedOnboarding: boolean }> {
+  showDebugPanel?: boolean
+}): Promise<{ hasCompletedOnboarding: boolean; showDebugPanel: boolean }> {
   const db = getDatabase()
 
   // Get current preferences
@@ -510,7 +513,8 @@ export async function setUserPreferences(prefs: {
   // Update with new values
   const updated = {
     id: 'default' as const,
-    hasCompletedOnboarding: prefs.hasCompletedOnboarding ?? current.hasCompletedOnboarding
+    hasCompletedOnboarding: prefs.hasCompletedOnboarding ?? current.hasCompletedOnboarding,
+    showDebugPanel: prefs.showDebugPanel ?? current.showDebugPanel
   }
 
   await db
@@ -518,10 +522,14 @@ export async function setUserPreferences(prefs: {
     .values(updated)
     .onConflictDoUpdate({
       target: userPreferences.id,
-      set: { hasCompletedOnboarding: updated.hasCompletedOnboarding }
+      set: {
+        hasCompletedOnboarding: updated.hasCompletedOnboarding,
+        showDebugPanel: updated.showDebugPanel
+      }
     })
 
   return {
-    hasCompletedOnboarding: updated.hasCompletedOnboarding
+    hasCompletedOnboarding: updated.hasCompletedOnboarding,
+    showDebugPanel: updated.showDebugPanel
   }
 }

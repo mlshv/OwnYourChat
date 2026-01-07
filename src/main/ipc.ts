@@ -72,14 +72,36 @@ export function setupIpcHandlers(): void {
         return { success: false, error: 'Conversation not found' }
       }
 
+      // Let user pick export directory
+      const mainWindow = getMainWindow()
+      if (!mainWindow) {
+        return { success: false, error: 'No main window' }
+      }
+
+      const result = await dialog.showOpenDialog(mainWindow, {
+        properties: ['openDirectory', 'createDirectory'],
+        title: 'Choose Export Location'
+      })
+
+      if (result.canceled || !result.filePaths[0]) {
+        return { success: false, error: 'Export cancelled' }
+      }
+
       // Get provider instance for downloading attachments
       const provider = providerRegistry.getProvider(conversation.provider as 'chatgpt' | 'claude')
       const context = {
         provider: provider ?? null
       }
 
-      const result = await exportConversation(id, options, context)
-      return { success: true, path: result }
+      const exportPath = await exportConversation(
+        id,
+        {
+          ...options,
+          outputPath: result.filePaths[0]
+        },
+        context
+      )
+      return { success: true, path: exportPath }
     } catch (error) {
       return { success: false, error: (error as Error).message }
     }

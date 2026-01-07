@@ -201,23 +201,23 @@ body {
 }
 
 .prose h1 {
-  @apply text-2xl mb-2 font-bold;
+  @apply text-2xl mb-2 font-semibold;
 }
 
 .prose h2 {
-  @apply text-xl mb-1 mt-4 font-bold;
+  @apply text-xl mb-1 mt-4 font-semibold;
 }
 
 .prose h3 {
-  @apply text-lg mb-1 mt-4 font-bold;
+  @apply text-lg mb-1 mt-4 font-semibold;
 }
 
 .prose h4 {
-  @apply text-base mb-1 mt-4 font-bold;
+  @apply text-base mb-1 mt-4 font-semibold;
 }
 
 .prose h5 {
-  @apply text-sm mb-1 mt-4 font-bold;
+  @apply text-sm mb-1 mt-4 font-semibold;
 }
 
 .prose p {
@@ -254,4 +254,8 @@ body {
 .prose pre code {
   background: transparent;
   padding: 0;
+}
+
+.prose strong {
+  @apply font-semibold;
 }

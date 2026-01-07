@@ -44,6 +44,12 @@ function createApplicationMenu(): void {
                   mainWindow?.webContents.send(IPC_CHANNELS.MENU_EXPORT_CLICK)
                 }
               },
+              {
+                label: 'Toggle Debug Panel',
+                click: () => {
+                  mainWindow?.webContents.send(IPC_CHANNELS.MENU_DEBUG_PANEL_TOGGLE)
+                }
+              },
               { type: 'separator' as const },
               { role: 'services' as const },
               { type: 'separator' as const },
@@ -75,6 +81,12 @@ function createApplicationMenu(): void {
                 accelerator: 'Ctrl+Shift+E',
                 click: () => {
                   mainWindow?.webContents.send(IPC_CHANNELS.MENU_EXPORT_CLICK)
+                }
+              },
+              {
+                label: 'Toggle Debug Panel',
+                click: () => {
+                  mainWindow?.webContents.send(IPC_CHANNELS.MENU_DEBUG_PANEL_TOGGLE)
                 }
               },
               { type: 'separator' as const }

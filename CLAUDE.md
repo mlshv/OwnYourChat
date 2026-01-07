@@ -104,6 +104,10 @@ Always use `-Icon` suffix for Phosphor icons: `AppleLogoIcon` not `AppleLogo`.
 
 Use `type` for type aliases, not `interface` (unless defining OOP interfaces intended for class implementation).
 
+## Development Workflow
+
+**IMPORTANT: Always run `pnpm typecheck` after making code changes to catch TypeScript errors before completing the task.**
+
 ## UI & Styling
 
 ### Squircle Border Radiuses

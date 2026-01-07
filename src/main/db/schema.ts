@@ -74,6 +74,9 @@ export const userPreferences = sqliteTable('user_preferences', {
   hasCompletedOnboarding: integer('has_completed_onboarding', { mode: 'boolean' })
     .notNull()
     .default(false),
+  showDebugPanel: integer('show_debug_panel', { mode: 'boolean' })
+    .notNull()
+    .default(false),
   createdAt: integer('created_at', { mode: 'timestamp' }),
   updatedAt: integer('updated_at', { mode: 'timestamp' })
 })

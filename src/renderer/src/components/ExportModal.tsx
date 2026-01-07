@@ -1,18 +1,14 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { cn } from '@/lib/cn'
-import {
-  Dialog,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle
-} from '@/components/ui/dialog'
+import { Dialog, DialogContent, DialogFooter, DialogHeader } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { Checkbox } from '@/components/ui/checkbox'
+import { HugeiconsIcon } from '@hugeicons/react'
+import { Tick02Icon } from '@hugeicons/core-free-icons'
 
 interface ExportModalProps {
   conversationId?: string
@@ -26,6 +22,12 @@ export function ExportModal({ conversationId, open, onOpenChange }: ExportModalP
   const [exportAll, setExportAll] = useState(!conversationId)
   const [isExporting, setIsExporting] = useState(false)
   const [result, setResult] = useState<{ success: boolean; message: string } | null>(null)
+
+  useEffect(() => {
+    if (!open) {
+      setResult(null)
+    }
+  }, [open])
 
   const handleExport = async () => {
     const api = window.api
@@ -75,15 +77,13 @@ export function ExportModal({ conversationId, open, onOpenChange }: ExportModalP
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-md p-0 gap-0">
         <div className="p-4">
-          <DialogHeader>
-            <DialogTitle>Export Conversations</DialogTitle>
-          </DialogHeader>
+          <DialogHeader />
         </div>
 
         <div className="space-y-6 px-4 pb-4">
           {/* Export scope */}
           <div className="space-y-3">
-            <Label>Export</Label>
+            <Label className="text-base font-medium">Export</Label>
             <RadioGroup
               value={exportAll ? 'all' : 'current'}
               onValueChange={(value) => setExportAll(value === 'all')}
@@ -107,7 +107,7 @@ export function ExportModal({ conversationId, open, onOpenChange }: ExportModalP
 
           {/* Format */}
           <div className="space-y-3">
-            <Label>Format</Label>
+            <Label className="text-base font-medium">Format</Label>
             <RadioGroup
               value={format}
               onValueChange={(value) => setFormat(value as 'markdown' | 'json')}
@@ -149,10 +149,15 @@ export function ExportModal({ conversationId, open, onOpenChange }: ExportModalP
           {result && (
             <div
               className={cn(
-                'p-3 rounded-lg text-sm',
-                result.success ? 'bg-accent text-foreground' : 'bg-destructive/10 text-destructive'
+                'p-3 rounded-lg text-sm flex gap-2 border',
+                result.success
+                  ? 'bg-accent text-foreground border-border'
+                  : 'bg-destructive/10 text-destructive border-destructive/20'
               )}
             >
+              {result.success && (
+                <HugeiconsIcon icon={Tick02Icon} className="w-4 h-4 flex-shrink-0 mt-0.5" />
+              )}
               {result.message}
             </div>
           )}

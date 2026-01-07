@@ -8,6 +8,13 @@
       "when": 1766749609508,
       "tag": "0000_cultured_betty_ross",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1767804683760,
+      "tag": "0001_small_blue_marvel",
+      "breakpoints": true
     }
   ]
 }

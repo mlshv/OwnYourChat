@@ -102,10 +102,12 @@ const api: ElectronAPI = {
     get: () =>
       ipcRenderer.invoke(IPC_CHANNELS.USER_PREFERENCES_GET) as Promise<{
         hasCompletedOnboarding: boolean
+        showDebugPanel: boolean
       }>,
-    set: (preferences: { hasCompletedOnboarding?: boolean }) =>
+    set: (preferences: { hasCompletedOnboarding?: boolean; showDebugPanel?: boolean }) =>
       ipcRenderer.invoke(IPC_CHANNELS.USER_PREFERENCES_SET, preferences) as Promise<{
         hasCompletedOnboarding: boolean
+        showDebugPanel: boolean
       }>
   },
 
@@ -161,6 +163,11 @@ const api: ElectronAPI = {
       const handler = () => callback()
       ipcRenderer.on(IPC_CHANNELS.MENU_SETTINGS_CLICK, handler)
       return () => ipcRenderer.removeListener(IPC_CHANNELS.MENU_SETTINGS_CLICK, handler)
+    },
+    onDebugPanelToggle: (callback: () => void) => {
+      const handler = () => callback()
+      ipcRenderer.on(IPC_CHANNELS.MENU_DEBUG_PANEL_TOGGLE, handler)
+      return () => ipcRenderer.removeListener(IPC_CHANNELS.MENU_DEBUG_PANEL_TOGGLE, handler)
     }
   }
 }

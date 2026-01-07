@@ -77,58 +77,52 @@ export function SettingsModal({ open, onOpenChange }: SettingsModalProps) {
 
           {/* MCP Server Section */}
           <div className="space-y-4">
-            <h3 className="text-sm font-medium">MCP Server</h3>
+            <h3 className="text-base font-medium">MCP Server</h3>
 
             {/* Enable/Disable Toggle */}
             <div className="flex items-center justify-between">
               <Label htmlFor="mcp-enabled">Enable MCP Server</Label>
-              <Switch id="mcp-enabled" checked={mcpEnabled} onCheckedChange={handleMcpEnabledChange} />
+              <Switch
+                id="mcp-enabled"
+                checked={mcpEnabled}
+                onCheckedChange={handleMcpEnabledChange}
+              />
             </div>
 
-            {mcpEnabled && (
-              <>
-                {/* Port Input */}
-                <div className="flex items-center justify-between">
-                  <Label htmlFor="mcp-port">Port</Label>
-                  <Input
-                    id="mcp-port"
-                    type="number"
-                    value={mcpPort}
-                    onChange={(e) => handleMcpPortChange(parseInt(e.target.value) || 3000)}
-                    className="w-24"
-                  />
-                </div>
+            {/* Port Input */}
+            <div className="flex items-center justify-between">
+              <Label htmlFor="mcp-port">Port</Label>
+              <Input
+                id="mcp-port"
+                type="number"
+                value={mcpPort}
+                onChange={(e) => handleMcpPortChange(parseInt(e.target.value) || 3000)}
+                className="w-24"
+              />
+            </div>
 
-                {/* Status Indicator */}
-                <div className="flex items-center justify-between">
-                  <Label>Status</Label>
-                  <span className="text-sm text-green-500">Running</span>
-                </div>
-
-                {/* Configuration JSON */}
-                <div className="space-y-2">
-                  <div className="flex items-center justify-between">
-                    <Label>JSON Configuration</Label>
-                    <Button onClick={handleCopyConfig} variant="outline" size="xs">
-                      {copied ? (
-                        <>
-                          <CheckIcon size={14} />
-                          Copied
-                        </>
-                      ) : (
-                        <>
-                          <CopyIcon size={14} />
-                          Copy
-                        </>
-                      )}
-                    </Button>
-                  </div>
-                  <pre className="text-xs bg-muted border border-border rounded p-3 overflow-x-auto">
-                    {getMcpConfig()}
-                  </pre>
-                </div>
-              </>
-            )}
+            {/* Configuration JSON */}
+            <div className="space-y-2">
+              <div className="flex items-center justify-between">
+                <Label>JSON Configuration</Label>
+                <Button onClick={handleCopyConfig} variant="outline" size="xs">
+                  {copied ? (
+                    <>
+                      <CheckIcon size={14} />
+                      Copied
+                    </>
+                  ) : (
+                    <>
+                      <CopyIcon size={14} />
+                      Copy
+                    </>
+                  )}
+                </Button>
+              </div>
+              <pre className="text-xs bg-muted border border-border rounded p-3 overflow-x-auto">
+                {getMcpConfig()}
+              </pre>
+            </div>
           </div>
         </div>
       </DialogContent>

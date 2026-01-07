@@ -1,4 +1,4 @@
-import { WebContentsView, session } from 'electron'
+import { WebContentsView, session, net } from 'electron'
 import { BaseProvider, type SyncResult, type ProviderName } from './base.js'
 import type { IStorage } from '../../storage/interface.js'
 import type { PerplexityMetadata } from './types'
@@ -398,55 +398,43 @@ export class PerplexityProvider extends BaseProvider<PerplexityMetadata> {
   }
 
   /**
-   * Download a file via webContents and return as Buffer
+   * Download a file directly using Electron's net module (bypasses CORS)
    */
   private async downloadFileViaScript(
     downloadUrl: string
   ): Promise<{ data: Buffer; mimeType: string }> {
-    if (!this.view) {
-      throw new Error('View not initialized')
-    }
+    return new Promise((resolve, reject) => {
+      const request = net.request(downloadUrl)
 
-    const url = this.view.webContents.getURL()
-    if (!url.includes('perplexity.ai')) {
-      await this.view.webContents.loadURL('https://www.perplexity.ai/')
-      await new Promise((r) => setTimeout(r, 2000))
-    }
+      request.on('response', (response) => {
+        const chunks: Buffer[] = []
+        const mimeType = response.headers['content-type']?.[0] || 'application/octet-stream'
 
-    const script = `
-(async function() {
-  const response = await fetch(${JSON.stringify(downloadUrl)}, {
-    credentials: 'include',
-  });
+        if (response.statusCode !== 200) {
+          reject(new Error(`Failed to download: ${response.statusCode}`))
+          return
+        }
 
-  if (!response.ok) {
-    console.error('[Perplexity API] Failed to download file:', response.status);
-    return { error: 'Failed to download: ' + response.status };
-  }
+        response.on('data', (chunk) => {
+          chunks.push(Buffer.from(chunk))
+        })
 
-  const blob = await response.blob();
-  const arrayBuffer = await blob.arrayBuffer();
-  const bytes = new Uint8Array(arrayBuffer);
-  let binary = '';
-  for (let i = 0; i < bytes.byteLength; i++) {
-    binary += String.fromCharCode(bytes[i]);
-  }
-  return {
-    data: btoa(binary),
-    mimeType: response.headers.get('content-type') || 'application/octet-stream',
-  };
-})();
-`
-    const result = await this.view.webContents.executeJavaScript(script)
+        response.on('end', () => {
+          const data = Buffer.concat(chunks)
+          resolve({ data, mimeType: mimeType as string })
+        })
 
-    if (result.error) {
-      throw new Error(result.error)
-    }
+        response.on('error', (error) => {
+          reject(error)
+        })
+      })
 
-    return {
-      data: Buffer.from(result.data, 'base64'),
-      mimeType: result.mimeType
-    }
+      request.on('error', (error) => {
+        reject(error)
+      })
+
+      request.end()
+    })
   }
 
   // ============================================================================
@@ -522,8 +510,9 @@ export class PerplexityProvider extends BaseProvider<PerplexityMetadata> {
 
         // Only mark offset complete after ALL threads succeed
         offset += PAGE_SIZE
+        const currentMetadata = await this.getMetadata()
         await this.setMetadata({
-          ...metadata,
+          ...currentMetadata,
           lastCompletedOffset: offset
         })
 
@@ -532,8 +521,9 @@ export class PerplexityProvider extends BaseProvider<PerplexityMetadata> {
         // Check if last page
         if (pageThreads.length < PAGE_SIZE || (totalThreads && offset >= totalThreads)) {
           console.log(`[${this.name}] Reached end of pagination`)
+          const finalMetadata = await this.getMetadata()
           await this.setMetadata({
-            ...metadata,
+            ...finalMetadata,
             lastCompletedOffset: offset,
             isFullSyncComplete: true
           })
@@ -613,22 +603,24 @@ export class PerplexityProvider extends BaseProvider<PerplexityMetadata> {
     thread: PerplexityThreadListItem,
     maxRetries = 3
   ): Promise<void> {
+    const threadId = this.extractThreadId(thread.slug)
+
     for (let attempt = 0; attempt < maxRetries; attempt++) {
       try {
         await this.syncThread(thread)
 
         // Clear error on success
-        await this.storage.updateConversationSyncError(thread.context_uuid, null, 0)
+        await this.storage.updateConversationSyncError(threadId, null, 0)
         return
       } catch (error) {
         if (attempt === maxRetries - 1) {
           // Final failure - persist error
           console.error(
-            `[${this.name}] Failed to sync thread ${thread.context_uuid} after ${maxRetries} attempts:`,
+            `[${this.name}] Failed to sync thread ${threadId} after ${maxRetries} attempts:`,
             error
           )
           await this.storage.updateConversationSyncError(
-            thread.context_uuid,
+            threadId,
             (error as Error).message,
             attempt + 1
           )
@@ -638,7 +630,7 @@ export class PerplexityProvider extends BaseProvider<PerplexityMetadata> {
         // Exponential backoff: 1s, 2s, 4s
         const backoffMs = Math.pow(2, attempt) * 1000
         console.log(
-          `[${this.name}] Retry ${attempt + 1}/${maxRetries} for thread ${thread.context_uuid} after ${backoffMs}ms`
+          `[${this.name}] Retry ${attempt + 1}/${maxRetries} for thread ${threadId} after ${backoffMs}ms`
         )
         await new Promise((r) => setTimeout(r, backoffMs))
       }
@@ -762,13 +754,17 @@ export class PerplexityProvider extends BaseProvider<PerplexityMetadata> {
 
     const content = await this.extractThreadContent(thread.slug)
 
-    const existing = await this.storage.getConversation(thread.context_uuid)
+    // Extract ID from thread_url_slug (part after last dash)
+    // Example: "what-is-this-cat-7zu8oWH.T1eHHROfJKh1jg" -> "7zu8oWH.T1eHHROfJKh1jg"
+    const threadId = this.extractThreadId(thread.slug)
+
+    const existing = await this.storage.getConversation(threadId)
     if (existing) {
-      await this.storage.deleteMessagesForConversation(thread.context_uuid)
+      await this.storage.deleteMessagesForConversation(threadId)
     }
 
     await this.storage.upsertConversation({
-      id: thread.context_uuid,
+      id: threadId,
       title: thread.title || 'Untitled',
       provider: 'perplexity',
       createdAt: new Date(thread.last_query_datetime),
@@ -811,7 +807,7 @@ export class PerplexityProvider extends BaseProvider<PerplexityMetadata> {
       const userMessageId = `${entry.uuid}-query`
       messageInserts.push({
         id: userMessageId,
-        conversationId: thread.context_uuid,
+        conversationId: threadId,
         role: 'user',
         parts: JSON.stringify([{ type: 'text', text: entry.query_str }]),
         createdAt: new Date(entry.updated_datetime),
@@ -854,7 +850,7 @@ export class PerplexityProvider extends BaseProvider<PerplexityMetadata> {
 
         messageInserts.push({
           id: `${entry.uuid}-answer`,
-          conversationId: thread.context_uuid,
+          conversationId: threadId,
           role: 'assistant',
           parts: JSON.stringify(parts),
           createdAt: new Date(entry.updated_datetime),
@@ -871,6 +867,18 @@ export class PerplexityProvider extends BaseProvider<PerplexityMetadata> {
     if (attachmentInserts.length > 0) {
       await this.storage.upsertAttachments(attachmentInserts)
     }
+  }
+
+  /**
+   * Extract thread ID from thread_url_slug
+   * Example: "what-is-this-cat-7zu8oWH.T1eHHROfJKh1jg" -> "7zu8oWH.T1eHHROfJKh1jg"
+   */
+  private extractThreadId(threadUrlSlug: string): string {
+    const lastDashIndex = threadUrlSlug.lastIndexOf('-')
+    if (lastDashIndex === -1) {
+      return threadUrlSlug
+    }
+    return threadUrlSlug.substring(lastDashIndex + 1)
   }
 
   /**

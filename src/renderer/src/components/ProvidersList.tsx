@@ -36,7 +36,7 @@ export function ProvidersList({ showTitle = true, onConnect }: ProvidersListProp
 
   return (
     <div>
-      {showTitle && <h3 className="text-sm font-medium mb-3">Connected Accounts</h3>}
+      {showTitle && <h3 className="text-base font-medium mb-3">Connected Accounts</h3>}
       <div className="space-y-2">
         {accounts.map((account) => {
           const Icon = AI_PROVIDERS[account.id].icon
@@ -45,7 +45,7 @@ export function ProvidersList({ showTitle = true, onConnect }: ProvidersListProp
               key={account.id}
               className="flex items-center justify-between p-3 rounded-lg bg-muted/50 border border-border"
             >
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-2">
                 <div className="text-xs text-muted-foreground">
                   <Icon size={24} />
                 </div>
