@@ -101,7 +101,7 @@ export function ChatView({
         <h2 className="font-semibold text-lg truncate-gradient flex-1" title={conversation.title}>
           {conversation.title}
         </h2>
-        <Button variant="ghost" size="icon" aria-label="Options">
+        <Button variant="ghost" size="icon" aria-label="Options" className="hidden">
           <HugeiconsIcon size={16} icon={MoreVerticalCircle01Icon} strokeWidth={2} />
         </Button>
       </div>
