@@ -74,6 +74,8 @@ const MarkdownPart = memo(
       })
     }
 
+    console.log(content)
+
     return (
       <ReactMarkdown
         remarkPlugins={[remarkGfm, [remarkMath, { singleDollarTextMath: false }]]}

@@ -132,9 +132,17 @@ export interface SyncStatus {
   error: string | null
 }
 
+export type ExportSettings = {
+  format: 'markdown' | 'json'
+  includeAttachments: boolean
+  prefixTimestamp: boolean
+  outputPath: string
+}
+
 export interface ExportOptions {
   format: 'markdown' | 'json'
   includeAttachments: boolean
+  prefixTimestamp?: boolean
   outputPath: string
 }
 
@@ -180,6 +188,9 @@ export const enum IPC_CHANNELS {
   ATTACHMENT_DOWNLOAD = 'attachment:download',
   ATTACHMENT_OPEN = 'attachment:open',
   ATTACHMENT_EXISTS = 'attachment:exists',
+
+  // Dialog
+  DIALOG_PICK_FOLDER = 'dialog:pick-folder',
 
   // Shell
   SHELL_OPEN_EXTERNAL = 'shell:open-external',
@@ -256,11 +267,20 @@ export interface ElectronAPI {
     }>
   }
   userPreferences: {
-    get: () => Promise<{ hasCompletedOnboarding: boolean; showDebugPanel: boolean }>
+    get: () => Promise<{
+      hasCompletedOnboarding: boolean
+      showDebugPanel: boolean
+      exportSettings: ExportSettings | null
+    }>
     set: (preferences: {
       hasCompletedOnboarding?: boolean
       showDebugPanel?: boolean
-    }) => Promise<{ hasCompletedOnboarding: boolean; showDebugPanel: boolean }>
+      exportSettings?: ExportSettings | null
+    }) => Promise<{
+      hasCompletedOnboarding: boolean
+      showDebugPanel: boolean
+      exportSettings: ExportSettings | null
+    }>
   }
   debug: {
     toggleChatGPTView: () => Promise<{ isVisible: boolean }>
@@ -277,6 +297,9 @@ export interface ElectronAPI {
     ) => Promise<{ success: boolean; localPath?: string; error?: string }>
     open: (localPath: string) => Promise<{ success: boolean; error?: string }>
     exists: (localPath: string) => Promise<boolean>
+  }
+  dialog: {
+    pickFolder: () => Promise<string | null>
   }
   shell: {
     openExternal: (url: string) => Promise<void>

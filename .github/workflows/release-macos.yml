@@ -79,13 +79,15 @@ jobs:
           CSC_KEY_PASSWORD: ${{ secrets.CSC_KEY_PASSWORD }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          pnpm run build:mac
+          pnpm run build:mac --publish always
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
           name: macos-dmg
-          path: dist/*.dmg
+          path: |
+            dist/*.dmg
+            dist/latest-mac.yml
 
       - name: Create Release
         if: startsWith(github.ref, 'refs/tags/')

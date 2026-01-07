@@ -103,11 +103,17 @@ const api: ElectronAPI = {
       ipcRenderer.invoke(IPC_CHANNELS.USER_PREFERENCES_GET) as Promise<{
         hasCompletedOnboarding: boolean
         showDebugPanel: boolean
+        exportSettings: import('@shared/types').ExportSettings | null
       }>,
-    set: (preferences: { hasCompletedOnboarding?: boolean; showDebugPanel?: boolean }) =>
+    set: (preferences: {
+      hasCompletedOnboarding?: boolean
+      showDebugPanel?: boolean
+      exportSettings?: import('@shared/types').ExportSettings | null
+    }) =>
       ipcRenderer.invoke(IPC_CHANNELS.USER_PREFERENCES_SET, preferences) as Promise<{
         hasCompletedOnboarding: boolean
         showDebugPanel: boolean
+        exportSettings: import('@shared/types').ExportSettings | null
       }>
   },
 
@@ -145,6 +151,11 @@ const api: ElectronAPI = {
       }>,
     exists: (localPath: string) =>
       ipcRenderer.invoke(IPC_CHANNELS.ATTACHMENT_EXISTS, localPath) as Promise<boolean>
+  },
+
+  // Dialog operations
+  dialog: {
+    pickFolder: () => ipcRenderer.invoke(IPC_CHANNELS.DIALOG_PICK_FOLDER) as Promise<string | null>
   },
 
   // Shell operations

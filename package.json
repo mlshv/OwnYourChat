@@ -45,6 +45,7 @@
     "@zubridge/electron": "^2.1.1",
     "better-sqlite3": "^12.5.0",
     "drizzle-orm": "^0.45.1",
+    "electron-updater": "^6.7.3",
     "vitest": "^4.0.16",
     "zustand": "^5.0.9"
   },

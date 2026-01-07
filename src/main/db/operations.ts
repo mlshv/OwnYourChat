@@ -481,7 +481,11 @@ function mapAttachment(row: typeof attachments.$inferSelect): Attachment {
 }
 
 // User preferences operations
-export async function getUserPreferences(): Promise<{ hasCompletedOnboarding: boolean; showDebugPanel: boolean }> {
+export async function getUserPreferences(): Promise<{
+  hasCompletedOnboarding: boolean
+  showDebugPanel: boolean
+  exportSettings: import('../../shared/types').ExportSettings | null
+}> {
   const db = getDatabase()
   const [result] = await db.select().from(userPreferences).where(eq(userPreferences.id, 'default'))
 
@@ -490,31 +494,53 @@ export async function getUserPreferences(): Promise<{ hasCompletedOnboarding: bo
     await db.insert(userPreferences).values({
       id: 'default',
       hasCompletedOnboarding: false,
-      showDebugPanel: false
+      showDebugPanel: false,
+      exportSettings: null
     })
-    return { hasCompletedOnboarding: false, showDebugPanel: false }
+    return { hasCompletedOnboarding: false, showDebugPanel: false, exportSettings: null }
+  }
+
+  let exportSettings: import('../../shared/types').ExportSettings | null = null
+  if (result.exportSettings) {
+    try {
+      exportSettings = JSON.parse(result.exportSettings)
+    } catch {
+      exportSettings = null
+    }
   }
 
   return {
     hasCompletedOnboarding: result.hasCompletedOnboarding,
-    showDebugPanel: result.showDebugPanel
+    showDebugPanel: result.showDebugPanel,
+    exportSettings
   }
 }
 
 export async function setUserPreferences(prefs: {
   hasCompletedOnboarding?: boolean
   showDebugPanel?: boolean
-}): Promise<{ hasCompletedOnboarding: boolean; showDebugPanel: boolean }> {
+  exportSettings?: import('../../shared/types').ExportSettings | null
+}): Promise<{
+  hasCompletedOnboarding: boolean
+  showDebugPanel: boolean
+  exportSettings: import('../../shared/types').ExportSettings | null
+}> {
   const db = getDatabase()
 
   // Get current preferences
   const current = await getUserPreferences()
 
+  // Handle exportSettings
+  const newExportSettings =
+    prefs.exportSettings !== undefined ? prefs.exportSettings : current.exportSettings
+  const exportSettingsJson = newExportSettings ? JSON.stringify(newExportSettings) : null
+
   // Update with new values
   const updated = {
     id: 'default' as const,
     hasCompletedOnboarding: prefs.hasCompletedOnboarding ?? current.hasCompletedOnboarding,
-    showDebugPanel: prefs.showDebugPanel ?? current.showDebugPanel
+    showDebugPanel: prefs.showDebugPanel ?? current.showDebugPanel,
+    exportSettings: exportSettingsJson
   }
 
   await db
@@ -524,12 +550,14 @@ export async function setUserPreferences(prefs: {
       target: userPreferences.id,
       set: {
         hasCompletedOnboarding: updated.hasCompletedOnboarding,
-        showDebugPanel: updated.showDebugPanel
+        showDebugPanel: updated.showDebugPanel,
+        exportSettings: updated.exportSettings
       }
     })
 
   return {
     hasCompletedOnboarding: updated.hasCompletedOnboarding,
-    showDebugPanel: updated.showDebugPanel
+    showDebugPanel: updated.showDebugPanel,
+    exportSettings: newExportSettings
   }
 }

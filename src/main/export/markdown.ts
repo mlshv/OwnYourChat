@@ -1,6 +1,7 @@
 import fs from 'fs'
 import path from 'path'
 import type { Conversation, Message, ExportOptions } from '../../shared/types'
+import { formatDate, sanitizeFilename } from './utils.js'
 
 export async function exportToMarkdown(
   conversation: Conversation,
@@ -9,7 +10,10 @@ export async function exportToMarkdown(
 ): Promise<string> {
   // Create conversation folder
   const safeTitle = sanitizeFilename(conversation.title)
-  const folderPath = path.join(options.outputPath, safeTitle)
+  const folderName = options.prefixTimestamp
+    ? `${formatDate(conversation.createdAt)} ${safeTitle}`
+    : safeTitle
+  const folderPath = path.join(options.outputPath, folderName)
 
   if (!fs.existsSync(folderPath)) {
     fs.mkdirSync(folderPath, { recursive: true })
@@ -95,17 +99,6 @@ export async function exportToMarkdown(
   fs.writeFileSync(filePath, lines.join('\n'), 'utf-8')
 
   return filePath
-}
-
-function sanitizeFilename(name: string): string {
-  return (
-    name
-      .replace(/[\\/:*?"<>|]+/g, '-')
-      .replace(/\s+/g, ' ')
-      .replace(/^\.+/, '')
-      .slice(0, 100)
-      .trim() || 'Untitled'
-  )
 }
 
 function formatDateTime(date: Date | null | undefined): string {

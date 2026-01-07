@@ -435,6 +435,13 @@
           "autoincrement": false,
           "default": false
         },
+        "export_settings": {
+          "name": "export_settings",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
         "created_at": {
           "name": "created_at",
           "type": "integer",

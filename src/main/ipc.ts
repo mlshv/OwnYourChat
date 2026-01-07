@@ -72,35 +72,13 @@ export function setupIpcHandlers(): void {
         return { success: false, error: 'Conversation not found' }
       }
 
-      // Let user pick export directory
-      const mainWindow = getMainWindow()
-      if (!mainWindow) {
-        return { success: false, error: 'No main window' }
-      }
-
-      const result = await dialog.showOpenDialog(mainWindow, {
-        properties: ['openDirectory', 'createDirectory'],
-        title: 'Choose Export Location'
-      })
-
-      if (result.canceled || !result.filePaths[0]) {
-        return { success: false, error: 'Export cancelled' }
-      }
-
       // Get provider instance for downloading attachments
       const provider = providerRegistry.getProvider(conversation.provider as 'chatgpt' | 'claude')
       const context = {
         provider: provider ?? null
       }
 
-      const exportPath = await exportConversation(
-        id,
-        {
-          ...options,
-          outputPath: result.filePaths[0]
-        },
-        context
-      )
+      const exportPath = await exportConversation(id, options, context)
       return { success: true, path: exportPath }
     } catch (error) {
       return { success: false, error: (error as Error).message }
@@ -109,21 +87,6 @@ export function setupIpcHandlers(): void {
 
   ipcMain.handle(IPC_CHANNELS.EXPORT_ALL, async (_event, options) => {
     try {
-      // Let user pick export directory
-      const mainWindow = getMainWindow()
-      if (!mainWindow) {
-        return { success: false, error: 'No main window' }
-      }
-
-      const result = await dialog.showOpenDialog(mainWindow, {
-        properties: ['openDirectory', 'createDirectory'],
-        title: 'Select Export Directory'
-      })
-
-      if (result.canceled || !result.filePaths[0]) {
-        return { success: false, error: 'Export cancelled' }
-      }
-
       // For batch export, we'll use ChatGPT provider as fallback
       // Individual conversation exports will use their own provider
       const provider = providerRegistry.getProvider('chatgpt')
@@ -131,13 +94,7 @@ export function setupIpcHandlers(): void {
         provider: provider ?? null
       }
 
-      const exportPath = await exportAllConversations(
-        {
-          ...options,
-          outputPath: result.filePaths[0]
-        },
-        context
-      )
+      const exportPath = await exportAllConversations(options, context)
       return { success: true, path: exportPath }
     } catch (error) {
       return { success: false, error: (error as Error).message }
@@ -325,6 +282,25 @@ export function setupIpcHandlers(): void {
     } catch {
       return false
     }
+  })
+
+  // Dialog handlers
+  ipcMain.handle(IPC_CHANNELS.DIALOG_PICK_FOLDER, async () => {
+    const mainWindow = getMainWindow()
+    if (!mainWindow) {
+      return null
+    }
+
+    const result = await dialog.showOpenDialog(mainWindow, {
+      properties: ['openDirectory', 'createDirectory'],
+      title: 'Select Export Folder'
+    })
+
+    if (result.canceled || !result.filePaths[0]) {
+      return null
+    }
+
+    return result.filePaths[0]
   })
 
   // Open URL

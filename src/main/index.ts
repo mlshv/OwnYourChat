@@ -14,6 +14,12 @@ import { providerRegistry } from './sync/providers/registry'
 import { store } from './store'
 import { createZustandBridge } from '@zubridge/electron/main'
 import { startMcpServer, stopMcpServer } from './mcp/server'
+import {
+  initAutoUpdater,
+  isUpdateAvailable,
+  quitAndInstall,
+  onUpdateDownloaded
+} from './update-manager'
 
 let mainWindow: BrowserWindow | null = null
 
@@ -29,6 +35,17 @@ function createApplicationMenu(): void {
             submenu: [
               { role: 'about' as const },
               { type: 'separator' as const },
+              ...(isUpdateAvailable()
+                ? [
+                    { type: 'separator' as const },
+                    {
+                      label: 'Restart to Update',
+                      click: () => {
+                        quitAndInstall()
+                      }
+                    }
+                  ]
+                : []),
               {
                 label: 'Preferences...',
                 accelerator: 'Cmd+,',
@@ -68,6 +85,17 @@ function createApplicationMenu(): void {
       submenu: [
         ...(!isMac
           ? [
+              ...(isUpdateAvailable()
+                ? [
+                    { type: 'separator' as const },
+                    {
+                      label: 'Restart to Update',
+                      click: () => {
+                        quitAndInstall()
+                      }
+                    }
+                  ]
+                : []),
               {
                 label: 'Preferences...',
                 accelerator: 'Ctrl+,',
@@ -221,6 +249,12 @@ app.whenReady().then(async () => {
   // Create application menu
   createApplicationMenu()
 
+  // Set up callback to rebuild menu when update is downloaded
+  onUpdateDownloaded(() => {
+    console.log('[App] Update downloaded, rebuilding menu...')
+    createApplicationMenu()
+  })
+
   // Set app user model id for windows
   electronApp.setAppUserModelId('ownyourchat')
 
@@ -313,6 +347,9 @@ app.whenReady().then(async () => {
     // dock icon is clicked and there are no other windows open.
     if (BrowserWindow.getAllWindows().length === 0) createWindow()
   })
+
+  // Initialize auto-updater
+  initAutoUpdater()
 })
 
 // Quit when all windows are closed, except on macOS. There, it's common
