@@ -6,6 +6,7 @@ import { ChatView } from './components/ChatView'
 import { ExportModal } from './components/ExportModal'
 import { SettingsModal } from './components/SettingsModal'
 import { OnboardingScreen } from './components/OnboardingScreen'
+import { Input } from './components/ui/input'
 import type { Conversation, Message, ElectronAPI } from '@shared/types'
 import { buildMessageTree, getDisplayPath, updateBranchSelection } from './lib/branch-utils'
 import { useAuthState } from './lib/store'
@@ -254,7 +255,7 @@ export default function App() {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center h-screen">
-        <div className="text-f2">Loading...</div>
+        <div className="text-muted-foreground">Loading...</div>
       </div>
     )
   }
@@ -264,7 +265,7 @@ export default function App() {
       <div className="flex items-center justify-center h-screen">
         <div className="text-center">
           <h1 className="text-2xl font-bold mb-4">OwnYourChat</h1>
-          <p className="text-f2">This app must be run in Electron.</p>
+          <p className="text-muted-foreground">This app must be run in Electron.</p>
         </div>
       </div>
     )
@@ -275,22 +276,21 @@ export default function App() {
       {/* Main content */}
       <div className="flex flex-1 overflow-hidden">
         {/* Sidebar */}
-        <div className="w-72 border-r border-b3 flex flex-col">
+        <div className="w-72 border-r border-border flex flex-col">
           {/* Search */}
-          <div className="p-3 border-b border-b3">
-            <input
+          <div className="p-3 border-b border-border">
+            <Input
               type="text"
               placeholder="Search conversations..."
               value={searchQuery}
               onChange={(e) => handleSearch(e.target.value)}
-              className="w-full px-3 py-2 text-sm border border-b4 rounded-lg bg-b1 focus:outline-none focus:ring-2 focus:ring-f1"
             />
           </div>
 
           {/* Chat list */}
           <div className="flex-1 overflow-auto">
             {conversations.items.length === 0 ? (
-              <div className="p-4 text-center text-f2 text-sm">
+              <div className="p-4 text-center text-muted-foreground text-sm">
                 {!authState.isLoggedIn
                   ? 'Connect a provider to sync your chats'
                   : 'No conversations yet.'}
@@ -320,7 +320,7 @@ export default function App() {
               onLoadMore={handleLoadMoreMessages}
             />
           ) : (
-            <div className="flex items-center justify-center h-full text-f2">
+            <div className="flex items-center justify-center h-full text-muted-foreground">
               Select a conversation to view
             </div>
           )}
@@ -328,34 +328,28 @@ export default function App() {
       </div>
 
       {/* Debug Toolbar */}
-      <div className="h-10 flex items-center justify-between px-4 bg-yellow-700 border-b border-b3">
+      <div className="h-10 flex items-center justify-between px-4 bg-yellow-700 border-b border-border">
         <div className="flex items-center gap-2">
           <span className="font-semibold text-sm">Debug Mode</span>
         </div>
         <div className="no-drag flex items-center gap-2">
           <button
-            onClick={() => setShowExportModal(true)}
-            className="text-xs px-2 py-1 bg-f1 text-b1 rounded active:bg-f2"
-          >
-            Export
-          </button>
-          <button
             onClick={() => window.api?.debug.toggleChatGPTView()}
-            className="text-xs px-2 py-1 bg-f1 text-b1 rounded active:bg-f2"
+            className="text-xs px-2 py-1 bg-foreground text-background rounded active:bg-foreground/90"
             title="Toggle ChatGPT WebContentsView visibility"
           >
             View ChatGPT
           </button>
           <button
             onClick={() => window.api?.debug.toggleClaudeView()}
-            className="text-xs px-2 py-1 bg-f1 text-b1 rounded active:bg-f2"
+            className="text-xs px-2 py-1 bg-foreground text-background rounded active:bg-foreground/90"
             title="Toggle Claude WebContentsView visibility"
           >
             View Claude
           </button>
           <button
             onClick={() => window.api?.debug.togglePerplexityView()}
-            className="text-xs px-2 py-1 bg-f1 text-b1 rounded active:bg-f2"
+            className="text-xs px-2 py-1 bg-foreground text-background rounded active:bg-foreground/90"
             title="Toggle Perplexity WebContentsView visibility"
           >
             View Perplexity
@@ -363,7 +357,7 @@ export default function App() {
 
           <button
             onClick={() => window.api?.debug.openChatGPTDevTools()}
-            className="text-xs px-2 py-1 bg-f1 text-b1 rounded active:bg-f2"
+            className="text-xs px-2 py-1 bg-foreground text-background rounded active:bg-foreground/90"
             title="Open DevTools for ChatGPT WebContentsView"
           >
             DevTools (ChatGPT)
@@ -371,14 +365,14 @@ export default function App() {
 
           <button
             onClick={() => window.api?.debug.openClaudeDevTools()}
-            className="text-xs px-2 py-1 bg-f1 text-b1 rounded active:bg-f2"
+            className="text-xs px-2 py-1 bg-foreground text-background rounded active:bg-foreground/90"
             title="Open DevTools for Claude WebContentsView"
           >
             DevTools (Claude)
           </button>
           <button
             onClick={() => window.api?.debug.openPerplexityDevTools()}
-            className="text-xs px-2 py-1 bg-f1 text-b1 rounded active:bg-f2"
+            className="text-xs px-2 py-1 bg-foreground text-background rounded active:bg-foreground/90"
             title="Open DevTools for Perplexity WebContentsView"
           >
             DevTools (Perplexity)
@@ -387,15 +381,14 @@ export default function App() {
       </div>
 
       {/* Export modal */}
-      {showExportModal && (
-        <ExportModal
-          conversationId={selectedConversation?.id}
-          onClose={() => setShowExportModal(false)}
-        />
-      )}
+      <ExportModal
+        conversationId={selectedConversation?.id}
+        open={showExportModal}
+        onOpenChange={setShowExportModal}
+      />
 
       {/* Settings modal */}
-      {showSettingsModal && <SettingsModal onClose={() => setShowSettingsModal(false)} />}
+      <SettingsModal open={showSettingsModal} onOpenChange={setShowSettingsModal} />
 
       {/* Onboarding screen */}
       {!hasCompletedOnboarding && <OnboardingScreen onComplete={handleOnboardingComplete} />}

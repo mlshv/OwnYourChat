@@ -124,7 +124,7 @@ export const AssistantMessage = memo(function AssistantMessage({
           return (
             <div
               key={att.id}
-              className="relative overflow-hidden rounded-xl bg-b4"
+              className="relative overflow-hidden rounded-xl bg-accent"
               style={{ width: displayW, height: displayH }}
             >
               {localPath ? (
@@ -137,7 +137,7 @@ export const AssistantMessage = memo(function AssistantMessage({
                 />
               ) : (
                 <div className="absolute inset-0 flex items-center justify-center animate-pulse">
-                  <span className="text-xs text-f2">Loading...</span>
+                  <span className="text-xs text-muted-foreground">Loading...</span>
                 </div>
               )}
             </div>
@@ -163,8 +163,8 @@ export const AssistantMessage = memo(function AssistantMessage({
               onClick={() => handleFileClick(att)}
               disabled={isDownloading}
               className={cn(
-                'text-left border border-b4 bg-b2 rounded-xl overflow-hidden w-72',
-                !isDownloading && 'active:bg-b3',
+                'text-left border border-border bg-muted rounded-xl overflow-hidden w-72',
+                !isDownloading && 'active:bg-accent',
                 isDownloading && 'opacity-50'
               )}
             >
@@ -178,7 +178,7 @@ export const AssistantMessage = memo(function AssistantMessage({
                   </div>
                   <div className="overflow-hidden min-w-0 flex-1">
                     <div className="truncate text-sm font-semibold">{att.filename}</div>
-                    <div className="text-f3 truncate text-sm">
+                    <div className="text-muted-foreground truncate text-sm">
                       {isDownloading ? 'Downloading...' : label}
                     </div>
                   </div>

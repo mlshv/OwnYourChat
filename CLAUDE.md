@@ -27,6 +27,9 @@ pnpm build                  # Type check and build
 pnpm build:mac              # Build for macOS
 pnpm build:win              # Build for Windows
 pnpm build:linux            # Build for Linux
+
+# UI Components
+pnpm ui:add [component]     # Add shadcn component (e.g., pnpm ui:add button)
 ```
 
 ## Architecture
@@ -100,6 +103,26 @@ Always use `-Icon` suffix for Phosphor icons: `AppleLogoIcon` not `AppleLogo`.
 ## TypeScript Conventions
 
 Use `type` for type aliases, not `interface` (unless defining OOP interfaces intended for class implementation).
+
+## UI & Styling
+
+### Squircle Border Radiuses
+
+All elements have `corner-shape: squircle` applied globally (`src/renderer/src/globals.css`). This makes rounded corners use squircle shapes instead of circular arcs.
+
+**For elements that must be truly circular (not squircle):**
+```css
+.round-element {
+  corner-shape: round;
+}
+```
+
+Common cases requiring `corner-shape: round`:
+- Radio button indicators
+- Checkbox indicators (when using `rounded-full`)
+- Avatar/profile images
+- Loading spinners
+- Circular badges or dots
 
 ## Build System
 

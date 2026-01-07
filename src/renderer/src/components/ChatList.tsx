@@ -68,8 +68,8 @@ export function ChatList({
             key={conv.id}
             onPointerDown={() => onSelect(conv)}
             className={cn(
-              'w-full text-left p-3 border-b border-b3',
-              selectedId === conv.id && 'bg-b3'
+              'w-full text-left p-3 border-b border-border',
+              selectedId === conv.id && 'bg-accent'
             )}
           >
             <div className="flex items-center gap-1 w-full">
@@ -78,11 +78,11 @@ export function ChatList({
                 {conv.title || 'Untitled'}
               </h3>
 
-              <span className="text-xs text-f2 whitespace-nowrap">
+              <span className="text-xs text-muted-foreground whitespace-nowrap">
                 {formatDate(conv.updatedAt)}
               </span>
             </div>
-            <div className="text-xs text-f2 mt-1">{conv.messageCount} messages</div>
+            <div className="text-xs text-muted-foreground mt-1">{conv.messageCount} messages</div>
           </button>
         )
       })}

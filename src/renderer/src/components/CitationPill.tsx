@@ -32,7 +32,7 @@ export const CitationPill = memo(function CitationPill({ reference }: CitationPi
       tabIndex={0}
       onClick={handleClick}
       onKeyDown={(e) => e.key === 'Enter' && handleClick(e as unknown as React.MouseEvent)}
-      className="inline-flex h-[18px] overflow-hidden rounded-xl px-2 text-[9px] font-medium text-f2 bg-b3 hover:bg-b4 active:bg-b4 cursor-pointer items-center ms-1 top-[-0.094rem] relative"
+      className="inline-flex h-[18px] overflow-hidden rounded-xl px-2 text-[9px] font-medium text-muted-foreground bg-accent hover:bg-accent active:bg-accent cursor-pointer items-center ms-1 top-[-0.094rem] relative"
     >
       <span className="max-w-[15ch] truncate text-center">{displayText}</span>
     </span>

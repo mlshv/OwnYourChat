@@ -36,11 +36,11 @@ export function BranchNavigation({ message, onSelectSibling }: BranchNavigationP
   }
 
   return (
-    <div className="flex items-center text-xs text-f2 select-none">
+    <div className="flex items-center text-xs text-muted-foreground select-none">
       <button
         onClick={handlePrev}
         disabled={!hasPrev}
-        className="flex py-1.5 px-0.5 items-center justify-center rounded active:bg-b3 disabled:opacity-30 disabled:cursor-default"
+        className="flex py-1.5 px-0.5 items-center justify-center rounded active:bg-accent disabled:opacity-30 disabled:cursor-default"
         aria-label="Previous variant"
       >
         <CaretLeftIcon className="w-5 h-5" />
@@ -51,7 +51,7 @@ export function BranchNavigation({ message, onSelectSibling }: BranchNavigationP
       <button
         onClick={handleNext}
         disabled={!hasNext}
-        className="flex py-1.5 px-0.5 items-center justify-center rounded active:bg-b3 disabled:opacity-30 disabled:cursor-default"
+        className="flex py-1.5 px-0.5 items-center justify-center rounded active:bg-accent disabled:opacity-30 disabled:cursor-default"
         aria-label="Next variant"
       >
         <CaretRightIcon className="w-5 h-5" />

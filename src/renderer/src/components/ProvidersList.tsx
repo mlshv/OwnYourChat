@@ -2,8 +2,9 @@
 
 import { useProvidersState } from '@/lib/store'
 import { AI_PROVIDERS } from '@/constants'
+import { Button } from '@/components/ui/button'
 
-interface ProvidersListProps {
+type ProvidersListProps = {
   showTitle?: boolean
   onConnect?: (accountId: 'chatgpt' | 'claude' | 'perplexity') => void
 }
@@ -42,24 +43,21 @@ export function ProvidersList({ showTitle = true, onConnect }: ProvidersListProp
           return (
             <div
               key={account.id}
-              className="flex items-center justify-between p-3 rounded-lg bg-b2 border border-b3"
+              className="flex items-center justify-between p-3 rounded-lg bg-muted/50 border border-border"
             >
               <div className="flex items-center gap-3">
-                <div className="text-xs text-f2">
+                <div className="text-xs text-muted-foreground">
                   <Icon size={24} />
                 </div>
                 <div className="text-sm font-medium">{account.name}</div>
               </div>
               {account.status === 'connected' && (
-                <div className="text-xs text-f2 bg-b3 px-2 py-1 rounded">Connected</div>
+                <div className="text-xs text-muted-foreground bg-accent px-2 py-1 rounded">Connected</div>
               )}
               {account.status === 'disconnected' && (
-                <button
-                  onClick={() => handleConnect(account.id)}
-                  className="text-xs bg-f1 text-b1 px-3 py-1 rounded active:bg-f2"
-                >
+                <Button onClick={() => handleConnect(account.id)} size="xs">
                   Connect
-                </button>
+                </Button>
               )}
             </div>
           )

@@ -111,8 +111,38 @@ const MarkdownPart = memo(
           },
           li: ({ children, marker }: { children?: React.ReactNode; marker?: string }) => (
             <li className="[&>p]:inline [&>p]:m-0">
-              <span className="text-f2">{marker || '-'}</span> {processChildren(children)}
+              <span className="text-muted-foreground">{marker || '-'}</span>{' '}
+              {processChildren(children)}
             </li>
+          ),
+          pre: ({ children }) => (
+            <pre className="bg-accent/50 rounded-md px-1 py-0.5 my-2">
+              {processChildren(children)}
+            </pre>
+          ),
+          table: ({ children }) => (
+            <div className="my-4 overflow-x-auto">
+              <table className="w-full border-collapse border border-border rounded-lg">
+                {processChildren(children)}
+              </table>
+            </div>
+          ),
+          thead: ({ children }) => (
+            <thead className="bg-muted">{processChildren(children)}</thead>
+          ),
+          tbody: ({ children }) => <tbody>{processChildren(children)}</tbody>,
+          tr: ({ children }) => (
+            <tr className="border-b border-border">{processChildren(children)}</tr>
+          ),
+          th: ({ children }) => (
+            <th className="px-4 py-2 text-left font-semibold border-r border-border last:border-r-0">
+              {processChildren(children)}
+            </th>
+          ),
+          td: ({ children }) => (
+            <td className="px-4 py-2 border-r border-border last:border-r-0">
+              {processChildren(children)}
+            </td>
           )
         }}
       >

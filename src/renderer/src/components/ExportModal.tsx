@@ -2,13 +2,25 @@
 
 import { useState } from 'react'
 import { cn } from '@/lib/cn'
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle
+} from '@/components/ui/dialog'
+import { Button } from '@/components/ui/button'
+import { Label } from '@/components/ui/label'
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
+import { Checkbox } from '@/components/ui/checkbox'
 
 interface ExportModalProps {
   conversationId?: string
-  onClose: () => void
+  open: boolean
+  onOpenChange: (open: boolean) => void
 }
 
-export function ExportModal({ conversationId, onClose }: ExportModalProps) {
+export function ExportModal({ conversationId, open, onOpenChange }: ExportModalProps) {
   const [format, setFormat] = useState<'markdown' | 'json'>('markdown')
   const [includeAttachments, setIncludeAttachments] = useState(true)
   const [exportAll, setExportAll] = useState(!conversationId)
@@ -60,86 +72,85 @@ export function ExportModal({ conversationId, onClose }: ExportModalProps) {
   }
 
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-      <div className="bg-b1 rounded-lg shadow-xl w-full max-w-md mx-4">
-        {/* Header */}
-        <div className="p-4 border-b border-b3">
-          <h2 className="text-lg font-semibold">Export Conversations</h2>
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="max-w-md p-0 gap-0">
+        <div className="p-4">
+          <DialogHeader>
+            <DialogTitle>Export Conversations</DialogTitle>
+          </DialogHeader>
         </div>
 
-        {/* Body */}
-        <div className="p-4 space-y-4">
+        <div className="space-y-6 px-4 pb-4">
           {/* Export scope */}
-          <div>
-            <label className="block text-sm font-medium mb-2">Export</label>
-            <div className="space-y-2">
+          <div className="space-y-3">
+            <Label>Export</Label>
+            <RadioGroup
+              value={exportAll ? 'all' : 'current'}
+              onValueChange={(value) => setExportAll(value === 'all')}
+            >
               {conversationId && (
-                <label className="flex items-center gap-2">
-                  <input
-                    type="radio"
-                    checked={!exportAll}
-                    onChange={() => setExportAll(false)}
-                    className="accent-f1"
-                  />
-                  <span className="text-sm">Current conversation</span>
-                </label>
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value="current" id="current" />
+                  <Label htmlFor="current" className="font-normal">
+                    Current conversation
+                  </Label>
+                </div>
               )}
-              <label className="flex items-center gap-2">
-                <input
-                  type="radio"
-                  checked={exportAll}
-                  onChange={() => setExportAll(true)}
-                  className="accent-f1"
-                />
-                <span className="text-sm">All conversations</span>
-              </label>
-            </div>
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="all" id="all" />
+                <Label htmlFor="all" className="font-normal">
+                  All conversations
+                </Label>
+              </div>
+            </RadioGroup>
           </div>
 
           {/* Format */}
-          <div>
-            <label className="block text-sm font-medium mb-2">Format</label>
-            <div className="space-y-2">
-              <label className="flex items-center gap-2">
-                <input
-                  type="radio"
-                  checked={format === 'markdown'}
-                  onChange={() => setFormat('markdown')}
-                  className="accent-f1"
-                />
-                <span className="text-sm">Markdown</span>
-              </label>
-              <label className="flex items-center gap-2">
-                <input
-                  type="radio"
-                  checked={format === 'json'}
-                  onChange={() => setFormat('json')}
-                  className="accent-f1"
-                />
-                <span className="text-sm">JSON</span>
-              </label>
-            </div>
+          <div className="space-y-3">
+            <Label>Format</Label>
+            <RadioGroup
+              value={format}
+              onValueChange={(value) => setFormat(value as 'markdown' | 'json')}
+            >
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="markdown" id="markdown" />
+                <Label htmlFor="markdown" className="font-normal">
+                  Markdown
+                </Label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="json" id="json" />
+                <Label htmlFor="json" className="font-normal">
+                  JSON
+                </Label>
+              </div>
+            </RadioGroup>
           </div>
 
           {/* Options */}
-          <div>
-            <label className="flex items-center gap-2">
-              <input
-                type="checkbox"
+          <div className="space-y-2">
+            <div className="flex items-center space-x-2">
+              <Checkbox
+                id="attachments"
                 checked={includeAttachments}
-                onChange={(e) => setIncludeAttachments(e.target.checked)}
-                className="accent-f1 rounded"
+                onCheckedChange={(checked) => setIncludeAttachments(checked as boolean)}
               />
-              <span className="text-sm">Include attachments</span>
-            </label>
+              <Label htmlFor="attachments" className="font-normal">
+                Include attachments
+              </Label>
+            </div>
+            <p className="text-xs text-muted-foreground pl-6">
+              Including attachments will slow down export as all files need to be downloaded from
+              exported chats.
+            </p>
           </div>
 
           {/* Result message */}
           {result && (
             <div
               className={cn(
-                'p-3 rounded text-sm',
-                result.success ? 'bg-b3 text-f1' : 'bg-b3 text-f1'
+                'p-3 rounded-lg text-sm',
+                result.success ? 'bg-accent text-foreground' : 'bg-destructive/10 text-destructive'
               )}
             >
               {result.message}
@@ -148,19 +159,15 @@ export function ExportModal({ conversationId, onClose }: ExportModalProps) {
         </div>
 
         {/* Footer */}
-        <div className="p-4 border-t border-b3 flex justify-end gap-2">
-          <button onClick={onClose} className="px-4 py-2 text-sm text-f2 active:bg-b2 rounded">
+        <DialogFooter className="flex justify-end gap-2 pt-2">
+          <Button variant="outline" onClick={() => onOpenChange(false)}>
             Cancel
-          </button>
-          <button
-            onClick={handleExport}
-            disabled={isExporting}
-            className="px-4 py-2 text-sm bg-f1 text-b1 rounded active:bg-f2 disabled:opacity-50"
-          >
+          </Button>
+          <Button onClick={handleExport} disabled={isExporting}>
             {isExporting ? 'Exporting...' : 'Export'}
-          </button>
-        </div>
-      </div>
-    </div>
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   )
 }

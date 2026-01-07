@@ -7,6 +7,9 @@ import { UserMessageBubble } from './UserMessageBubble'
 import { AssistantMessage } from './AssistantMessage'
 import { BranchNavigation } from './BranchNavigation'
 import { AI_PROVIDERS } from '@/constants'
+import { HugeiconsIcon } from '@hugeicons/react'
+import { MoreVerticalCircle01Icon } from '@hugeicons/core-free-icons'
+import { Button } from './ui/button'
 
 const LOAD_MORE_THRESHOLD = 200 // pixels from top to trigger loading more
 
@@ -94,8 +97,13 @@ export function ChatView({
   return (
     <div className="flex flex-col h-full">
       {/* Header */}
-      <div className="px-4 py-2 border-b border-b3">
-        <h2 className="font-semibold text-lg">{conversation.title}</h2>
+      <div className="px-4 py-2 border-b border-border flex items-center">
+        <h2 className="font-semibold text-lg truncate-gradient flex-1" title={conversation.title}>
+          {conversation.title}
+        </h2>
+        <Button variant="ghost" size="icon" aria-label="Options">
+          <HugeiconsIcon size={16} icon={MoreVerticalCircle01Icon} strokeWidth={2} />
+        </Button>
       </div>
 
       {/* Messages */}
@@ -104,9 +112,12 @@ export function ChatView({
         {hasMoreMessages && (
           <div className="py-4 text-center max-w-3xl mx-auto">
             {isLoadingMore ? (
-              <span className="text-sm text-f2">Loading older messages...</span>
+              <span className="text-sm text-muted-foreground">Loading older messages...</span>
             ) : (
-              <button onClick={onLoadMore} className="text-sm text-f2 hover:text-f1">
+              <button
+                onClick={onLoadMore}
+                className="text-sm text-muted-foreground hover:text-foreground"
+              >
                 Load more messages
               </button>
             )}
@@ -148,7 +159,7 @@ export function ChatView({
         <div className="max-w-3xl mx-auto pt-4 pb-12 flex justify-center">
           <button
             onClick={() => AI_PROVIDERS[conversation.provider].openConversation(conversation.id)}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl border border-b4 bg-b2 active:bg-b3 text-sm"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl border border-border bg-muted active:bg-accent text-sm"
           >
             <Icon size={24} />
             <span>Continue conversation in {AI_PROVIDERS[conversation.provider].name}</span>

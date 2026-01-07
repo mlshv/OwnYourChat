@@ -29,6 +29,22 @@ function createApplicationMenu(): void {
             submenu: [
               { role: 'about' as const },
               { type: 'separator' as const },
+              {
+                label: 'Preferences...',
+                accelerator: 'Cmd+,',
+                click: () => {
+                  mainWindow?.webContents.send(IPC_CHANNELS.MENU_SETTINGS_CLICK)
+                }
+              },
+              { type: 'separator' as const },
+              {
+                label: 'Export Conversations...',
+                accelerator: 'Cmd+Shift+E',
+                click: () => {
+                  mainWindow?.webContents.send(IPC_CHANNELS.MENU_EXPORT_CLICK)
+                }
+              },
+              { type: 'separator' as const },
               { role: 'services' as const },
               { type: 'separator' as const },
               { role: 'hide' as const },
@@ -43,7 +59,29 @@ function createApplicationMenu(): void {
     // File menu
     {
       label: 'File',
-      submenu: [isMac ? { role: 'close' as const } : { role: 'quit' as const }]
+      submenu: [
+        ...(!isMac
+          ? [
+              {
+                label: 'Preferences...',
+                accelerator: 'Ctrl+,',
+                click: () => {
+                  mainWindow?.webContents.send(IPC_CHANNELS.MENU_SETTINGS_CLICK)
+                }
+              },
+              { type: 'separator' as const },
+              {
+                label: 'Export Conversations...',
+                accelerator: 'Ctrl+Shift+E',
+                click: () => {
+                  mainWindow?.webContents.send(IPC_CHANNELS.MENU_EXPORT_CLICK)
+                }
+              },
+              { type: 'separator' as const }
+            ]
+          : []),
+        isMac ? { role: 'close' as const } : { role: 'quit' as const }
+      ]
     },
     // Edit menu
     {
@@ -81,32 +119,6 @@ function createApplicationMenu(): void {
         { role: 'zoomOut' as const },
         { type: 'separator' as const },
         { role: 'togglefullscreen' as const }
-      ]
-    },
-    // Export menu
-    {
-      label: 'Export',
-      submenu: [
-        {
-          label: 'Export Conversations...',
-          accelerator: isMac ? 'Cmd+Shift+E' : 'Ctrl+Shift+E',
-          click: () => {
-            mainWindow?.webContents.send(IPC_CHANNELS.MENU_EXPORT_CLICK)
-          }
-        }
-      ]
-    },
-    // Settings menu
-    {
-      label: 'Settings',
-      submenu: [
-        {
-          label: 'Preferences...',
-          accelerator: isMac ? 'Cmd+,' : 'Ctrl+,',
-          click: () => {
-            mainWindow?.webContents.send(IPC_CHANNELS.MENU_SETTINGS_CLICK)
-          }
-        }
       ]
     },
     // Window menu
