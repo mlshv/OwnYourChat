@@ -1,12 +1,8 @@
 import { randomUUID } from 'node:crypto'
-import { Server } from '@modelcontextprotocol/sdk/server/index.js'
+import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js'
 import { StreamableHTTPServerTransport } from '@modelcontextprotocol/sdk/server/streamableHttp.js'
-import {
-  CallToolRequestSchema,
-  ListToolsRequestSchema,
-  isInitializeRequest,
-  type Tool
-} from '@modelcontextprotocol/sdk/types.js'
+import { isInitializeRequest } from '@modelcontextprotocol/sdk/types.js'
+import { z } from 'zod'
 import * as db from '../db/operations'
 import { createServer } from 'http'
 import type { Server as HttpServer, IncomingMessage, ServerResponse } from 'http'
@@ -16,170 +12,79 @@ let isRunning = false
 
 const transports: Map<string, StreamableHTTPServerTransport> = new Map()
 
-const TOOLS: Tool[] = [
-  {
-    name: 'list_conversations',
-    description:
-      'List conversations from the local database. Returns a paginated list of ChatGPT and Claude conversations synced to the local database.',
-    inputSchema: {
-      type: 'object',
-      properties: {
-        limit: {
-          type: 'number',
-          description: 'Maximum number of conversations to return (default: 50)'
-        },
-        offset: {
-          type: 'number',
-          description: 'Number of conversations to skip for pagination (default: 0)'
-        }
-      }
-    }
-  },
-  {
-    name: 'get_conversation_with_messages',
-    description:
-      'Get a specific conversation with all its messages. Returns detailed conversation data including the full message history with attachments.',
-    inputSchema: {
-      type: 'object',
-      properties: {
-        id: {
-          type: 'string',
-          description: 'The unique ID of the conversation to retrieve'
-        },
-        limit: {
-          type: 'number',
-          description: 'Optional limit on number of messages to return'
-        }
-      },
-      required: ['id']
-    }
-  },
-  {
-    name: 'search_conversations',
-    description:
-      'Search conversations by keywords in their titles. Returns conversations where the title contains ANY of the provided keywords (case-insensitive).',
-    inputSchema: {
-      type: 'object',
-      properties: {
-        keywords: {
-          type: 'array',
-          items: { type: 'string' },
-          description: 'Array of keywords to search for in conversation titles'
-        },
-        limit: {
-          type: 'number',
-          description: 'Maximum number of results to return (default: 50)'
-        }
-      },
-      required: ['keywords']
-    }
-  },
-  {
-    name: 'search_messages',
-    description:
-      'Search messages by keywords in their content. Returns messages where the content contains ANY of the provided keywords (case-insensitive). Each result includes the message, its parent conversation, and which keywords matched.',
-    inputSchema: {
-      type: 'object',
-      properties: {
-        keywords: {
-          type: 'array',
-          items: { type: 'string' },
-          description: 'Array of keywords to search for in message content'
-        },
-        limit: {
-          type: 'number',
-          description: 'Maximum number of results to return (default: 50)'
-        }
-      },
-      required: ['keywords']
-    }
-  }
-]
-
 const createMcpServer = () => {
-  const server = new Server(
-    { name: 'ownyourchat', version: '1.0.0' },
-    { capabilities: { tools: {} } }
+  const server = new McpServer({ name: 'ownyourchat', version: '1.0.0' })
+
+  server.registerTool(
+    'list_conversations',
+    {
+      description:
+        'List conversations from the local database. Returns a paginated list of ChatGPT and Claude conversations synced to the local database.',
+      inputSchema: {
+        limit: z.number().optional().describe('Maximum number of conversations to return (default: 50)'),
+        offset: z.number().optional().describe('Number of conversations to skip for pagination (default: 0)')
+      }
+    },
+    async ({ limit, offset }) => {
+      console.log('[MCP] Tool call: list_conversations', JSON.stringify({ limit, offset }))
+      const result = await db.listConversations({ limit: limit ?? 50, offset: offset ?? 0 })
+      return { content: [{ type: 'text', text: JSON.stringify(result, null, 2) }] }
+    }
   )
 
-  server.setRequestHandler(ListToolsRequestSchema, async () => ({ tools: TOOLS }))
-
-  server.setRequestHandler(CallToolRequestSchema, async (request) => {
-    const { name, arguments: args } = request.params
-
-    try {
-      switch (name) {
-        case 'list_conversations': {
-          const options = {
-            limit: typeof args?.limit === 'number' ? args.limit : 50,
-            offset: typeof args?.offset === 'number' ? args.offset : 0
-          }
-          const result = await db.listConversations(options)
-          return { content: [{ type: 'text', text: JSON.stringify(result, null, 2) }] }
-        }
-
-        case 'get_conversation_with_messages': {
-          if (!args?.id || typeof args.id !== 'string') {
-            return {
-              content: [{ type: 'text', text: JSON.stringify({ error: 'Missing required parameter: id' }) }],
-              isError: true
-            }
-          }
-
-          const options = typeof args.limit === 'number' ? { limit: args.limit } : undefined
-          const result = await db.getConversationWithMessages(args.id, options)
-
-          if (!result) {
-            return {
-              content: [{ type: 'text', text: JSON.stringify({ error: 'Conversation not found' }) }],
-              isError: true
-            }
-          }
-
-          return { content: [{ type: 'text', text: JSON.stringify(result, null, 2) }] }
-        }
-
-        case 'search_conversations': {
-          if (!args?.keywords || !Array.isArray(args.keywords)) {
-            return {
-              content: [{ type: 'text', text: JSON.stringify({ error: 'Missing required parameter: keywords (array)' }) }],
-              isError: true
-            }
-          }
-
-          const keywords = args.keywords.filter((k): k is string => typeof k === 'string')
-          const searchOptions = typeof args.limit === 'number' ? { limit: args.limit } : undefined
-          const result = await db.searchConversationsByKeywords(keywords, searchOptions)
-          return { content: [{ type: 'text', text: JSON.stringify(result, null, 2) }] }
-        }
-
-        case 'search_messages': {
-          if (!args?.keywords || !Array.isArray(args.keywords)) {
-            return {
-              content: [{ type: 'text', text: JSON.stringify({ error: 'Missing required parameter: keywords (array)' }) }],
-              isError: true
-            }
-          }
-
-          const keywords = args.keywords.filter((k): k is string => typeof k === 'string')
-          const searchOptions = typeof args.limit === 'number' ? { limit: args.limit } : undefined
-          const result = await db.searchMessagesByKeywords(keywords, searchOptions)
-          return { content: [{ type: 'text', text: JSON.stringify(result, null, 2) }] }
-        }
-
-        default:
-          return {
-            content: [{ type: 'text', text: JSON.stringify({ error: `Unknown tool: ${name}` }) }],
-            isError: true
-          }
+  server.registerTool(
+    'get_conversation_with_messages',
+    {
+      description:
+        'Get a specific conversation with all its messages. Returns detailed conversation data including the full message history with attachments.',
+      inputSchema: {
+        id: z.string().describe('The unique ID of the conversation to retrieve'),
+        limit: z.number().optional().describe('Optional limit on number of messages to return')
       }
-    } catch (error) {
-      return {
-        content: [{ type: 'text', text: JSON.stringify({ error: (error as Error).message }) }],
-        isError: true
+    },
+    async ({ id, limit }) => {
+      console.log('[MCP] Tool call: get_conversation_with_messages', JSON.stringify({ id, limit }))
+      const result = await db.getConversationWithMessages(id, limit ? { limit } : undefined)
+      if (!result) {
+        return { content: [{ type: 'text', text: JSON.stringify({ error: 'Conversation not found' }) }], isError: true }
       }
+      return { content: [{ type: 'text', text: JSON.stringify(result, null, 2) }] }
     }
-  })
+  )
+
+  server.registerTool(
+    'search_conversations',
+    {
+      description:
+        'Search conversations by keywords in their titles. Returns conversations where the title contains ANY of the provided keywords (case-insensitive).',
+      inputSchema: {
+        keywords: z.array(z.string()).describe('Array of keywords to search for in conversation titles'),
+        limit: z.number().optional().describe('Maximum number of results to return (default: 50)')
+      }
+    },
+    async ({ keywords, limit }) => {
+      console.log('[MCP] Tool call: search_conversations', JSON.stringify({ keywords, limit }))
+      const result = await db.searchConversationsByKeywords(keywords, limit ? { limit } : undefined)
+      return { content: [{ type: 'text', text: JSON.stringify(result, null, 2) }] }
+    }
+  )
+
+  server.registerTool(
+    'search_messages',
+    {
+      description:
+        'Search messages by keywords in their content. Returns messages where the content contains ANY of the provided keywords (case-insensitive). Each result includes the message, its parent conversation, and which keywords matched.',
+      inputSchema: {
+        keywords: z.array(z.string()).describe('Array of keywords to search for in message content'),
+        limit: z.number().optional().describe('Maximum number of results to return (default: 50)')
+      }
+    },
+    async ({ keywords, limit }) => {
+      console.log('[MCP] Tool call: search_messages', JSON.stringify({ keywords, limit }))
+      const result = await db.searchMessagesByKeywords(keywords, limit ? { limit } : undefined)
+      return { content: [{ type: 'text', text: JSON.stringify(result, null, 2) }] }
+    }
+  )
 
   return server
 }
@@ -208,6 +113,11 @@ export async function startMcpServer(port: number = 37777): Promise<void> {
 
   try {
     httpServer = createServer(async (req: IncomingMessage, res: ServerResponse) => {
+      const sessionId = req.headers['mcp-session-id'] as string | undefined
+
+      // Log all incoming requests
+      console.log(`[MCP] <- ${req.method} ${req.url} session=${sessionId ?? 'none'}`)
+
       res.setHeader('Access-Control-Allow-Origin', '*')
       res.setHeader('Access-Control-Allow-Methods', 'GET, POST, DELETE, OPTIONS')
       res.setHeader('Access-Control-Allow-Headers', 'Content-Type, mcp-session-id')
@@ -225,17 +135,28 @@ export async function startMcpServer(port: number = 37777): Promise<void> {
         return
       }
 
-      if (req.url !== '/mcp') {
-        res.writeHead(404)
-        res.end('Not found')
+      // handle OAuth discovery - return 404 JSON to indicate no auth server
+      if (req.url?.startsWith('/.well-known/')) {
+        console.log(`[MCP] -> 404 ${req.url} (OAuth not configured)`)
+        res.writeHead(404, { 'Content-Type': 'application/json' })
+        res.end(JSON.stringify({ error: 'not_found', error_description: 'OAuth not configured' }))
         return
       }
 
-      const sessionId = req.headers['mcp-session-id'] as string | undefined
+      if (req.url !== '/mcp') {
+        console.log(`[MCP] -> 404 ${req.url}`)
+        res.writeHead(404, { 'Content-Type': 'application/json' })
+        res.end(JSON.stringify({ error: 'not_found' }))
+        return
+      }
 
       try {
         if (req.method === 'POST') {
           const body = await parseBody(req)
+
+          // Log JSON-RPC method details
+          const jsonRpcBody = body as { method?: string; id?: unknown }
+          console.log(`[MCP]    method=${jsonRpcBody.method ?? 'unknown'} id=${jsonRpcBody.id ?? '-'}`)
 
           if (sessionId && transports.has(sessionId)) {
             const transport = transports.get(sessionId)!
@@ -267,6 +188,7 @@ export async function startMcpServer(port: number = 37777): Promise<void> {
             return
           }
 
+          console.log(`[MCP] -> 400 Bad Request: No valid session ID`)
           res.writeHead(400, { 'Content-Type': 'application/json' })
           res.end(
             JSON.stringify({
@@ -280,8 +202,13 @@ export async function startMcpServer(port: number = 37777): Promise<void> {
 
         if (req.method === 'GET') {
           if (!sessionId || !transports.has(sessionId)) {
-            res.writeHead(400, { 'Content-Type': 'text/plain' })
-            res.end('Invalid or missing session ID')
+            console.log(`[MCP] -> 404 Session not found: ${sessionId ?? 'none'}`)
+            res.writeHead(404, { 'Content-Type': 'application/json' })
+            res.end(JSON.stringify({
+              jsonrpc: '2.0',
+              error: { code: -32001, message: 'Session not found. Please reinitialize.' },
+              id: null
+            }))
             return
           }
           const transport = transports.get(sessionId)!
@@ -291,20 +218,21 @@ export async function startMcpServer(port: number = 37777): Promise<void> {
 
         if (req.method === 'DELETE') {
           if (!sessionId || !transports.has(sessionId)) {
-            res.writeHead(400, { 'Content-Type': 'text/plain' })
-            res.end('Invalid or missing session ID')
+            console.log(`[MCP] -> 200 Session already terminated: ${sessionId ?? 'none'}`)
+            res.writeHead(200, { 'Content-Type': 'application/json' })
+            res.end(JSON.stringify({ status: 'ok' }))
             return
           }
-          console.log(`[MCP] Session termination request for ${sessionId}`)
           const transport = transports.get(sessionId)!
           await transport.handleRequest(req, res)
           return
         }
 
+        console.log(`[MCP] -> 405 Method not allowed: ${req.method}`)
         res.writeHead(405)
         res.end('Method not allowed')
       } catch (error) {
-        console.error('[MCP] Error handling request:', error)
+        console.error(`[MCP] -> 500 Internal server error:`, error)
         if (!res.headersSent) {
           res.writeHead(500, { 'Content-Type': 'application/json' })
           res.end(
