@@ -6,6 +6,22 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 OwnYourChat is an Electron desktop application that syncs AI conversations from ChatGPT, Claude, and Perplexity into a local SQLite database. Built with Electron + React + TypeScript, using Drizzle ORM for database management.
 
+## Detailed Specifications
+
+For deeper documentation including engineering decisions and rationale, see `specs/`:
+
+| Spec | Description |
+|------|-------------|
+| [architecture.md](specs/architecture.md) | System overview, 3-process Electron model, directory structure |
+| [providers.md](specs/providers.md) | ChatGPT/Claude/Perplexity sync, authentication, polling |
+| [database.md](specs/database.md) | SQLite schema, message tree structure, upsert patterns |
+| [ipc.md](specs/ipc.md) | IPC channels, stale-while-revalidate, preload bridge |
+| [state-management.md](specs/state-management.md) | Zustand + Zubridge, cross-process state sync |
+| [mcp-server.md](specs/mcp-server.md) | MCP server for AI assistants, HTTP transport |
+| [frontend.md](specs/frontend.md) | React components, branch navigation, virtualization |
+| [attachments.md](specs/attachments.md) | File downloading, caching, custom protocol |
+| [export.md](specs/export.md) | Markdown/JSON export, attachment handling |
+
 ## Development Commands
 
 ```bash
