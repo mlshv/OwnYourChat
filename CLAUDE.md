@@ -21,6 +21,8 @@ For deeper documentation including engineering decisions and rationale, see `spe
 | [frontend.md](specs/frontend.md) | React components, branch navigation, virtualization |
 | [attachments.md](specs/attachments.md) | File downloading, caching, custom protocol |
 | [export.md](specs/export.md) | Markdown/JSON export, attachment handling |
+| [electron-qa-debug-agent.md](specs/electron-qa-debug-agent.md) | QA/debug subagent spec, MCP integration |
+| [electron-qa-debug-agent-implementation-plan.md](specs/electron-qa-debug-agent-implementation-plan.md) | Step-by-step setup guide |
 
 ## Development Commands
 

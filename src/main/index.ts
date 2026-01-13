@@ -2,6 +2,11 @@ import { app, BrowserWindow, protocol, net, Menu } from 'electron'
 import { join } from 'path'
 import fs from 'fs'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
+
+// Enable remote debugging for electron-mcp-server (QA/debug agent) in dev mode
+if (is.dev) {
+  app.commandLine.appendSwitch('remote-debugging-port', '9222')
+}
 import icon from '../../build/icon.png?asset'
 import { IPC_CHANNELS } from '../shared/types'
 import { getAttachmentsPath, getSettings } from './settings'
@@ -296,6 +301,16 @@ app.whenReady().then(async () => {
   })
 
   createWindow()
+
+  // Enable Chrome DevTools Protocol for electron-mcp-server (QA/debug agent)
+  if (is.dev && mainWindow) {
+    try {
+      mainWindow.webContents.debugger.attach('1.3')
+      console.log('[App] CDP debugger attached for electron-mcp-server')
+    } catch (error) {
+      console.error('[App] Failed to attach CDP debugger:', error)
+    }
+  }
 
   // Initialize Zubridge
   if (mainWindow) {

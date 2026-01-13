@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "electron": {
+      "command": "npx",
+      "args": ["electron-mcp-server"]
+    }
+  }
+}
