@@ -66,7 +66,7 @@ export function ChatList({
         return (
           <button
             key={conv.id}
-            onPointerDown={() => onSelect(conv)}
+            onClick={() => onSelect(conv)}
             className={cn(
               'w-full text-left p-3 border-b border-border outline-none focus-visible:bg-accent focus-visible:border-transparent',
               selectedId === conv.id && 'bg-accent border-transparent'

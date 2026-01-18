@@ -108,26 +108,53 @@ Attachments embedded as Markdown links/images.
 
 ## JSON Format
 
+OpenAI Chat API-compatible format for interoperability with other tools.
+
 ```json
 {
-  "conversation": {
-    "id": "...",
-    "title": "...",
-    "provider": "chatgpt",
-    "createdAt": "2026-01-07T10:00:00Z"
-  },
+  "id": "conv-abc123",
+  "title": "My Conversation",
+  "provider": "chatgpt",
+  "created_at": 1704621600,
+  "updated_at": 1704621700,
+  "exported_at": "2026-01-07T10:00:00Z",
+  "message_count": 10,
   "messages": [
     {
-      "id": "...",
+      "id": "msg-xyz789",
       "role": "user",
-      "parts": [...],
-      "attachments": [...]
+      "content": "What is the capital of France?",
+      "created_at": 1704621600,
+      "parent_id": null
+    },
+    {
+      "id": "msg-abc456",
+      "role": "assistant",
+      "content": "The capital of France is Paris.",
+      "created_at": 1704621605,
+      "parent_id": "msg-xyz789",
+      "sources": [
+        {"title": "Wikipedia - Paris", "url": "https://en.wikipedia.org/wiki/Paris"}
+      ],
+      "attachments": [
+        {
+          "type": "image",
+          "filename": "paris.png",
+          "local_path": "./attachments/paris.png",
+          "original_url": "https://..."
+        }
+      ]
     }
   ]
 }
 ```
 
-Full data preservation including message tree structure.
+**Field mapping**:
+- `created_at` / `updated_at`: Unix timestamps (seconds)
+- `content`: Flattened text from message parts
+- `parent_id`: Message tree structure (null for root messages)
+- `sources`: Extracted from `source-url` parts (Perplexity citations, etc.)
+- `attachments`: Only present when `includeAttachments` enabled
 
 ## IPC Channels
 
@@ -135,6 +162,19 @@ Full data preservation including message tree structure.
 |---------|---------|
 | `export:conversation` | Export single conversation |
 | `export:all` | Batch export all (up to 10k) |
+| `export:progress` | Progress updates (renderer listens) |
+| `export:cancel` | Abort in-progress export |
+
+### Progress Event
+
+```typescript
+type ExportProgress = {
+  phase: 'downloading' | 'exporting'
+  current: number
+  total: number
+  conversationTitle?: string
+}
+```
 
 ## UI
 
@@ -143,6 +183,24 @@ Full data preservation including message tree structure.
 - "Include attachments" checkbox with warning about download time
 - "Prefix with timestamp" checkbox
 - Output folder picker (`dialog:pick-folder`)
-- Progress indicator during batch export
+- Progress bar during export (attachment downloads + conversation count)
+- Cancel button aborts in-progress export immediately
 
 Settings persisted in `user_preferences.exportSettings`.
+
+### Progress UI
+
+During export, modal shows:
+- Phase label ("Downloading attachments..." / "Exporting conversations...")
+- Progress bar with current/total count
+- Current conversation title (for batch exports)
+- "Cancel Export" button (replaces "Cancel")
+
+### Cancellation
+
+Cancel triggers immediate abort:
+- Stops current attachment download
+- Cleans up partial files
+- Returns to ready state
+
+IPC: `export:cancel` signals abort to main process.

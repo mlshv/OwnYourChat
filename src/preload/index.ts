@@ -5,6 +5,7 @@ import {
   type Conversation,
   type Message,
   type ExportOptions,
+  type ExportProgress,
   type ElectronAPI,
   type AppState
 } from '@shared/types'
@@ -67,7 +68,14 @@ const api: ElectronAPI = {
         success: boolean
         path?: string
         error?: string
-      }>
+      }>,
+    onProgress: (callback: (progress: ExportProgress) => void) => {
+      const handler = (_event: Electron.IpcRendererEvent, progress: ExportProgress) =>
+        callback(progress)
+      ipcRenderer.on(IPC_CHANNELS.EXPORT_PROGRESS, handler)
+      return () => ipcRenderer.removeListener(IPC_CHANNELS.EXPORT_PROGRESS, handler)
+    },
+    cancel: () => ipcRenderer.invoke(IPC_CHANNELS.EXPORT_CANCEL) as Promise<void>
   },
 
   // Auth operations

@@ -146,6 +146,14 @@ export interface ExportOptions {
   outputPath: string
 }
 
+// Export progress tracking
+export type ExportProgress = {
+  phase: 'counting' | 'downloading' | 'exporting'
+  current: number
+  total: number
+  conversationTitle?: string
+}
+
 // IPC channel names
 export const enum IPC_CHANNELS {
   // Sync
@@ -161,6 +169,8 @@ export const enum IPC_CHANNELS {
   // Export
   EXPORT_CONVERSATION = 'export:conversation',
   EXPORT_ALL = 'export:all',
+  EXPORT_PROGRESS = 'export:progress',
+  EXPORT_CANCEL = 'export:cancel',
 
   // Auth
   AUTH_STATUS = 'auth:status',
@@ -239,6 +249,8 @@ export interface ElectronAPI {
       options: ExportOptions
     ) => Promise<{ success: boolean; path?: string; error?: string }>
     all: (options: ExportOptions) => Promise<{ success: boolean; path?: string; error?: string }>
+    onProgress: (callback: (progress: ExportProgress) => void) => () => void
+    cancel: () => Promise<void>
   }
   auth: {
     login: (provider: 'chatgpt' | 'claude' | 'perplexity') => Promise<{ success: boolean }>

@@ -33,6 +33,7 @@ export default function App() {
   const [branchSelections, setBranchSelections] = useState<Record<string, string>>({}) // parentId -> selected childId
   const [isLoading, setIsLoading] = useState(true)
   const [showExportModal, setShowExportModal] = useState(false)
+  const [exportScope, setExportScope] = useState<'current' | 'all' | null>(null)
   const [showSettingsModal, setShowSettingsModal] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
   const [hasCompletedOnboarding, setHasCompletedOnboarding] = useState(false)
@@ -134,6 +135,7 @@ export default function App() {
 
     // Listen for menu export click
     const unsubscribeMenuExport = window.api!.menu.onExportClick(() => {
+      setExportScope(null)
       setShowExportModal(true)
     })
 
@@ -328,6 +330,10 @@ export default function App() {
               hasMoreMessages={hasMoreMessages}
               isLoadingMore={isLoadingMore}
               onLoadMore={handleLoadMoreMessages}
+              onOpenExport={() => {
+                setExportScope('current')
+                setShowExportModal(true)
+              }}
             />
           ) : (
             <div className="flex items-center justify-center h-full text-muted-foreground">
@@ -396,7 +402,13 @@ export default function App() {
       <ExportModal
         conversationId={selectedConversation?.id}
         open={showExportModal}
-        onOpenChange={setShowExportModal}
+        onOpenChange={(open) => {
+          setShowExportModal(open)
+          if (!open) {
+            setExportScope(null)
+          }
+        }}
+        preferredScope={exportScope ?? undefined}
       />
 
       {/* Settings modal */}

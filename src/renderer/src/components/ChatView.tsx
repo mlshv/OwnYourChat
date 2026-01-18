@@ -2,14 +2,25 @@
 
 import { useRef, useEffect, useState, useCallback } from 'react'
 import { VList, VListHandle } from 'virtua'
-import type { Conversation, Message } from '@shared/types'
+import type { Conversation, Message, MessagePart, SourceUrlPart } from '@shared/types'
 import { UserMessageBubble } from './UserMessageBubble'
 import { AssistantMessage } from './AssistantMessage'
 import { BranchNavigation } from './BranchNavigation'
 import { AI_PROVIDERS } from '@/constants'
 import { HugeiconsIcon } from '@hugeicons/react'
-import { MoreVerticalCircle01Icon } from '@hugeicons/core-free-icons'
+import {
+  Copy01Icon,
+  Copy02Icon,
+  FileExportIcon,
+  MoreVerticalCircle01Icon
+} from '@hugeicons/core-free-icons'
 import { Button } from './ui/button'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger
+} from './ui/dropdown-menu'
 
 const LOAD_MORE_THRESHOLD = 200 // pixels from top to trigger loading more
 
@@ -20,6 +31,101 @@ interface ChatViewProps {
   hasMoreMessages?: boolean
   isLoadingMore?: boolean
   onLoadMore?: () => void
+  onOpenExport?: () => void
+}
+
+const formatDateTime = (date: Date | string | null | undefined): string => {
+  if (!date) return 'Unknown'
+  const parsedDate = new Date(date)
+  if (Number.isNaN(parsedDate.getTime())) return 'Unknown'
+  return parsedDate.toLocaleString('en-US', {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit'
+  })
+}
+
+const flattenPartsToContent = (parts: MessagePart[]): string =>
+  parts
+    .filter((part) => part.type === 'text')
+    .map((part) => part.text)
+    .join('\n')
+
+const extractSources = (parts: MessagePart[]): Array<{ title?: string; url: string }> =>
+  parts
+    .filter((part): part is SourceUrlPart => part.type === 'source-url')
+    .map((part) => ({
+      ...(part.title && { title: part.title }),
+      url: part.url
+    }))
+
+const toUnixTimestamp = (date: Date | string | undefined | null): number | null => {
+  if (!date) return null
+  const parsedDate = new Date(date)
+  if (Number.isNaN(parsedDate.getTime())) return null
+  return Math.floor(parsedDate.getTime() / 1000)
+}
+
+const buildMarkdownExport = (conversation: Conversation, messages: Message[]): string => {
+  const headerLines = [
+    `# ${conversation.title}`,
+    '',
+    `**Created:** ${formatDateTime(conversation.createdAt)}  `,
+    `**Last updated:** ${formatDateTime(conversation.updatedAt)}  `,
+    `**Exported:** ${formatDateTime(new Date())}`,
+    ''
+  ]
+
+  const messageLines = messages.flatMap((msg) => {
+    const roleLabel = msg.role === 'user' ? 'User' : 'Assistant'
+    const content = msg.parts
+      .map((part) => {
+        if (part.type === 'text') return part.text
+        if (part.type === 'source-url') {
+          return part.title ? `[${part.title}](${part.url})` : part.url
+        }
+        return ''
+      })
+      .join('')
+
+    return [`## ${roleLabel}`, '', ...(content ? [content, ''] : [])]
+  })
+
+  return [...headerLines, ...messageLines].join('\n')
+}
+
+const buildJsonExport = (conversation: Conversation, messages: Message[]): string => {
+  const processedMessages = messages.map((msg) => {
+    const sources = extractSources(msg.parts)
+    const messageObj: Record<string, unknown> = {
+      id: msg.id,
+      role: msg.role,
+      content: flattenPartsToContent(msg.parts),
+      created_at: toUnixTimestamp(msg.createdAt),
+      parent_id: msg.parentId
+    }
+
+    if (sources.length > 0) {
+      messageObj.sources = sources
+    }
+
+    return messageObj
+  })
+
+  const exportData = {
+    id: conversation.id,
+    title: conversation.title,
+    provider: conversation.provider,
+    created_at: toUnixTimestamp(conversation.createdAt),
+    updated_at: toUnixTimestamp(conversation.updatedAt),
+    exported_at: new Date().toISOString(),
+    message_count: messages.length,
+    messages: processedMessages
+  }
+
+  return JSON.stringify(exportData, null, 2)
 }
 
 export function ChatView({
@@ -28,7 +134,8 @@ export function ChatView({
   onBranchSelect,
   hasMoreMessages = false,
   isLoadingMore = false,
-  onLoadMore
+  onLoadMore,
+  onOpenExport
 }: ChatViewProps) {
   const listRef = useRef<VListHandle>(null)
   // Track downloaded attachment paths: { attachmentId: localPath }
@@ -94,6 +201,21 @@ export function ChatView({
 
   const Icon = AI_PROVIDERS[conversation.provider].icon
 
+  const handleCopy = useCallback(
+    async (format: 'markdown' | 'json') => {
+      const text =
+        format === 'markdown'
+          ? buildMarkdownExport(conversation, messages)
+          : buildJsonExport(conversation, messages)
+      try {
+        await navigator.clipboard.writeText(text)
+      } catch (error) {
+        console.error('Failed to copy export text:', error)
+      }
+    },
+    [conversation, messages]
+  )
+
   return (
     <div className="flex flex-col h-full">
       {/* Header */}
@@ -101,9 +223,28 @@ export function ChatView({
         <h2 className="font-semibold text-lg truncate-gradient flex-1" title={conversation.title}>
           {conversation.title}
         </h2>
-        <Button variant="ghost" size="icon" aria-label="Options" className="hidden">
-          <HugeiconsIcon size={16} icon={MoreVerticalCircle01Icon} strokeWidth={2} />
-        </Button>
+        <DropdownMenu>
+          <DropdownMenuTrigger
+            aria-label="Options"
+            className="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 rounded-lg border border-transparent bg-clip-padding text-sm font-medium focus-visible:ring-[3px] aria-invalid:ring-[3px] [&_svg:not([class*='size-'])]:size-4 inline-flex items-center justify-center whitespace-nowrap disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none shrink-0 [&_svg]:shrink-0 outline-none group/button select-none aria-expanded:bg-muted aria-expanded:text-foreground transition-none active:bg-muted active:text-foreground dark:active:bg-muted/50 size-8"
+          >
+            <HugeiconsIcon size={16} icon={MoreVerticalCircle01Icon} strokeWidth={2} />
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" sideOffset={4} className="w-44">
+            <DropdownMenuItem onClick={() => onOpenExport?.()}>
+              <HugeiconsIcon icon={FileExportIcon} />
+              Export
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => handleCopy('markdown')}>
+              <HugeiconsIcon icon={Copy01Icon} />
+              Copy as Markdown
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => handleCopy('json')}>
+              <HugeiconsIcon icon={Copy02Icon} />
+              Copy as JSON
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
 
       {/* Messages */}

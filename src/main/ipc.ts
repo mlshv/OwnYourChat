@@ -1,8 +1,12 @@
 import { ipcMain, dialog, shell } from 'electron'
-import { IPC_CHANNELS } from '../shared/types'
+import { IPC_CHANNELS, type ExportProgress } from '../shared/types'
 import { getMainWindow, providerRegistry } from './index.js'
 import * as db from './db/operations'
-import { exportConversation, exportAllConversations } from './export'
+import {
+  startExportWorker,
+  startExportAllWorker,
+  cancelExport
+} from './export/worker-manager'
 import { getSettings, updateSettings } from './settings'
 import { startMcpServer, stopMcpServer, isMcpServerRunning } from './mcp/server'
 import fs from 'fs'
@@ -63,42 +67,80 @@ export function setupIpcHandlers(): void {
     }
   })
 
-  // Export handlers
+  // Helper function to send progress updates to renderer
+  const sendProgressUpdate = (progress: ExportProgress): void => {
+    const mainWindow = getMainWindow()
+    if (mainWindow) {
+      mainWindow.webContents.send(IPC_CHANNELS.EXPORT_PROGRESS, progress)
+    }
+  }
+
+  // Helper function to download attachments (called by worker via manager)
+  const downloadAttachment = async (request: {
+    conversationId: string
+    attachmentId: string
+    fileId: string
+    filename: string
+  }): Promise<string> => {
+    // Get conversation to determine provider
+    const conversation = await db.getConversation(request.conversationId)
+    if (!conversation) {
+      throw new Error('Conversation not found for attachment')
+    }
+
+    // Get provider instance
+    const provider = providerRegistry.getProvider(
+      conversation.provider as 'chatgpt' | 'claude' | 'perplexity'
+    )
+    if (!provider) {
+      throw new Error(`${conversation.provider} provider not available`)
+    }
+
+    // Download the attachment using provider method
+    const localPath = await provider.downloadAttachment(
+      request.fileId,
+      request.filename,
+      request.conversationId
+    )
+
+    // Update the database
+    await db.updateAttachmentLocalPath(request.attachmentId, localPath)
+
+    return localPath
+  }
+
+  // Export handlers - using worker thread for non-blocking operation
   ipcMain.handle(IPC_CHANNELS.EXPORT_CONVERSATION, async (_event, id: string, options) => {
     try {
-      // Get conversation to determine provider
-      const conversation = await db.getConversation(id)
-      if (!conversation) {
-        return { success: false, error: 'Conversation not found' }
-      }
-
-      // Get provider instance for downloading attachments
-      const provider = providerRegistry.getProvider(conversation.provider as 'chatgpt' | 'claude')
-      const context = {
-        provider: provider ?? null
-      }
-
-      const exportPath = await exportConversation(id, options, context)
-      return { success: true, path: exportPath }
+      const result = await startExportWorker(
+        { conversationId: id, options },
+        sendProgressUpdate,
+        downloadAttachment
+      )
+      return result
     } catch (error) {
+      console.error('[IPC] Export conversation error:', error)
       return { success: false, error: (error as Error).message }
     }
   })
 
   ipcMain.handle(IPC_CHANNELS.EXPORT_ALL, async (_event, options) => {
     try {
-      // For batch export, we'll use ChatGPT provider as fallback
-      // Individual conversation exports will use their own provider
-      const provider = providerRegistry.getProvider('chatgpt')
-      const context = {
-        provider: provider ?? null
-      }
-
-      const exportPath = await exportAllConversations(options, context)
-      return { success: true, path: exportPath }
+      const result = await startExportAllWorker(
+        { options },
+        sendProgressUpdate,
+        downloadAttachment
+      )
+      return result
     } catch (error) {
+      console.error('[IPC] Export all error:', error)
       return { success: false, error: (error as Error).message }
     }
+  })
+
+  // Export cancel handler
+  ipcMain.handle(IPC_CHANNELS.EXPORT_CANCEL, async () => {
+    cancelExport()
   })
 
   ipcMain.handle(IPC_CHANNELS.AUTH_LOGIN, async (_event, providerName: 'chatgpt' | 'claude') => {
