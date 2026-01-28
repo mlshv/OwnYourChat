@@ -164,6 +164,7 @@ export const enum IPC_CHANNELS {
   CONVERSATIONS_GET = 'conversations:get',
   CONVERSATIONS_GET_MESSAGES_PAGE = 'conversations:get-messages-page',
   CONVERSATIONS_SEARCH = 'conversations:search',
+  CONVERSATIONS_PROVIDER_COUNTS = 'conversations:provider-counts',
   CONVERSATIONS_REFRESH = 'conversations:refresh',
 
   // Export
@@ -214,7 +215,11 @@ export const enum IPC_CHANNELS {
 // ElectronAPI type definition for window.api
 export interface ElectronAPI {
   conversations: {
-    list: (options?: { limit?: number; offset?: number }) => Promise<{
+    list: (options?: {
+      limit?: number
+      offset?: number
+      provider?: 'chatgpt' | 'claude' | 'perplexity'
+    }) => Promise<{
       items: Conversation[]
       total: number
       hasMore: boolean
@@ -236,10 +241,18 @@ export interface ElectronAPI {
       hasMore: boolean
       oldestOrderIndex: number | null
     }>
-    search: (query: string) => Promise<{
+    search: (
+      query: string,
+      options?: { provider?: 'chatgpt' | 'claude' | 'perplexity' }
+    ) => Promise<{
       items: Conversation[]
       total: number
       hasMore: boolean
+    }>
+    getProviderCounts: () => Promise<{
+      chatgpt: number
+      claude: number
+      perplexity: number
     }>
     refresh: (id: string) => Promise<{ conversation: Conversation; messages: Message[] } | null>
   }
