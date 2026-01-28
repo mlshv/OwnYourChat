@@ -36,6 +36,7 @@ export default function App() {
   const [exportScope, setExportScope] = useState<'current' | 'all' | null>(null)
   const [showSettingsModal, setShowSettingsModal] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
+  const [caseSensitiveSearch, setCaseSensitiveSearch] = useState(false)
   const [hasCompletedOnboarding, setHasCompletedOnboarding] = useState(false)
   const [showDebugPanel, setShowDebugPanel] = useState(false)
   const [isUserAtTop, setIsUserAtTop] = useState(true)
@@ -251,16 +252,29 @@ export default function App() {
     }
   }
 
-  const handleSearch = async (query: string) => {
+  const handleSearch = async (query: string, caseSensitive?: boolean) => {
     setSearchQuery(query)
     if (!isElectron) return
 
+    const isCaseSensitive = caseSensitive ?? caseSensitiveSearch
+
     if (query.trim()) {
-      const results = await window.api!.conversations.search(query)
+      const results = await window.api!.conversations.search(query, {
+        caseInsensitive: !isCaseSensitive
+      })
       setConversations(results)
     } else {
       const result = await window.api!.conversations.list({ limit: 200 })
       setConversations(result)
+    }
+  }
+
+  const handleToggleCaseSensitive = () => {
+    const newValue = !caseSensitiveSearch
+    setCaseSensitiveSearch(newValue)
+    // Re-run search with new setting if there's a query
+    if (searchQuery.trim()) {
+      handleSearch(searchQuery, newValue)
     }
   }
 
@@ -291,12 +305,26 @@ export default function App() {
         <div className="w-72 border-r border-border flex flex-col">
           {/* Search */}
           <div className="p-3 border-b border-border">
-            <Input
-              type="text"
-              placeholder="Search conversations..."
-              value={searchQuery}
-              onChange={(e) => handleSearch(e.target.value)}
-            />
+            <div className="flex gap-2">
+              <Input
+                type="text"
+                placeholder="Search conversations..."
+                value={searchQuery}
+                onChange={(e) => handleSearch(e.target.value)}
+                className="flex-1"
+              />
+              <button
+                onClick={handleToggleCaseSensitive}
+                className={`px-2 py-1 text-xs font-mono rounded border transition-colors ${
+                  caseSensitiveSearch
+                    ? 'bg-primary text-primary-foreground border-primary'
+                    : 'bg-transparent text-muted-foreground border-border hover:border-muted-foreground'
+                }`}
+                title={caseSensitiveSearch ? 'Case sensitive (click to disable)' : 'Case insensitive (click to enable)'}
+              >
+                Aa
+              </button>
+            </div>
           </div>
 
           {/* Chat list */}

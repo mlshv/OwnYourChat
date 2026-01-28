@@ -6,3 +6,4 @@ out
 *.log*
 .context
 .env
+.claude

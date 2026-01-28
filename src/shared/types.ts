@@ -236,7 +236,7 @@ export interface ElectronAPI {
       hasMore: boolean
       oldestOrderIndex: number | null
     }>
-    search: (query: string) => Promise<{
+    search: (query: string, options?: { caseInsensitive?: boolean }) => Promise<{
       items: Conversation[]
       total: number
       hasMore: boolean

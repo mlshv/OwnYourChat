@@ -42,8 +42,8 @@ const api: ElectronAPI = {
         hasMore: boolean
         oldestOrderIndex: number | null
       }>,
-    search: (query: string) =>
-      ipcRenderer.invoke(IPC_CHANNELS.CONVERSATIONS_SEARCH, query) as Promise<{
+    search: (query: string, options?: { caseInsensitive?: boolean }) =>
+      ipcRenderer.invoke(IPC_CHANNELS.CONVERSATIONS_SEARCH, query, options) as Promise<{
         items: Conversation[]
         total: number
         hasMore: boolean

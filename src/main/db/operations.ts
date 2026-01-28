@@ -1,4 +1,4 @@
-import { eq, like, desc, max, lt, and, asc, ne, count, or } from 'drizzle-orm'
+import { eq, like, desc, max, lt, and, asc, ne, count, or, sql } from 'drizzle-orm'
 import { getDatabase } from './index'
 import { conversations, messages, attachments, syncState, userPreferences } from './schema'
 import type { NewConversation, NewMessage, NewAttachment } from './schema'
@@ -170,15 +170,21 @@ export async function getMessagesPage(
 }
 
 export async function searchConversations(
-  query: string
+  query: string,
+  options?: { caseInsensitive?: boolean }
 ): Promise<{ items: Conversation[]; total: number; hasMore: boolean }> {
   const db = getDatabase()
-  const searchPattern = `%${query}%`
+  const caseInsensitive = options?.caseInsensitive ?? true
+
+  // LIKE is case-insensitive in SQLite, GLOB is case-sensitive
+  const condition = caseInsensitive
+    ? like(conversations.title, `%${query}%`)
+    : sql`${conversations.title} GLOB ${'*' + query + '*'}`
 
   const results = await db
     .select()
     .from(conversations)
-    .where(like(conversations.title, searchPattern))
+    .where(condition)
     .orderBy(desc(conversations.updatedAt))
     .limit(50)
 
@@ -191,16 +197,22 @@ export async function searchConversations(
 
 export async function searchConversationsByKeywords(
   keywords: string[],
-  options?: { limit?: number }
+  options?: { limit?: number; caseInsensitive?: boolean }
 ): Promise<{ items: Conversation[]; total: number }> {
   const db = getDatabase()
   const limit = options?.limit ?? 50
+  const caseInsensitive = options?.caseInsensitive ?? true
 
   if (keywords.length === 0) {
     return { items: [], total: 0 }
   }
 
-  const conditions = keywords.map((kw) => like(conversations.title, `%${kw}%`))
+  // LIKE is case-insensitive in SQLite, GLOB is case-sensitive
+  const conditions = keywords.map((kw) =>
+    caseInsensitive
+      ? like(conversations.title, `%${kw}%`)
+      : sql`${conversations.title} GLOB ${'*' + kw + '*'}`
+  )
 
   const results = await db
     .select()
@@ -217,7 +229,7 @@ export async function searchConversationsByKeywords(
 
 export async function searchMessagesByKeywords(
   keywords: string[],
-  options?: { limit?: number }
+  options?: { limit?: number; caseInsensitive?: boolean }
 ): Promise<{
   items: Array<{
     message: Message
@@ -228,12 +240,18 @@ export async function searchMessagesByKeywords(
 }> {
   const db = getDatabase()
   const limit = options?.limit ?? 50
+  const caseInsensitive = options?.caseInsensitive ?? true
 
   if (keywords.length === 0) {
     return { items: [], total: 0 }
   }
 
-  const conditions = keywords.map((kw) => like(messages.parts, `%${kw}%`))
+  // LIKE is case-insensitive in SQLite, GLOB is case-sensitive
+  const conditions = keywords.map((kw) =>
+    caseInsensitive
+      ? like(messages.parts, `%${kw}%`)
+      : sql`${messages.parts} GLOB ${'*' + kw + '*'}`
+  )
 
   const results = await db
     .select({

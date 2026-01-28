@@ -35,9 +35,12 @@ export function setupIpcHandlers(): void {
     }
   )
 
-  ipcMain.handle(IPC_CHANNELS.CONVERSATIONS_SEARCH, async (_event, query: string) => {
-    return db.searchConversations(query)
-  })
+  ipcMain.handle(
+    IPC_CHANNELS.CONVERSATIONS_SEARCH,
+    async (_event, query: string, options?: { caseInsensitive?: boolean }) => {
+      return db.searchConversations(query, options)
+    }
+  )
 
   // Refresh a single conversation from provider API (for getting latest messages)
   // Uses stale-while-revalidate: returns existing data immediately if refresh fails
