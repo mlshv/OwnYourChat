@@ -56,15 +56,19 @@ const createMcpServer = () => {
     'search_conversations',
     {
       description:
-        'Search conversations by keywords in their titles. Returns conversations where the title contains ANY of the provided keywords (case-insensitive).',
+        'Search conversations by keywords in their titles. Returns conversations where the title contains ANY of the provided keywords.',
       inputSchema: {
         keywords: z.array(z.string()).describe('Array of keywords to search for in conversation titles'),
-        limit: z.number().optional().describe('Maximum number of results to return (default: 50)')
+        limit: z.number().optional().describe('Maximum number of results to return (default: 50)'),
+        caseInsensitive: z
+          .boolean()
+          .optional()
+          .describe('Whether to perform case-insensitive search (default: true)')
       }
     },
-    async ({ keywords, limit }) => {
-      console.log('[MCP] Tool call: search_conversations', JSON.stringify({ keywords, limit }))
-      const result = await db.searchConversationsByKeywords(keywords, limit ? { limit } : undefined)
+    async ({ keywords, limit, caseInsensitive }) => {
+      console.log('[MCP] Tool call: search_conversations', JSON.stringify({ keywords, limit, caseInsensitive }))
+      const result = await db.searchConversationsByKeywords(keywords, { limit, caseInsensitive })
       return { content: [{ type: 'text', text: JSON.stringify(result, null, 2) }] }
     }
   )
@@ -73,15 +77,19 @@ const createMcpServer = () => {
     'search_messages',
     {
       description:
-        'Search messages by keywords in their content. Returns messages where the content contains ANY of the provided keywords (case-insensitive). Each result includes the message, its parent conversation, and which keywords matched.',
+        'Search messages by keywords in their content. Returns messages where the content contains ANY of the provided keywords. Each result includes the message, its parent conversation, and which keywords matched.',
       inputSchema: {
         keywords: z.array(z.string()).describe('Array of keywords to search for in message content'),
-        limit: z.number().optional().describe('Maximum number of results to return (default: 50)')
+        limit: z.number().optional().describe('Maximum number of results to return (default: 50)'),
+        caseInsensitive: z
+          .boolean()
+          .optional()
+          .describe('Whether to perform case-insensitive search (default: true)')
       }
     },
-    async ({ keywords, limit }) => {
-      console.log('[MCP] Tool call: search_messages', JSON.stringify({ keywords, limit }))
-      const result = await db.searchMessagesByKeywords(keywords, limit ? { limit } : undefined)
+    async ({ keywords, limit, caseInsensitive }) => {
+      console.log('[MCP] Tool call: search_messages', JSON.stringify({ keywords, limit, caseInsensitive }))
+      const result = await db.searchMessagesByKeywords(keywords, { limit, caseInsensitive })
       return { content: [{ type: 'text', text: JSON.stringify(result, null, 2) }] }
     }
   )

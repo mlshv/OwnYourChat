@@ -26,6 +26,10 @@ export async function initDatabase(): Promise<void> {
   }
 
   sqlite = new Database(dbPath)
+
+  // Register custom function for Unicode-aware lowercase (SQLite's built-in lower() only handles ASCII)
+  sqlite.function('unicode_lower', (str: string | null) => str?.toLowerCase() ?? null)
+
   db = drizzle(sqlite, { schema })
 
   // Run migrations (create tables if they don't exist)

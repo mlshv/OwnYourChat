@@ -1,4 +1,4 @@
-import { eq, like, desc, max, lt, and, asc, ne, count, or } from 'drizzle-orm'
+import { eq, desc, max, lt, and, asc, ne, count, or, sql } from 'drizzle-orm'
 import { getDatabase } from './index'
 import { conversations, messages, attachments, syncState, userPreferences } from './schema'
 import type { NewConversation, NewMessage, NewAttachment } from './schema'
@@ -209,12 +209,17 @@ export async function getMessagesPage(
 
 export async function searchConversations(
   query: string,
-  options?: { provider?: 'chatgpt' | 'claude' | 'perplexity' }
+  options?: { provider?: 'chatgpt' | 'claude' | 'perplexity'; caseInsensitive?: boolean }
 ): Promise<{ items: Conversation[]; total: number; hasMore: boolean }> {
   const db = getDatabase()
-  const searchPattern = `%${query}%`
+  const caseInsensitive = options?.caseInsensitive ?? true
 
-  const titleCondition = like(conversations.title, searchPattern)
+  // unicode_lower is a custom SQLite function that uses JS toLowerCase() for proper Unicode support
+  // INSTR does binary comparison for substring matching
+  const titleCondition = caseInsensitive
+    ? sql`INSTR(unicode_lower(${conversations.title}), ${query.toLowerCase()}) > 0`
+    : sql`INSTR(${conversations.title}, ${query}) > 0`
+
   const whereClause = options?.provider
     ? and(titleCondition, eq(conversations.provider, options.provider))
     : titleCondition
@@ -235,16 +240,23 @@ export async function searchConversations(
 
 export async function searchConversationsByKeywords(
   keywords: string[],
-  options?: { limit?: number }
+  options?: { limit?: number; caseInsensitive?: boolean }
 ): Promise<{ items: Conversation[]; total: number }> {
   const db = getDatabase()
   const limit = options?.limit ?? 50
+  const caseInsensitive = options?.caseInsensitive ?? true
 
   if (keywords.length === 0) {
     return { items: [], total: 0 }
   }
 
-  const conditions = keywords.map((kw) => like(conversations.title, `%${kw}%`))
+  // unicode_lower is a custom SQLite function that uses JS toLowerCase() for proper Unicode support
+  // INSTR does binary comparison for substring matching
+  const conditions = keywords.map((kw) =>
+    caseInsensitive
+      ? sql`INSTR(unicode_lower(${conversations.title}), ${kw.toLowerCase()}) > 0`
+      : sql`INSTR(${conversations.title}, ${kw}) > 0`
+  )
 
   const results = await db
     .select()
@@ -261,7 +273,7 @@ export async function searchConversationsByKeywords(
 
 export async function searchMessagesByKeywords(
   keywords: string[],
-  options?: { limit?: number }
+  options?: { limit?: number; caseInsensitive?: boolean }
 ): Promise<{
   items: Array<{
     message: Message
@@ -272,12 +284,19 @@ export async function searchMessagesByKeywords(
 }> {
   const db = getDatabase()
   const limit = options?.limit ?? 50
+  const caseInsensitive = options?.caseInsensitive ?? true
 
   if (keywords.length === 0) {
     return { items: [], total: 0 }
   }
 
-  const conditions = keywords.map((kw) => like(messages.parts, `%${kw}%`))
+  // unicode_lower is a custom SQLite function that uses JS toLowerCase() for proper Unicode support
+  // INSTR does binary comparison for substring matching
+  const conditions = keywords.map((kw) =>
+    caseInsensitive
+      ? sql`INSTR(unicode_lower(${messages.parts}), ${kw.toLowerCase()}) > 0`
+      : sql`INSTR(${messages.parts}, ${kw}) > 0`
+  )
 
   const results = await db
     .select({
