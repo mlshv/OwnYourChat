@@ -268,6 +268,16 @@ export abstract class BaseProvider<TMetadata = Record<string, unknown>> implemen
     })
   }
 
+  /**
+   * Update sync progress in the global store.
+   * Call this during sync to report current/total conversations and new chats found.
+   */
+  protected updateSyncProgress(current: number, total: number, newChatsFound: number = 0): void {
+    store.getState().updateSyncState({
+      progress: { current, total, newChatsFound }
+    })
+  }
+
   protected async loadPersistedState(): Promise<void> {
     const state = await this.storage.getProviderState(this.name)
     if (state) {

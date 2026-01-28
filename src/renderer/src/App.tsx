@@ -496,36 +496,53 @@ export default function App() {
           {/* Sync status */}
           {connectedProviders.length > 0 && (
             <div className="px-3 py-2 border-t border-border text-xs text-muted-foreground">
-              {syncState.isRunning ? (
-                <span className="flex items-center gap-1.5">
-                  <span className="inline-block w-1.5 h-1.5 bg-primary rounded-full animate-pulse corner-shape-round" />
-                  Syncing
-                  {syncState.progress && syncState.progress.total > 0 && (
-                    <span className="tabular-nums">
-                      {syncState.progress.current}/{syncState.progress.total}
+              {(() => {
+                // Check if any provider is syncing
+                const syncingProvider = connectedProviders.find((p) => providersState[p].isSyncing)
+                // Get most recent sync time across all providers
+                const lastSyncTimes = connectedProviders
+                  .map((p) => providersState[p].lastSyncAt)
+                  .filter((t): t is Date => t !== null)
+                const mostRecentSync =
+                  lastSyncTimes.length > 0
+                    ? new Date(Math.max(...lastSyncTimes.map((t) => new Date(t).getTime())))
+                    : null
+
+                if (syncingProvider || syncState.isRunning) {
+                  return (
+                    <span className="flex items-center gap-1.5">
+                      <span className="inline-block w-1.5 h-1.5 bg-primary rounded-full animate-pulse corner-shape-round" />
+                      Syncing{syncingProvider && ` ${AI_PROVIDERS[syncingProvider].name}`}
+                      {syncState.progress && syncState.progress.total > 0 && (
+                        <span className="tabular-nums">
+                          {syncState.progress.current}/{syncState.progress.total}
+                        </span>
+                      )}
+                      {syncState.progress && syncState.progress.newChatsFound > 0 && (
+                        <span className="text-primary">
+                          +{syncState.progress.newChatsFound} new
+                        </span>
+                      )}
                     </span>
-                  )}
-                  {syncState.progress && syncState.progress.newChatsFound > 0 && (
-                    <span className="text-primary">+{syncState.progress.newChatsFound} new</span>
-                  )}
-                </span>
-              ) : syncState.lastSyncAt ? (
-                <span>
-                  Last sync:{' '}
-                  {(() => {
-                    const diff = Date.now() - new Date(syncState.lastSyncAt).getTime()
-                    const mins = Math.floor(diff / 60000)
-                    if (mins < 1) return 'just now'
-                    if (mins === 1) return '1 min ago'
-                    if (mins < 60) return `${mins} mins ago`
+                  )
+                }
+
+                if (mostRecentSync) {
+                  const diff = Date.now() - mostRecentSync.getTime()
+                  const mins = Math.floor(diff / 60000)
+                  let timeAgo: string
+                  if (mins < 1) timeAgo = 'just now'
+                  else if (mins === 1) timeAgo = '1 min ago'
+                  else if (mins < 60) timeAgo = `${mins} mins ago`
+                  else {
                     const hours = Math.floor(mins / 60)
-                    if (hours === 1) return '1 hour ago'
-                    return `${hours} hours ago`
-                  })()}
-                </span>
-              ) : (
-                <span>Waiting to sync...</span>
-              )}
+                    timeAgo = hours === 1 ? '1 hour ago' : `${hours} hours ago`
+                  }
+                  return <span>Last sync: {timeAgo}</span>
+                }
+
+                return <span>Waiting to sync...</span>
+              })()}
             </div>
           )}
         </div>

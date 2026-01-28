@@ -471,6 +471,9 @@ export class ChatGPTProvider extends BaseProvider<ChatGPTMetadata> {
           `[${this.name}] Processing ${pageConversations.length} conversations at offset ${offset}`
         )
 
+        // Report progress (offset is current position, result.total is total)
+        this.updateSyncProgress(offset, result.total, newChatsFound)
+
         // Process entire page atomically
         for (const conv of pageConversations) {
           await this.syncConversationWithRetry(conv)

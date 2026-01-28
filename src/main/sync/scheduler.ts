@@ -62,7 +62,8 @@ async function runScheduledSync(): Promise<void> {
       store.getState().updateSyncState({
         isRunning: false,
         lastSyncAt: new Date(),
-        error: null
+        error: null,
+        progress: null
       })
     } else {
       console.log('[Scheduler] Sync failed:', result.results)
@@ -75,7 +76,8 @@ async function runScheduledSync(): Promise<void> {
 
       store.getState().updateSyncState({
         isRunning: false,
-        error: errorMessage || 'Unknown error'
+        error: errorMessage || 'Unknown error',
+        progress: null
       })
     }
   } catch (error) {
@@ -84,7 +86,8 @@ async function runScheduledSync(): Promise<void> {
     // Update store: sync error
     store.getState().updateSyncState({
       isRunning: false,
-      error: (error as Error).message
+      error: (error as Error).message,
+      progress: null
     })
   }
 }
