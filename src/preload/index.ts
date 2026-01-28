@@ -16,7 +16,11 @@ import { preloadBridge } from '@zubridge/electron/preload'
 const api: ElectronAPI = {
   // Conversation operations
   conversations: {
-    list: (options?: { limit?: number; offset?: number }) =>
+    list: (options?: {
+      limit?: number
+      offset?: number
+      provider?: 'chatgpt' | 'claude' | 'perplexity'
+    }) =>
       ipcRenderer.invoke(IPC_CHANNELS.CONVERSATIONS_LIST, options) as Promise<{
         items: Conversation[]
         total: number
@@ -42,11 +46,17 @@ const api: ElectronAPI = {
         hasMore: boolean
         oldestOrderIndex: number | null
       }>,
-    search: (query: string) =>
-      ipcRenderer.invoke(IPC_CHANNELS.CONVERSATIONS_SEARCH, query) as Promise<{
+    search: (query: string, options?: { provider?: 'chatgpt' | 'claude' | 'perplexity' }) =>
+      ipcRenderer.invoke(IPC_CHANNELS.CONVERSATIONS_SEARCH, query, options) as Promise<{
         items: Conversation[]
         total: number
         hasMore: boolean
+      }>,
+    getProviderCounts: () =>
+      ipcRenderer.invoke(IPC_CHANNELS.CONVERSATIONS_PROVIDER_COUNTS) as Promise<{
+        chatgpt: number
+        claude: number
+        perplexity: number
       }>,
     refresh: (id: string) =>
       ipcRenderer.invoke(IPC_CHANNELS.CONVERSATIONS_REFRESH, id) as Promise<{

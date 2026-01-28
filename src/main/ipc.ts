@@ -35,8 +35,19 @@ export function setupIpcHandlers(): void {
     }
   )
 
-  ipcMain.handle(IPC_CHANNELS.CONVERSATIONS_SEARCH, async (_event, query: string) => {
-    return db.searchConversations(query)
+  ipcMain.handle(
+    IPC_CHANNELS.CONVERSATIONS_SEARCH,
+    async (
+      _event,
+      query: string,
+      options?: { provider?: 'chatgpt' | 'claude' | 'perplexity' }
+    ) => {
+      return db.searchConversations(query, options)
+    }
+  )
+
+  ipcMain.handle(IPC_CHANNELS.CONVERSATIONS_PROVIDER_COUNTS, async () => {
+    return db.getProviderCounts()
   })
 
   // Refresh a single conversation from provider API (for getting latest messages)

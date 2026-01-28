@@ -9,7 +9,8 @@ import { OnboardingScreen } from './components/OnboardingScreen'
 import { Input } from './components/ui/input'
 import type { Conversation, Message, ElectronAPI } from '@shared/types'
 import { buildMessageTree, getDisplayPath, updateBranchSelection } from './lib/branch-utils'
-import { useAuthState } from './lib/store'
+import { useAuthState, useProvidersState } from './lib/store'
+import { AI_PROVIDERS } from './constants'
 
 // Type augmentation for window.api
 declare global {
@@ -21,6 +22,7 @@ declare global {
 export default function App() {
   // Store state
   const authState = useAuthState()
+  const providersState = useProvidersState()
 
   // Local state
   const [conversations, setConversations] = useState<{
@@ -36,6 +38,8 @@ export default function App() {
   const [exportScope, setExportScope] = useState<'current' | 'all' | null>(null)
   const [showSettingsModal, setShowSettingsModal] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
+  const [selectedProvider, setSelectedProvider] = useState<'chatgpt' | 'claude' | 'perplexity' | null>(null)
+  const [totalProviderCounts, setTotalProviderCounts] = useState<{ chatgpt: number; claude: number; perplexity: number }>({ chatgpt: 0, claude: 0, perplexity: 0 })
   const [hasCompletedOnboarding, setHasCompletedOnboarding] = useState(false)
   const [showDebugPanel, setShowDebugPanel] = useState(false)
   const [isUserAtTop, setIsUserAtTop] = useState(true)
@@ -46,6 +50,27 @@ export default function App() {
   const [isLoadingMore, setIsLoadingMore] = useState(false)
 
   const MESSAGES_PAGE_SIZE = 50
+
+  // Get connected providers
+  const connectedProviders = useMemo(() => {
+    return (Object.keys(AI_PROVIDERS) as Array<'chatgpt' | 'claude' | 'perplexity'>).filter(
+      (id) => providersState[id].isOnline
+    )
+  }, [providersState])
+
+  // Compute display counts: when searching/filtering, show counts from current results
+  // Otherwise show total counts
+  const displayCounts = useMemo(() => {
+    if (searchQuery.trim() || selectedProvider) {
+      // Count from current filtered results
+      const counts = { chatgpt: 0, claude: 0, perplexity: 0 }
+      for (const conv of conversations.items) {
+        counts[conv.provider]++
+      }
+      return counts
+    }
+    return totalProviderCounts
+  }, [searchQuery, selectedProvider, conversations.items, totalProviderCounts])
 
   // Build message tree and compute display path
   const messageTree = useMemo(() => buildMessageTree(allMessages), [allMessages])
@@ -122,8 +147,12 @@ export default function App() {
         setShowDebugPanel(prefs.showDebugPanel)
 
         // Always load conversations from database (regardless of connection state)
-        const result = await window.api!.conversations.list({ limit: 200 })
+        const [result, counts] = await Promise.all([
+          window.api!.conversations.list({ limit: 200 }),
+          window.api!.conversations.getProviderCounts()
+        ])
         setConversations(result)
+        setTotalProviderCounts(counts)
       } catch (error) {
         console.error('Failed to initialize:', error)
       } finally {
@@ -251,17 +280,33 @@ export default function App() {
     }
   }
 
-  const handleSearch = async (query: string) => {
+  const handleSearch = async (
+    query: string,
+    provider?: 'chatgpt' | 'claude' | 'perplexity' | null
+  ) => {
     setSearchQuery(query)
     if (!isElectron) return
 
+    const providerFilter = provider !== undefined ? provider : selectedProvider
+
     if (query.trim()) {
-      const results = await window.api!.conversations.search(query)
+      const results = await window.api!.conversations.search(query, {
+        provider: providerFilter ?? undefined
+      })
       setConversations(results)
     } else {
-      const result = await window.api!.conversations.list({ limit: 200 })
+      const result = await window.api!.conversations.list({
+        limit: 200,
+        provider: providerFilter ?? undefined
+      })
       setConversations(result)
     }
+  }
+
+  const handleProviderFilter = (provider: 'chatgpt' | 'claude' | 'perplexity') => {
+    const newProvider = selectedProvider === provider ? null : provider
+    setSelectedProvider(newProvider)
+    handleSearch(searchQuery, newProvider)
   }
 
   if (isLoading) {
@@ -297,6 +342,32 @@ export default function App() {
               value={searchQuery}
               onChange={(e) => handleSearch(e.target.value)}
             />
+            {/* Provider filters */}
+            {connectedProviders.length > 0 && (
+              <div className="flex gap-1.5 mt-2 flex-wrap">
+                {connectedProviders.map((providerId) => {
+                  const provider = AI_PROVIDERS[providerId]
+                  const Icon = provider.icon
+                  const count = displayCounts[providerId]
+                  const isSelected = selectedProvider === providerId
+                  return (
+                    <button
+                      key={providerId}
+                      onClick={() => handleProviderFilter(providerId)}
+                      className={`flex items-center gap-1.5 px-2 py-1 text-xs rounded border transition-colors ${
+                        isSelected
+                          ? 'bg-primary text-primary-foreground border-primary'
+                          : 'bg-transparent text-muted-foreground border-border hover:border-muted-foreground'
+                      }`}
+                      title={`Filter by ${provider.name}`}
+                    >
+                      <Icon size={14} />
+                      <span>{count}</span>
+                    </button>
+                  )
+                })}
+              </div>
+            )}
           </div>
 
           {/* Chat list */}
