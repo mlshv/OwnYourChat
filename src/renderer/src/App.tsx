@@ -9,7 +9,7 @@ import { OnboardingScreen } from './components/OnboardingScreen'
 import { Input } from './components/ui/input'
 import type { Conversation, Message, ElectronAPI } from '@shared/types'
 import { buildMessageTree, getDisplayPath, updateBranchSelection } from './lib/branch-utils'
-import { useAuthState, useProvidersState } from './lib/store'
+import { useAuthState, useProvidersState, useSyncState } from './lib/store'
 import { AI_PROVIDERS } from './constants'
 import { ChatTextIcon } from '@phosphor-icons/react'
 
@@ -24,6 +24,7 @@ export default function App() {
   // Store state
   const authState = useAuthState()
   const providersState = useProvidersState()
+  const syncState = useSyncState()
 
   // Local state
   const [conversations, setConversations] = useState<{
@@ -491,6 +492,42 @@ export default function App() {
               />
             )}
           </div>
+
+          {/* Sync status */}
+          {connectedProviders.length > 0 && (
+            <div className="px-3 py-2 border-t border-border text-xs text-muted-foreground">
+              {syncState.isRunning ? (
+                <span className="flex items-center gap-1.5">
+                  <span className="inline-block w-1.5 h-1.5 bg-primary rounded-full animate-pulse corner-shape-round" />
+                  Syncing
+                  {syncState.progress && syncState.progress.total > 0 && (
+                    <span className="tabular-nums">
+                      {syncState.progress.current}/{syncState.progress.total}
+                    </span>
+                  )}
+                  {syncState.progress && syncState.progress.newChatsFound > 0 && (
+                    <span className="text-primary">+{syncState.progress.newChatsFound} new</span>
+                  )}
+                </span>
+              ) : syncState.lastSyncAt ? (
+                <span>
+                  Last sync:{' '}
+                  {(() => {
+                    const diff = Date.now() - new Date(syncState.lastSyncAt).getTime()
+                    const mins = Math.floor(diff / 60000)
+                    if (mins < 1) return 'just now'
+                    if (mins === 1) return '1 min ago'
+                    if (mins < 60) return `${mins} mins ago`
+                    const hours = Math.floor(mins / 60)
+                    if (hours === 1) return '1 hour ago'
+                    return `${hours} hours ago`
+                  })()}
+                </span>
+              ) : (
+                <span>Waiting to sync...</span>
+              )}
+            </div>
+          )}
         </div>
 
         {/* Main content area */}
