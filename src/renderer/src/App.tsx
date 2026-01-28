@@ -47,6 +47,12 @@ export default function App() {
     claude: number
     perplexity: number
   }>({ chatgpt: 0, claude: 0, perplexity: 0 })
+  // Stores counts from search results (before provider filtering)
+  const [searchResultCounts, setSearchResultCounts] = useState<{
+    chatgpt: number
+    claude: number
+    perplexity: number
+  } | null>(null)
   const [caseSensitiveSearch, setCaseSensitiveSearch] = useState(false)
   const [searchInMessages, setSearchInMessages] = useState(false)
   const [hasCompletedOnboarding, setHasCompletedOnboarding] = useState(false)
@@ -76,19 +82,15 @@ export default function App() {
     providersState.perplexity.lastSyncAt
   ])
 
-  // Compute display counts: when searching/filtering, show counts from current results
+  // Compute display counts: when searching, show counts from search results (before provider filter)
   // Otherwise show total counts
   const displayCounts = useMemo(() => {
-    if (searchQuery.trim() || selectedProvider) {
-      // Count from current filtered results
-      const counts = { chatgpt: 0, claude: 0, perplexity: 0 }
-      for (const conv of conversations.items) {
-        counts[conv.provider]++
-      }
-      return counts
+    if (searchQuery.trim() && searchResultCounts) {
+      // Use pre-computed counts from search results (not affected by provider filter)
+      return searchResultCounts
     }
     return totalProviderCounts
-  }, [searchQuery, selectedProvider, conversations.items, totalProviderCounts])
+  }, [searchQuery, searchResultCounts, totalProviderCounts])
 
   // Build message tree and compute display path
   const messageTree = useMemo(() => buildMessageTree(allMessages), [allMessages])
@@ -321,13 +323,33 @@ export default function App() {
     const shouldSearchMessages = includeMessages && query.trim().length >= 3
 
     if (query.trim()) {
-      const results = await window.api!.conversations.search(query, {
-        provider: providerFilter ?? undefined,
+      // First, get all search results without provider filter to compute counts
+      const allResults = await window.api!.conversations.search(query, {
         caseInsensitive: !isCaseSensitive,
         searchInMessages: shouldSearchMessages
       })
-      setConversations(results)
+
+      // Compute counts from all search results
+      const counts = { chatgpt: 0, claude: 0, perplexity: 0 }
+      for (const conv of allResults.items) {
+        counts[conv.provider]++
+      }
+      setSearchResultCounts(counts)
+
+      // Apply provider filter for display if selected
+      if (providerFilter) {
+        const filteredItems = allResults.items.filter((c) => c.provider === providerFilter)
+        setConversations({
+          items: filteredItems,
+          total: filteredItems.length,
+          hasMore: false
+        })
+      } else {
+        setConversations(allResults)
+      }
     } else {
+      // Clear search result counts when not searching
+      setSearchResultCounts(null)
       const result = await window.api!.conversations.list({
         limit: 200,
         provider: providerFilter ?? undefined
