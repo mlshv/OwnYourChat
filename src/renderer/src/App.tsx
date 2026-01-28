@@ -39,7 +39,7 @@ export default function App() {
   const [showSettingsModal, setShowSettingsModal] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedProvider, setSelectedProvider] = useState<'chatgpt' | 'claude' | 'perplexity' | null>(null)
-  const [providerCounts, setProviderCounts] = useState<{ chatgpt: number; claude: number; perplexity: number }>({ chatgpt: 0, claude: 0, perplexity: 0 })
+  const [totalProviderCounts, setTotalProviderCounts] = useState<{ chatgpt: number; claude: number; perplexity: number }>({ chatgpt: 0, claude: 0, perplexity: 0 })
   const [hasCompletedOnboarding, setHasCompletedOnboarding] = useState(false)
   const [showDebugPanel, setShowDebugPanel] = useState(false)
   const [isUserAtTop, setIsUserAtTop] = useState(true)
@@ -57,6 +57,20 @@ export default function App() {
       (id) => providersState[id].isOnline
     )
   }, [providersState])
+
+  // Compute display counts: when searching/filtering, show counts from current results
+  // Otherwise show total counts
+  const displayCounts = useMemo(() => {
+    if (searchQuery.trim() || selectedProvider) {
+      // Count from current filtered results
+      const counts = { chatgpt: 0, claude: 0, perplexity: 0 }
+      for (const conv of conversations.items) {
+        counts[conv.provider]++
+      }
+      return counts
+    }
+    return totalProviderCounts
+  }, [searchQuery, selectedProvider, conversations.items, totalProviderCounts])
 
   // Build message tree and compute display path
   const messageTree = useMemo(() => buildMessageTree(allMessages), [allMessages])
@@ -138,7 +152,7 @@ export default function App() {
           window.api!.conversations.getProviderCounts()
         ])
         setConversations(result)
-        setProviderCounts(counts)
+        setTotalProviderCounts(counts)
       } catch (error) {
         console.error('Failed to initialize:', error)
       } finally {
@@ -334,7 +348,7 @@ export default function App() {
                 {connectedProviders.map((providerId) => {
                   const provider = AI_PROVIDERS[providerId]
                   const Icon = provider.icon
-                  const count = providerCounts[providerId]
+                  const count = displayCounts[providerId]
                   const isSelected = selectedProvider === providerId
                   return (
                     <button
