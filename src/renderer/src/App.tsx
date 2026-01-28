@@ -65,15 +65,14 @@ export default function App() {
     )
   }, [providersState])
 
-  // Track latest sync time across all providers to detect sync completion
-  const latestSyncTime = useMemo(() => {
-    const times = [
-      providersState.chatgpt.lastSyncAt,
-      providersState.claude.lastSyncAt,
-      providersState.perplexity.lastSyncAt
-    ].filter(Boolean) as Date[]
-    return times.length > 0 ? Math.max(...times.map((t) => new Date(t).getTime())) : null
-  }, [providersState])
+  // Track sync state changes across all providers - stringify to detect any change
+  const providersSyncKey = useMemo(() => {
+    return `${providersState.chatgpt.lastSyncAt}-${providersState.claude.lastSyncAt}-${providersState.perplexity.lastSyncAt}`
+  }, [
+    providersState.chatgpt.lastSyncAt,
+    providersState.claude.lastSyncAt,
+    providersState.perplexity.lastSyncAt
+  ])
 
   // Compute display counts: when searching/filtering, show counts from current results
   // Otherwise show total counts
@@ -222,7 +221,7 @@ export default function App() {
       })
     }
     // If user scrolled down, do nothing (no jarring updates)
-  }, [isElectron, isUserAtTop, searchQuery, latestSyncTime])
+  }, [isElectron, isUserAtTop, searchQuery, providersSyncKey])
 
   const handleOnboardingComplete = async () => {
     if (!isElectron) return
