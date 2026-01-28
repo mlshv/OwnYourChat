@@ -243,7 +243,11 @@ export interface ElectronAPI {
     }>
     search: (
       query: string,
-      options?: { provider?: 'chatgpt' | 'claude' | 'perplexity'; caseInsensitive?: boolean }
+      options?: {
+        provider?: 'chatgpt' | 'claude' | 'perplexity'
+        caseInsensitive?: boolean
+        searchInMessages?: boolean
+      }
     ) => Promise<{
       items: Conversation[]
       total: number

@@ -48,7 +48,11 @@ const api: ElectronAPI = {
       }>,
     search: (
       query: string,
-      options?: { provider?: 'chatgpt' | 'claude' | 'perplexity'; caseInsensitive?: boolean }
+      options?: {
+        provider?: 'chatgpt' | 'claude' | 'perplexity'
+        caseInsensitive?: boolean
+        searchInMessages?: boolean
+      }
     ) =>
       ipcRenderer.invoke(IPC_CHANNELS.CONVERSATIONS_SEARCH, query, options) as Promise<{
         items: Conversation[]

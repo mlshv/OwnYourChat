@@ -11,6 +11,7 @@ import type { Conversation, Message, ElectronAPI } from '@shared/types'
 import { buildMessageTree, getDisplayPath, updateBranchSelection } from './lib/branch-utils'
 import { useAuthState, useProvidersState } from './lib/store'
 import { AI_PROVIDERS } from './constants'
+import { ChatTextIcon } from '@phosphor-icons/react'
 
 // Type augmentation for window.api
 declare global {
@@ -47,6 +48,7 @@ export default function App() {
     perplexity: number
   }>({ chatgpt: 0, claude: 0, perplexity: 0 })
   const [caseSensitiveSearch, setCaseSensitiveSearch] = useState(false)
+  const [searchInMessages, setSearchInMessages] = useState(false)
   const [hasCompletedOnboarding, setHasCompletedOnboarding] = useState(false)
   const [showDebugPanel, setShowDebugPanel] = useState(false)
   const [isUserAtTop, setIsUserAtTop] = useState(true)
@@ -305,6 +307,7 @@ export default function App() {
     options?: {
       provider?: 'chatgpt' | 'claude' | 'perplexity' | null
       caseSensitive?: boolean
+      searchInMessages?: boolean
     }
   ) => {
     setSearchQuery(query)
@@ -313,11 +316,15 @@ export default function App() {
     const providerFilter =
       options?.provider !== undefined ? options.provider : selectedProvider
     const isCaseSensitive = options?.caseSensitive ?? caseSensitiveSearch
+    const includeMessages = options?.searchInMessages ?? searchInMessages
+    // Only search messages if query is 3+ chars (performance optimization)
+    const shouldSearchMessages = includeMessages && query.trim().length >= 3
 
     if (query.trim()) {
       const results = await window.api!.conversations.search(query, {
         provider: providerFilter ?? undefined,
-        caseInsensitive: !isCaseSensitive
+        caseInsensitive: !isCaseSensitive,
+        searchInMessages: shouldSearchMessages
       })
       setConversations(results)
     } else {
@@ -393,6 +400,27 @@ export default function App() {
                 }
               >
                 Aa
+              </button>
+              <button
+                onClick={() => {
+                  const newValue = !searchInMessages
+                  setSearchInMessages(newValue)
+                  if (searchQuery.trim()) {
+                    handleSearch(searchQuery, { searchInMessages: newValue })
+                  }
+                }}
+                className={`px-2 py-1 rounded border transition-colors ${
+                  searchInMessages
+                    ? 'bg-primary text-primary-foreground border-primary'
+                    : 'bg-transparent text-muted-foreground border-border hover:border-muted-foreground'
+                }`}
+                title={
+                  searchInMessages
+                    ? 'Searching in messages (3+ chars required)'
+                    : 'Searching titles only (click to include messages)'
+                }
+              >
+                <ChatTextIcon size={14} />
               </button>
             </div>
             {/* Provider filters */}

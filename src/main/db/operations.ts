@@ -209,10 +209,15 @@ export async function getMessagesPage(
 
 export async function searchConversations(
   query: string,
-  options?: { provider?: 'chatgpt' | 'claude' | 'perplexity'; caseInsensitive?: boolean }
+  options?: {
+    provider?: 'chatgpt' | 'claude' | 'perplexity'
+    caseInsensitive?: boolean
+    searchInMessages?: boolean
+  }
 ): Promise<{ items: Conversation[]; total: number; hasMore: boolean }> {
   const db = getDatabase()
   const caseInsensitive = options?.caseInsensitive ?? true
+  const searchInMessages = options?.searchInMessages ?? false
 
   // unicode_lower is a custom SQLite function that uses JS toLowerCase() for proper Unicode support
   // INSTR does binary comparison for substring matching
@@ -220,9 +225,27 @@ export async function searchConversations(
     ? sql`INSTR(unicode_lower(${conversations.title}), ${query.toLowerCase()}) > 0`
     : sql`INSTR(${conversations.title}, ${query}) > 0`
 
+  let searchCondition
+  if (searchInMessages) {
+    // Also search in message content using EXISTS subquery
+    const messageCondition = caseInsensitive
+      ? sql`INSTR(unicode_lower(${messages.parts}), ${query.toLowerCase()}) > 0`
+      : sql`INSTR(${messages.parts}, ${query}) > 0`
+
+    const hasMatchingMessage = sql`EXISTS (
+      SELECT 1 FROM ${messages}
+      WHERE ${messages.conversationId} = ${conversations.id}
+      AND ${messageCondition}
+    )`
+
+    searchCondition = or(titleCondition, hasMatchingMessage)
+  } else {
+    searchCondition = titleCondition
+  }
+
   const whereClause = options?.provider
-    ? and(titleCondition, eq(conversations.provider, options.provider))
-    : titleCondition
+    ? and(searchCondition, eq(conversations.provider, options.provider))
+    : searchCondition
 
   const results = await db
     .select()
