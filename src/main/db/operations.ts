@@ -1,4 +1,4 @@
-import { eq, like, desc, max, lt, and, asc, ne, count, or, sql } from 'drizzle-orm'
+import { eq, desc, max, lt, and, asc, ne, count, or, sql } from 'drizzle-orm'
 import { getDatabase } from './index'
 import { conversations, messages, attachments, syncState, userPreferences } from './schema'
 import type { NewConversation, NewMessage, NewAttachment } from './schema'
@@ -176,10 +176,11 @@ export async function searchConversations(
   const db = getDatabase()
   const caseInsensitive = options?.caseInsensitive ?? true
 
-  // LIKE is case-insensitive in SQLite, GLOB is case-sensitive
+  // unicode_lower is a custom SQLite function that uses JS toLowerCase() for proper Unicode support
+  // INSTR does binary comparison for substring matching
   const condition = caseInsensitive
-    ? like(conversations.title, `%${query}%`)
-    : sql`${conversations.title} GLOB ${'*' + query + '*'}`
+    ? sql`INSTR(unicode_lower(${conversations.title}), ${query.toLowerCase()}) > 0`
+    : sql`INSTR(${conversations.title}, ${query}) > 0`
 
   const results = await db
     .select()
@@ -207,11 +208,12 @@ export async function searchConversationsByKeywords(
     return { items: [], total: 0 }
   }
 
-  // LIKE is case-insensitive in SQLite, GLOB is case-sensitive
+  // unicode_lower is a custom SQLite function that uses JS toLowerCase() for proper Unicode support
+  // INSTR does binary comparison for substring matching
   const conditions = keywords.map((kw) =>
     caseInsensitive
-      ? like(conversations.title, `%${kw}%`)
-      : sql`${conversations.title} GLOB ${'*' + kw + '*'}`
+      ? sql`INSTR(unicode_lower(${conversations.title}), ${kw.toLowerCase()}) > 0`
+      : sql`INSTR(${conversations.title}, ${kw}) > 0`
   )
 
   const results = await db
@@ -246,11 +248,12 @@ export async function searchMessagesByKeywords(
     return { items: [], total: 0 }
   }
 
-  // LIKE is case-insensitive in SQLite, GLOB is case-sensitive
+  // unicode_lower is a custom SQLite function that uses JS toLowerCase() for proper Unicode support
+  // INSTR does binary comparison for substring matching
   const conditions = keywords.map((kw) =>
     caseInsensitive
-      ? like(messages.parts, `%${kw}%`)
-      : sql`${messages.parts} GLOB ${'*' + kw + '*'}`
+      ? sql`INSTR(unicode_lower(${messages.parts}), ${kw.toLowerCase()}) > 0`
+      : sql`INSTR(${messages.parts}, ${kw}) > 0`
   )
 
   const results = await db
