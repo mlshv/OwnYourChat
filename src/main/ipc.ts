@@ -40,7 +40,11 @@ export function setupIpcHandlers(): void {
     async (
       _event,
       query: string,
-      options?: { provider?: 'chatgpt' | 'claude' | 'perplexity' }
+      options?: {
+        provider?: 'chatgpt' | 'claude' | 'perplexity'
+        caseInsensitive?: boolean
+        searchInMessages?: boolean
+      }
     ) => {
       return db.searchConversations(query, options)
     }

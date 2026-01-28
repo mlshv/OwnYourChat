@@ -46,7 +46,14 @@ const api: ElectronAPI = {
         hasMore: boolean
         oldestOrderIndex: number | null
       }>,
-    search: (query: string, options?: { provider?: 'chatgpt' | 'claude' | 'perplexity' }) =>
+    search: (
+      query: string,
+      options?: {
+        provider?: 'chatgpt' | 'claude' | 'perplexity'
+        caseInsensitive?: boolean
+        searchInMessages?: boolean
+      }
+    ) =>
       ipcRenderer.invoke(IPC_CHANNELS.CONVERSATIONS_SEARCH, query, options) as Promise<{
         items: Conversation[]
         total: number

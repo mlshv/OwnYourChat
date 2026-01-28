@@ -502,6 +502,9 @@ export class PerplexityProvider extends BaseProvider<PerplexityMetadata> {
           `[${this.name}] Processing ${pageThreads.length} threads at offset ${offset}`
         )
 
+        // Report progress
+        this.updateSyncProgress(offset, totalThreads ?? 0, newChatsFound)
+
         // Process entire page atomically
         for (const thread of pageThreads) {
           await this.syncThreadWithRetry(thread)

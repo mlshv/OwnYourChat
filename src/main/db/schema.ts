@@ -19,21 +19,27 @@ export const conversations = sqliteTable(
   })
 )
 
-export const messages = sqliteTable('messages', {
-  id: text('id').primaryKey(),
-  conversationId: text('conversation_id').references(() => conversations.id, {
-    onDelete: 'cascade'
-  }),
-  role: text('role').notNull(), // 'user' | 'assistant' | 'system'
-  parts: text('parts').notNull(), // JSON array of MessagePart objects
-  createdAt: integer('created_at', { mode: 'timestamp' }),
-  updatedAt: integer('updated_at', { mode: 'timestamp' }),
-  orderIndex: integer('order_index').notNull(),
-  // Branch/tree structure fields
-  parentId: text('parent_id'), // Parent message ID (null for root)
-  siblingIds: text('sibling_ids'), // JSON array of sibling message IDs
-  siblingIndex: integer('sibling_index') // 0-based index among siblings
-})
+export const messages = sqliteTable(
+  'messages',
+  {
+    id: text('id').primaryKey(),
+    conversationId: text('conversation_id').references(() => conversations.id, {
+      onDelete: 'cascade'
+    }),
+    role: text('role').notNull(), // 'user' | 'assistant' | 'system'
+    parts: text('parts').notNull(), // JSON array of MessagePart objects
+    createdAt: integer('created_at', { mode: 'timestamp' }),
+    updatedAt: integer('updated_at', { mode: 'timestamp' }),
+    orderIndex: integer('order_index').notNull(),
+    // Branch/tree structure fields
+    parentId: text('parent_id'), // Parent message ID (null for root)
+    siblingIds: text('sibling_ids'), // JSON array of sibling message IDs
+    siblingIndex: integer('sibling_index') // 0-based index among siblings
+  },
+  (table) => ({
+    conversationIdIdx: index('conversation_id_idx').on(table.conversationId)
+  })
+)
 
 export const attachments = sqliteTable('attachments', {
   id: text('id').primaryKey(),

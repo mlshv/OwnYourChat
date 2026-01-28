@@ -632,6 +632,9 @@ export class ClaudeProvider extends BaseProvider<ClaudeMetadata> {
           `[${this.name}] Processing ${pageConversations.length} conversations at offset ${offset}`
         )
 
+        // Report progress
+        this.updateSyncProgress(offset, total, newChatsFound)
+
         // Process entire page atomically
         for (const conv of pageConversations) {
           await this.syncConversationWithRetry(conv)

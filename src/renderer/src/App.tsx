@@ -9,8 +9,9 @@ import { OnboardingScreen } from './components/OnboardingScreen'
 import { Input } from './components/ui/input'
 import type { Conversation, Message, ElectronAPI } from '@shared/types'
 import { buildMessageTree, getDisplayPath, updateBranchSelection } from './lib/branch-utils'
-import { useAuthState, useProvidersState } from './lib/store'
+import { useAuthState, useProvidersState, useSyncState } from './lib/store'
 import { AI_PROVIDERS } from './constants'
+import { ChatTextIcon } from '@phosphor-icons/react'
 
 // Type augmentation for window.api
 declare global {
@@ -23,6 +24,7 @@ export default function App() {
   // Store state
   const authState = useAuthState()
   const providersState = useProvidersState()
+  const syncState = useSyncState()
 
   // Local state
   const [conversations, setConversations] = useState<{
@@ -38,8 +40,22 @@ export default function App() {
   const [exportScope, setExportScope] = useState<'current' | 'all' | null>(null)
   const [showSettingsModal, setShowSettingsModal] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
-  const [selectedProvider, setSelectedProvider] = useState<'chatgpt' | 'claude' | 'perplexity' | null>(null)
-  const [totalProviderCounts, setTotalProviderCounts] = useState<{ chatgpt: number; claude: number; perplexity: number }>({ chatgpt: 0, claude: 0, perplexity: 0 })
+  const [selectedProvider, setSelectedProvider] = useState<
+    'chatgpt' | 'claude' | 'perplexity' | null
+  >(null)
+  const [totalProviderCounts, setTotalProviderCounts] = useState<{
+    chatgpt: number
+    claude: number
+    perplexity: number
+  }>({ chatgpt: 0, claude: 0, perplexity: 0 })
+  // Stores counts from search results (before provider filtering)
+  const [searchResultCounts, setSearchResultCounts] = useState<{
+    chatgpt: number
+    claude: number
+    perplexity: number
+  } | null>(null)
+  const [caseSensitiveSearch, setCaseSensitiveSearch] = useState(false)
+  const [searchInMessages, setSearchInMessages] = useState(false)
   const [hasCompletedOnboarding, setHasCompletedOnboarding] = useState(false)
   const [showDebugPanel, setShowDebugPanel] = useState(false)
   const [isUserAtTop, setIsUserAtTop] = useState(true)
@@ -58,19 +74,24 @@ export default function App() {
     )
   }, [providersState])
 
-  // Compute display counts: when searching/filtering, show counts from current results
+  // Track sync state changes across all providers - stringify to detect any change
+  const providersSyncKey = useMemo(() => {
+    return `${providersState.chatgpt.lastSyncAt}-${providersState.claude.lastSyncAt}-${providersState.perplexity.lastSyncAt}`
+  }, [
+    providersState.chatgpt.lastSyncAt,
+    providersState.claude.lastSyncAt,
+    providersState.perplexity.lastSyncAt
+  ])
+
+  // Compute display counts: when searching, show counts from search results (before provider filter)
   // Otherwise show total counts
   const displayCounts = useMemo(() => {
-    if (searchQuery.trim() || selectedProvider) {
-      // Count from current filtered results
-      const counts = { chatgpt: 0, claude: 0, perplexity: 0 }
-      for (const conv of conversations.items) {
-        counts[conv.provider]++
-      }
-      return counts
+    if (searchQuery.trim() && searchResultCounts) {
+      // Use pre-computed counts from search results (not affected by provider filter)
+      return searchResultCounts
     }
     return totalProviderCounts
-  }, [searchQuery, selectedProvider, conversations.items, totalProviderCounts])
+  }, [searchQuery, searchResultCounts, totalProviderCounts])
 
   // Build message tree and compute display path
   const messageTree = useMemo(() => buildMessageTree(allMessages), [allMessages])
@@ -196,12 +217,16 @@ export default function App() {
 
     // If user is at top, fetch fresh conversations and replace state
     if (isUserAtTop) {
-      window.api!.conversations.list({ limit: 200 }).then((fresh) => {
+      Promise.all([
+        window.api!.conversations.list({ limit: 200 }),
+        window.api!.conversations.getProviderCounts()
+      ]).then(([fresh, counts]) => {
         setConversations(fresh)
+        setTotalProviderCounts(counts)
       })
     }
     // If user scrolled down, do nothing (no jarring updates)
-  }, [isElectron, isUserAtTop, searchQuery])
+  }, [isElectron, isUserAtTop, searchQuery, providersSyncKey])
 
   const handleOnboardingComplete = async () => {
     if (!isElectron) return
@@ -282,19 +307,50 @@ export default function App() {
 
   const handleSearch = async (
     query: string,
-    provider?: 'chatgpt' | 'claude' | 'perplexity' | null
+    options?: {
+      provider?: 'chatgpt' | 'claude' | 'perplexity' | null
+      caseSensitive?: boolean
+      searchInMessages?: boolean
+    }
   ) => {
     setSearchQuery(query)
     if (!isElectron) return
 
-    const providerFilter = provider !== undefined ? provider : selectedProvider
+    const providerFilter =
+      options?.provider !== undefined ? options.provider : selectedProvider
+    const isCaseSensitive = options?.caseSensitive ?? caseSensitiveSearch
+    const includeMessages = options?.searchInMessages ?? searchInMessages
+    // Only search messages if query is 3+ chars (performance optimization)
+    const shouldSearchMessages = includeMessages && query.trim().length >= 3
 
     if (query.trim()) {
-      const results = await window.api!.conversations.search(query, {
-        provider: providerFilter ?? undefined
+      // First, get all search results without provider filter to compute counts
+      const allResults = await window.api!.conversations.search(query, {
+        caseInsensitive: !isCaseSensitive,
+        searchInMessages: shouldSearchMessages
       })
-      setConversations(results)
+
+      // Compute counts from all search results
+      const counts = { chatgpt: 0, claude: 0, perplexity: 0 }
+      for (const conv of allResults.items) {
+        counts[conv.provider]++
+      }
+      setSearchResultCounts(counts)
+
+      // Apply provider filter for display if selected
+      if (providerFilter) {
+        const filteredItems = allResults.items.filter((c) => c.provider === providerFilter)
+        setConversations({
+          items: filteredItems,
+          total: filteredItems.length,
+          hasMore: false
+        })
+      } else {
+        setConversations(allResults)
+      }
     } else {
+      // Clear search result counts when not searching
+      setSearchResultCounts(null)
       const result = await window.api!.conversations.list({
         limit: 200,
         provider: providerFilter ?? undefined
@@ -306,7 +362,16 @@ export default function App() {
   const handleProviderFilter = (provider: 'chatgpt' | 'claude' | 'perplexity') => {
     const newProvider = selectedProvider === provider ? null : provider
     setSelectedProvider(newProvider)
-    handleSearch(searchQuery, newProvider)
+    handleSearch(searchQuery, { provider: newProvider })
+  }
+
+  const handleToggleCaseSensitive = () => {
+    const newValue = !caseSensitiveSearch
+    setCaseSensitiveSearch(newValue)
+    // Re-run search with new setting if there's a query
+    if (searchQuery.trim()) {
+      handleSearch(searchQuery, { caseSensitive: newValue })
+    }
   }
 
   if (isLoading) {
@@ -336,12 +401,51 @@ export default function App() {
         <div className="w-72 border-r border-border flex flex-col">
           {/* Search */}
           <div className="p-3 border-b border-border">
-            <Input
-              type="text"
-              placeholder="Search conversations..."
-              value={searchQuery}
-              onChange={(e) => handleSearch(e.target.value)}
-            />
+            <div className="flex gap-2">
+              <Input
+                type="text"
+                placeholder="Search conversations..."
+                value={searchQuery}
+                onChange={(e) => handleSearch(e.target.value)}
+                className="flex-1"
+              />
+              <button
+                onClick={handleToggleCaseSensitive}
+                className={`px-2 py-1 text-xs font-mono rounded border transition-colors ${
+                  caseSensitiveSearch
+                    ? 'bg-primary text-primary-foreground border-primary'
+                    : 'bg-transparent text-muted-foreground border-border hover:border-muted-foreground'
+                }`}
+                title={
+                  caseSensitiveSearch
+                    ? 'Case sensitive (click to disable)'
+                    : 'Case insensitive (click to enable)'
+                }
+              >
+                Aa
+              </button>
+              <button
+                onClick={() => {
+                  const newValue = !searchInMessages
+                  setSearchInMessages(newValue)
+                  if (searchQuery.trim()) {
+                    handleSearch(searchQuery, { searchInMessages: newValue })
+                  }
+                }}
+                className={`px-2 py-1 rounded border transition-colors ${
+                  searchInMessages
+                    ? 'bg-primary text-primary-foreground border-primary'
+                    : 'bg-transparent text-muted-foreground border-border hover:border-muted-foreground'
+                }`}
+                title={
+                  searchInMessages
+                    ? 'Searching in messages (3+ chars required)'
+                    : 'Searching titles only (click to include messages)'
+                }
+              >
+                <ChatTextIcon size={14} />
+              </button>
+            </div>
             {/* Provider filters */}
             {connectedProviders.length > 0 && (
               <div className="flex gap-1.5 mt-2 flex-wrap">
@@ -388,6 +492,59 @@ export default function App() {
               />
             )}
           </div>
+
+          {/* Sync status */}
+          {connectedProviders.length > 0 && (
+            <div className="px-3 py-2 border-t border-border text-xs text-muted-foreground">
+              {(() => {
+                // Check if any provider is syncing
+                const syncingProvider = connectedProviders.find((p) => providersState[p].isSyncing)
+                // Get most recent sync time across all providers
+                const lastSyncTimes = connectedProviders
+                  .map((p) => providersState[p].lastSyncAt)
+                  .filter((t): t is Date => t !== null)
+                const mostRecentSync =
+                  lastSyncTimes.length > 0
+                    ? new Date(Math.max(...lastSyncTimes.map((t) => new Date(t).getTime())))
+                    : null
+
+                if (syncingProvider || syncState.isRunning) {
+                  return (
+                    <span className="flex items-center gap-1.5">
+                      <span className="inline-block w-1.5 h-1.5 bg-primary rounded-full animate-pulse corner-shape-round" />
+                      Syncing{syncingProvider && ` ${AI_PROVIDERS[syncingProvider].name}`}
+                      {syncState.progress && syncState.progress.total > 0 && (
+                        <span className="tabular-nums">
+                          {syncState.progress.current}/{syncState.progress.total}
+                        </span>
+                      )}
+                      {syncState.progress && syncState.progress.newChatsFound > 0 && (
+                        <span className="text-primary">
+                          +{syncState.progress.newChatsFound} new
+                        </span>
+                      )}
+                    </span>
+                  )
+                }
+
+                if (mostRecentSync) {
+                  const diff = Date.now() - mostRecentSync.getTime()
+                  const mins = Math.floor(diff / 60000)
+                  let timeAgo: string
+                  if (mins < 1) timeAgo = 'just now'
+                  else if (mins === 1) timeAgo = '1 min ago'
+                  else if (mins < 60) timeAgo = `${mins} mins ago`
+                  else {
+                    const hours = Math.floor(mins / 60)
+                    timeAgo = hours === 1 ? '1 hour ago' : `${hours} hours ago`
+                  }
+                  return <span>Last sync: {timeAgo}</span>
+                }
+
+                return <span>Waiting to sync...</span>
+              })()}
+            </div>
+          )}
         </div>
 
         {/* Main content area */}
