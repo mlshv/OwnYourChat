@@ -28,12 +28,7 @@ export function OnboardingScreen({ onComplete }: OnboardingScreenProps) {
 
         {/* Continue button */}
         <div>
-          <Button
-            onClick={onComplete}
-            disabled={!hasAnyConnected}
-            className="w-full"
-            size="lg"
-          >
+          <Button onClick={onComplete} disabled={!hasAnyConnected} className="w-full" size="lg">
             {hasAnyConnected ? 'Continue' : 'Connect at least one provider to continue'}
           </Button>
 

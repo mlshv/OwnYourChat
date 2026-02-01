@@ -40,6 +40,7 @@ Built-in Model Context Protocol (MCP) server exposes conversation data to AI ass
 ```
 
 **Why HTTP over stdio**:
+
 - Stateless connections - simpler for desktop apps
 - No Express dependency - just Node's `http` module + MCP SDK
 - Multiple clients can connect simultaneously
@@ -47,12 +48,12 @@ Built-in Model Context Protocol (MCP) server exposes conversation data to AI ass
 
 ## Endpoints
 
-| Path | Method | Purpose |
-|------|--------|---------|
-| `/mcp` | POST | Initialize session, send requests |
-| `/mcp` | GET | SSE stream for responses |
-| `/mcp` | DELETE | Close session |
-| `/health` | GET | Health check |
+| Path      | Method | Purpose                           |
+| --------- | ------ | --------------------------------- |
+| `/mcp`    | POST   | Initialize session, send requests |
+| `/mcp`    | GET    | SSE stream for responses          |
+| `/mcp`    | DELETE | Close session                     |
+| `/health` | GET    | Health check                      |
 
 ## Tools
 
@@ -132,17 +133,18 @@ Enable/disable in Settings UI. JSON configuration shown for copy-paste:
 
 ## API
 
-| Function | Purpose |
-|----------|---------|
-| `startMcpServer(port)` | Start HTTP server |
-| `stopMcpServer()` | Stop server, close all transports |
-| `isMcpServerRunning()` | Check if running |
+| Function               | Purpose                           |
+| ---------------------- | --------------------------------- |
+| `startMcpServer(port)` | Start HTTP server                 |
+| `stopMcpServer()`      | Stop server, close all transports |
+| `isMcpServerRunning()` | Check if running                  |
 
 Called from main process based on `settings.mcpEnabled`.
 
 ## CORS
 
 Enabled for all origins:
+
 ```typescript
 res.setHeader('Access-Control-Allow-Origin', '*')
 res.setHeader('Access-Control-Allow-Methods', 'GET, POST, DELETE, OPTIONS')

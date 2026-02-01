@@ -100,7 +100,8 @@ const api: ElectronAPI = {
     login: (provider: 'chatgpt' | 'claude' | 'perplexity') =>
       ipcRenderer.invoke(IPC_CHANNELS.AUTH_LOGIN, provider),
     logout: (provider?: 'chatgpt' | 'claude' | 'perplexity') =>
-      ipcRenderer.invoke(IPC_CHANNELS.AUTH_LOGOUT, provider)
+      ipcRenderer.invoke(IPC_CHANNELS.AUTH_LOGOUT, provider),
+    cancelConnection: () => ipcRenderer.invoke(IPC_CHANNELS.AUTH_CANCEL_CONNECTION)
   },
 
   // Settings operations
@@ -113,13 +114,15 @@ const api: ElectronAPI = {
         mcpEnabled: boolean
         mcpPort: number
       }>,
-    set: (settings: Partial<{
-      syncIntervalMinutes: number
-      autoSync: boolean
-      exportPath: string
-      mcpEnabled: boolean
-      mcpPort: number
-    }>) => ipcRenderer.invoke(IPC_CHANNELS.SETTINGS_SET, settings)
+    set: (
+      settings: Partial<{
+        syncIntervalMinutes: number
+        autoSync: boolean
+        exportPath: string
+        mcpEnabled: boolean
+        mcpPort: number
+      }>
+    ) => ipcRenderer.invoke(IPC_CHANNELS.SETTINGS_SET, settings)
   },
 
   // User preferences operations

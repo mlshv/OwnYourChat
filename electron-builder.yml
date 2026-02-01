@@ -1,4 +1,4 @@
-appId: ownyourchat
+appId: sh.misha.ownyourchat
 productName: OwnYourChat
 directories:
   buildResources: build

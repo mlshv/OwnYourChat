@@ -7,11 +7,13 @@ Export operations block the Electron main process because better-sqlite3 is sync
 ## Solution
 
 Move heavy export operations to a Node.js Worker Thread. The worker handles:
+
 - Database reads (conversation listing, message fetching)
 - JSON/Markdown formatting
 - File I/O (directory creation, file copying, file writing)
 
 Main process retains:
+
 - Attachment downloads (requires provider instance with auth state)
 - IPC communication with renderer
 - Abort coordination
@@ -37,6 +39,7 @@ Main process retains:
 ```
 
 **Message Flow:**
+
 1. Main → Worker: `{ type: 'export', payload: { conversationIds, options } }`
 2. Worker → Main: `{ type: 'progress', payload: ExportProgress }`
 3. Worker → Main: `{ type: 'downloadAttachment', conversationId, attachmentId, fileId }`
@@ -135,15 +138,15 @@ Replace direct `exportAllConversations()` calls with worker management:
 ```typescript
 ipcMain.handle(IPC_CHANNELS.EXPORT_ALL, async (_event, options) => {
   return new Promise((resolve) => {
-    const worker = startExportWorker(
-      options,
-      sendProgressUpdate,
-      async (attachmentRequest) => {
-        // Download attachments in main process
-        const localPath = await downloadAttachment(attachmentRequest)
-        worker.postMessage({ type: 'attachmentDownloaded', attachmentId: attachmentRequest.attachmentId, localPath })
-      }
-    )
+    const worker = startExportWorker(options, sendProgressUpdate, async (attachmentRequest) => {
+      // Download attachments in main process
+      const localPath = await downloadAttachment(attachmentRequest)
+      worker.postMessage({
+        type: 'attachmentDownloaded',
+        attachmentId: attachmentRequest.attachmentId,
+        localPath
+      })
+    })
 
     worker.on('message', (msg) => {
       if (msg.type === 'complete') resolve({ success: true, path: msg.payload.path })
@@ -165,15 +168,15 @@ ipcMain.handle(IPC_CHANNELS.EXPORT_ALL, async (_event, options) => {
 
 ## Files to Modify/Create
 
-| File | Action | Description |
-|------|--------|-------------|
-| `src/main/export/worker.ts` | Create | Worker entry point with DB connection |
-| `src/main/export/worker-manager.ts` | Create | Worker lifecycle management |
-| `src/main/export/index.ts` | Modify | Refactor to support worker pattern |
-| `src/main/export/json.ts` | Modify | Accept db instance as parameter |
-| `src/main/ipc.ts` | Modify | Use worker manager instead of direct calls |
-| `src/main/db/index.ts` | Modify | Export `getDbPath()` for worker |
-| `electron.vite.config.ts` | Modify | Add worker build configuration |
+| File                                | Action | Description                                |
+| ----------------------------------- | ------ | ------------------------------------------ |
+| `src/main/export/worker.ts`         | Create | Worker entry point with DB connection      |
+| `src/main/export/worker-manager.ts` | Create | Worker lifecycle management                |
+| `src/main/export/index.ts`          | Modify | Refactor to support worker pattern         |
+| `src/main/export/json.ts`           | Modify | Accept db instance as parameter            |
+| `src/main/ipc.ts`                   | Modify | Use worker manager instead of direct calls |
+| `src/main/db/index.ts`              | Modify | Export `getDbPath()` for worker            |
+| `electron.vite.config.ts`           | Modify | Add worker build configuration             |
 
 ---
 
@@ -182,6 +185,7 @@ ipcMain.handle(IPC_CHANNELS.EXPORT_ALL, async (_event, options) => {
 Attachments stay in main process since providers require auth state:
 
 **Flow:**
+
 1. Worker exports conversation, encounters attachment without local file
 2. Worker sends `{ type: 'downloadAttachment', conversationId, attachmentId, fileId }` to main
 3. Main downloads via provider, updates DB with local path
@@ -220,21 +224,26 @@ if (cancelled) {
 ## Implementation Summary
 
 **Files Created:**
+
 - `src/main/export/worker.ts` - Worker entry point with own DB connection
 - `src/main/export/worker-manager.ts` - Worker lifecycle management
 
 **Files Modified:**
+
 - `electron.vite.config.ts` - Added worker build configuration (input entry)
 - `src/main/ipc.ts` - Updated export handlers to use worker manager
 
 **Build Output:**
+
 - `out/main/export-worker.js` (15.13 KB) - Worker script bundled successfully
 - `out/main/index.js` (273.82 KB) - Main process with worker manager
 
 **Tests Added:**
+
 - `src/main/export/__test__/worker-manager.test.ts` - Message type validation tests (14 tests)
 
 **Key Implementation Details:**
+
 - Worker has its own better-sqlite3 database connection
 - Attachment downloads delegated to main process (provider auth required)
 - Progress updates sent via postMessage

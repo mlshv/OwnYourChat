@@ -48,7 +48,6 @@
     "better-sqlite3": "^12.5.0",
     "drizzle-orm": "^0.45.1",
     "electron-updater": "^6.7.3",
-    "electron-webauthn": "^1.0.5",
     "vitest": "^4.0.16",
     "zustand": "^5.0.9"
   },
@@ -97,8 +96,7 @@
   "pnpm": {
     "onlyBuiltDependencies": [
       "electron",
-      "esbuild",
-      "objc-js"
+      "esbuild"
     ],
     "ignoredBuiltDependencies": [
       "better-sqlite3",

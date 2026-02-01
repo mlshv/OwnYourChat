@@ -13,6 +13,8 @@ export const useSyncState = () => useStore<AppState['sync']>((state) => state.sy
 
 export const useSettings = () => useStore<AppState['settings']>((state) => state.settings)
 
+export const useUIState = () => useStore<AppState['ui']>((state) => state.ui)
+
 // Actions
 export const useUpdateProviderState = () =>
   useStore<AppState['updateProviderState']>((state) => state.updateProviderState)

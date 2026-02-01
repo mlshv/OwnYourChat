@@ -57,8 +57,10 @@ async function downloadMissingAttachments(
   }
 
   // Count total attachments to download
-  const attachmentsToDownload: Array<{ msg: Message; att: NonNullable<Message['attachments']>[0] }> =
-    []
+  const attachmentsToDownload: Array<{
+    msg: Message
+    att: NonNullable<Message['attachments']>[0]
+  }> = []
   for (const msg of messages) {
     if (!msg.attachments || msg.attachments.length === 0) continue
     for (const att of msg.attachments) {

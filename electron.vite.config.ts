@@ -29,8 +29,7 @@ export default defineConfig({
     build: {
       rollupOptions: {
         input: {
-          index: resolve('src/preload/index.ts'),
-          'provider-webauthn': resolve('src/preload/provider-webauthn.ts')
+          index: resolve('src/preload/index.ts')
         }
       }
     }

@@ -5,6 +5,7 @@
 Export conversations to Markdown or JSON files, with optional attachments.
 
 **Files**:
+
 - `src/main/export/index.ts` - Main export logic
 - `src/main/export/markdown.ts` - Markdown formatter
 - `src/main/export/json.ts` - JSON formatter
@@ -16,7 +17,7 @@ Export conversations to Markdown or JSON files, with optional attachments.
 interface ExportOptions {
   format: 'markdown' | 'json'
   includeAttachments: boolean
-  prefixTimestamp: boolean  // YYYY-MM-DD prefix for sorting
+  prefixTimestamp: boolean // YYYY-MM-DD prefix for sorting
   outputPath: string
 }
 ```
@@ -30,6 +31,7 @@ interface ExportOptions {
 ```
 
 **Why this format**:
+
 - Alphabetically sortable (year first with zero-padding)
 - Works across all file systems
 - Easy to find conversations by date
@@ -37,6 +39,7 @@ interface ExportOptions {
 Without timestamp: `My Conversation Title.md`
 
 Filename sanitization (`sanitizeFilename`):
+
 - Replace `\/:*?"<>|` with `-`
 - Collapse whitespace
 - Remove leading dots
@@ -133,9 +136,7 @@ OpenAI Chat API-compatible format for interoperability with other tools.
       "content": "The capital of France is Paris.",
       "created_at": 1704621605,
       "parent_id": "msg-xyz789",
-      "sources": [
-        {"title": "Wikipedia - Paris", "url": "https://en.wikipedia.org/wiki/Paris"}
-      ],
+      "sources": [{ "title": "Wikipedia - Paris", "url": "https://en.wikipedia.org/wiki/Paris" }],
       "attachments": [
         {
           "type": "image",
@@ -150,6 +151,7 @@ OpenAI Chat API-compatible format for interoperability with other tools.
 ```
 
 **Field mapping**:
+
 - `created_at` / `updated_at`: Unix timestamps (seconds)
 - `content`: Flattened text from message parts
 - `parent_id`: Message tree structure (null for root messages)
@@ -158,12 +160,12 @@ OpenAI Chat API-compatible format for interoperability with other tools.
 
 ## IPC Channels
 
-| Channel | Purpose |
-|---------|---------|
-| `export:conversation` | Export single conversation |
-| `export:all` | Batch export all (up to 10k) |
-| `export:progress` | Progress updates (renderer listens) |
-| `export:cancel` | Abort in-progress export |
+| Channel               | Purpose                             |
+| --------------------- | ----------------------------------- |
+| `export:conversation` | Export single conversation          |
+| `export:all`          | Batch export all (up to 10k)        |
+| `export:progress`     | Progress updates (renderer listens) |
+| `export:cancel`       | Abort in-progress export            |
 
 ### Progress Event
 
@@ -179,6 +181,7 @@ type ExportProgress = {
 ## UI
 
 `ExportModal` component:
+
 - Format selection (Markdown/JSON)
 - "Include attachments" checkbox with warning about download time
 - "Prefix with timestamp" checkbox
@@ -191,6 +194,7 @@ Settings persisted in `user_preferences.exportSettings`.
 ### Progress UI
 
 During export, modal shows:
+
 - Phase label ("Downloading attachments..." / "Exporting conversations...")
 - Progress bar with current/total count
 - Current conversation title (for batch exports)
@@ -199,6 +203,7 @@ During export, modal shows:
 ### Cancellation
 
 Cancel triggers immediate abort:
+
 - Stops current attachment download
 - Cleans up partial files
 - Returns to ready state

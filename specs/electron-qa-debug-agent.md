@@ -44,44 +44,54 @@ A Claude Code subagent that provides automated QA testing and debugging capabili
 ## Use Cases
 
 ### 1. UI Verification
-Main agent asks: *"Go to the Settings page and verify the MCP toggle is visible"*
+
+Main agent asks: _"Go to the Settings page and verify the MCP toggle is visible"_
 
 The QA agent:
+
 1. Navigates to Settings
 2. Inspects DOM for MCP toggle element
 3. Reports visibility status and any console errors
 
 ### 2. Screenshot Capture
-Main agent asks: *"Take a screenshot of the conversation list with the sidebar open"*
+
+Main agent asks: _"Take a screenshot of the conversation list with the sidebar open"_
 
 The QA agent:
+
 1. Ensures sidebar is open
 2. Captures screenshot via CDP
 3. Saves to `.context/screenshots/` with contextual name
 4. Returns file path to main agent
 
 ### 3. Console Debugging
-Main agent asks: *"What errors appear in the console when clicking the sync button?"*
+
+Main agent asks: _"What errors appear in the console when clicking the sync button?"_
 
 The QA agent:
+
 1. Clears/notes current console state
 2. Clicks sync button
 3. Captures any new console errors/warnings
 4. Returns formatted log output
 
 ### 4. Regression Testing
-Main agent asks: *"Test the login flow for ChatGPT provider"*
+
+Main agent asks: _"Test the login flow for ChatGPT provider"_
 
 The QA agent:
+
 1. Opens provider login
 2. Verifies login window appears
 3. Checks for console errors
 4. Reports overall flow status
 
 ### 5. State Inspection
-Main agent asks: *"Check what's in the Zustand store after syncing"*
+
+Main agent asks: _"Check what's in the Zustand store after syncing"_
 
 The QA agent:
+
 1. Executes console command to dump store state
 2. Returns relevant state snapshot
 
@@ -94,6 +104,7 @@ The QA agent:
 ```
 
 Project-level placement ensures:
+
 - Team members can use it (via version control)
 - MCP server configuration is project-specific
 - Screenshot paths are relative to project
@@ -114,7 +125,7 @@ claude mcp add electron npx electron-mcp-server
 The Electron app must have CDP (Chrome DevTools Protocol) enabled. Add to `src/main/index.ts`:
 
 ```typescript
-mainWindow.webContents.debugger.attach('1.3');
+mainWindow.webContents.debugger.attach('1.3')
 ```
 
 ## Agent Specification
@@ -137,34 +148,35 @@ model: sonnet
 
 ### Tool Restrictions
 
-| Tool | Access | Purpose |
-|------|--------|---------|
-| Read | Yes | Read source code for context during debugging |
-| Glob | Yes | Find files when diagnosing issues |
-| Grep | Yes | Search code for relevant patterns |
-| Write | Yes | Save screenshots to `.context/screenshots/` only |
-| Edit | No | Cannot modify source code |
-| Bash | No | Uses MCP for app interaction instead |
+| Tool  | Access | Purpose                                          |
+| ----- | ------ | ------------------------------------------------ |
+| Read  | Yes    | Read source code for context during debugging    |
+| Glob  | Yes    | Find files when diagnosing issues                |
+| Grep  | Yes    | Search code for relevant patterns                |
+| Write | Yes    | Save screenshots to `.context/screenshots/` only |
+| Edit  | No     | Cannot modify source code                        |
+| Bash  | No     | Uses MCP for app interaction instead             |
 
 ### MCP Tools Available
 
 From `electron-mcp-server`:
 
-| Tool | Purpose |
-|------|---------|
-| `click` | Click elements by selector |
-| `input` | Fill form fields |
-| `screenshot` | Capture current window state |
+| Tool               | Purpose                          |
+| ------------------ | -------------------------------- |
+| `click`            | Click elements by selector       |
+| `input`            | Fill form fields                 |
+| `screenshot`       | Capture current window state     |
 | `get_console_logs` | Retrieve renderer console output |
-| `get_main_logs` | Retrieve main process logs |
-| `evaluate` | Execute JS in renderer context |
-| `get_element` | Inspect DOM elements |
+| `get_main_logs`    | Retrieve main process logs       |
+| `evaluate`         | Execute JS in renderer context   |
+| `get_element`      | Inspect DOM elements             |
 
 ## Behavior Specification
 
 ### Trigger Conditions
 
 Claude should delegate to this agent when:
+
 - Discussing UI bugs or visual issues
 - Needing to verify a change worked
 - Debugging console errors
@@ -193,11 +205,13 @@ When errors occur, the agent should:
 Adaptive based on request:
 
 **Concise** (for simple checks):
+
 ```
 Settings page loaded. MCP toggle visible and enabled. No console errors.
 ```
 
 **Detailed** (for debugging):
+
 ```
 ## Console Output Analysis
 
@@ -219,6 +233,7 @@ Settings page loaded. MCP toggle visible and enabled. No console errors.
 Screenshots saved to: `.context/screenshots/`
 
 Naming convention (agent decides contextually):
+
 - `settings-mcp-toggle-2024-01-12.png` - Feature-specific
 - `error-state-conversation-list.png` - Error documentation
 - `regression-login-flow-step-3.png` - Test sequence
@@ -244,6 +259,7 @@ Naming convention (agent decides contextually):
 ### Result Consumption
 
 The main agent receives:
+
 - Summary of findings
 - Screenshot file paths (can read with Read tool if needed)
 - Specific error details for fixing

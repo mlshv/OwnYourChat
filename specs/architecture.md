@@ -36,11 +36,11 @@ OwnYourChat is an Electron desktop app that syncs AI conversations from ChatGPT,
 
 ## Key Entry Points
 
-| Process | Entry | Purpose |
-|---------|-------|---------|
-| Main | `src/main/index.ts` | App lifecycle, creates BrowserWindow |
-| Preload | `src/preload/index.ts` | Bridges IPC to renderer |
-| Renderer | `src/renderer/src/main.tsx` | React root |
+| Process  | Entry                       | Purpose                              |
+| -------- | --------------------------- | ------------------------------------ |
+| Main     | `src/main/index.ts`         | App lifecycle, creates BrowserWindow |
+| Preload  | `src/preload/index.ts`      | Bridges IPC to renderer              |
+| Renderer | `src/renderer/src/main.tsx` | React root                           |
 
 ## Directory Structure
 
@@ -71,14 +71,14 @@ src/
 
 ## Key Dependencies
 
-| Package | Purpose |
-|---------|---------|
-| `drizzle-orm` + `better-sqlite3` | Database |
+| Package                          | Purpose             |
+| -------------------------------- | ------------------- |
+| `drizzle-orm` + `better-sqlite3` | Database            |
 | `zustand` + `@zubridge/electron` | Cross-process state |
-| `@modelcontextprotocol/sdk` | MCP server |
-| `electron-updater` | Auto-updates |
-| `virtua` | Virtual scrolling |
-| `shadcn` + `tailwindcss` | UI components |
+| `@modelcontextprotocol/sdk`      | MCP server          |
+| `electron-updater`               | Auto-updates        |
+| `virtua`                         | Virtual scrolling   |
+| `shadcn` + `tailwindcss`         | UI components       |
 
 ## Custom Protocol
 
@@ -87,5 +87,6 @@ src/
 ## Path Aliases
 
 Configured in `electron.vite.config.ts`:
+
 - Main: `@/` → `src/main/`, `@shared/` → `src/shared/`
 - Renderer: `@/` → `src/renderer/src/`, `@shared/` → `src/shared/`

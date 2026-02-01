@@ -1,17 +1,20 @@
 'use client'
 
 import { useState, useEffect, useRef, useMemo, useCallback } from 'react'
+import { FunnelIcon } from '@phosphor-icons/react'
 import { ChatList } from './components/ChatList'
 import { ChatView } from './components/ChatView'
+import { ConnectionBar } from './components/ConnectionBar'
 import { ExportModal } from './components/ExportModal'
 import { SettingsModal } from './components/SettingsModal'
 import { OnboardingScreen } from './components/OnboardingScreen'
-import { Input } from './components/ui/input'
+import { SearchInput } from './components/SearchInput'
+import { Button } from './components/ui/button'
+import { Tooltip, TooltipTrigger, TooltipContent } from './components/ui/tooltip'
 import type { Conversation, Message, ElectronAPI } from '@shared/types'
 import { buildMessageTree, getDisplayPath, updateBranchSelection } from './lib/branch-utils'
-import { useAuthState, useProvidersState, useSyncState } from './lib/store'
+import { useAuthState, useProvidersState, useSyncState, useUIState } from './lib/store'
 import { AI_PROVIDERS } from './constants'
-import { ChatTextIcon } from '@phosphor-icons/react'
 
 // Type augmentation for window.api
 declare global {
@@ -25,6 +28,7 @@ export default function App() {
   const authState = useAuthState()
   const providersState = useProvidersState()
   const syncState = useSyncState()
+  const uiState = useUIState()
 
   // Local state
   const [conversations, setConversations] = useState<{
@@ -56,6 +60,7 @@ export default function App() {
   } | null>(null)
   const [caseSensitiveSearch, setCaseSensitiveSearch] = useState(false)
   const [searchInMessages, setSearchInMessages] = useState(false)
+  const [showProviderFilters, setShowProviderFilters] = useState(false)
   const [hasCompletedOnboarding, setHasCompletedOnboarding] = useState(false)
   const [showDebugPanel, setShowDebugPanel] = useState(false)
   const [isUserAtTop, setIsUserAtTop] = useState(true)
@@ -316,8 +321,7 @@ export default function App() {
     setSearchQuery(query)
     if (!isElectron) return
 
-    const providerFilter =
-      options?.provider !== undefined ? options.provider : selectedProvider
+    const providerFilter = options?.provider !== undefined ? options.provider : selectedProvider
     const isCaseSensitive = options?.caseSensitive ?? caseSensitiveSearch
     const includeMessages = options?.searchInMessages ?? searchInMessages
     // Only search messages if query is 3+ chars (performance optimization)
@@ -365,8 +369,7 @@ export default function App() {
     handleSearch(searchQuery, { provider: newProvider })
   }
 
-  const handleToggleCaseSensitive = () => {
-    const newValue = !caseSensitiveSearch
+  const handleToggleCaseSensitive = (newValue: boolean) => {
     setCaseSensitiveSearch(newValue)
     // Re-run search with new setting if there's a query
     if (searchQuery.trim()) {
@@ -395,81 +398,73 @@ export default function App() {
 
   return (
     <div className="flex flex-col h-screen">
+      {/* Connection bar - shown when connecting to a provider */}
+      {uiState?.connectingProvider && (
+        <ConnectionBar
+          provider={uiState.connectingProvider}
+          onCancel={() => window.api?.auth.cancelConnection()}
+        />
+      )}
+
       {/* Main content */}
-      <div className="flex flex-1 overflow-hidden">
+      <div className="flex flex-1 overflow-hidden relative">
         {/* Sidebar */}
-        <div className="w-72 border-r border-border flex flex-col">
+        <div className="w-72 border-r border-border flex flex-col pt-5">
           {/* Search */}
-          <div className="p-3 border-b border-border">
-            <div className="flex gap-2">
-              <Input
-                type="text"
-                placeholder="Search conversations..."
+          <div className="py-3 px-2 border-b border-border">
+            <div className="flex gap-1.5">
+              <SearchInput
                 value={searchQuery}
-                onChange={(e) => handleSearch(e.target.value)}
-                className="flex-1"
-              />
-              <button
-                onClick={handleToggleCaseSensitive}
-                className={`px-2 py-1 text-xs font-mono rounded border transition-colors ${
-                  caseSensitiveSearch
-                    ? 'bg-primary text-primary-foreground border-primary'
-                    : 'bg-transparent text-muted-foreground border-border hover:border-muted-foreground'
-                }`}
-                title={
-                  caseSensitiveSearch
-                    ? 'Case sensitive (click to disable)'
-                    : 'Case insensitive (click to enable)'
-                }
-              >
-                Aa
-              </button>
-              <button
-                onClick={() => {
-                  const newValue = !searchInMessages
+                onChange={handleSearch}
+                placeholder="Search conversations..."
+                caseSensitive={caseSensitiveSearch}
+                onCaseSensitiveChange={handleToggleCaseSensitive}
+                searchInMessages={searchInMessages}
+                onSearchInMessagesChange={(newValue) => {
                   setSearchInMessages(newValue)
                   if (searchQuery.trim()) {
                     handleSearch(searchQuery, { searchInMessages: newValue })
                   }
                 }}
-                className={`px-2 py-1 rounded border transition-colors ${
-                  searchInMessages
-                    ? 'bg-primary text-primary-foreground border-primary'
-                    : 'bg-transparent text-muted-foreground border-border hover:border-muted-foreground'
-                }`}
-                title={
-                  searchInMessages
-                    ? 'Searching in messages (3+ chars required)'
-                    : 'Searching titles only (click to include messages)'
-                }
-              >
-                <ChatTextIcon size={14} />
-              </button>
+              />
+              <Tooltip disableHoverablePopup>
+                <TooltipTrigger
+                  render={
+                    <Button
+                      variant="outline"
+                      onClick={() => setShowProviderFilters(!showProviderFilters)}
+                      className="px-1.5"
+                    >
+                      <FunnelIcon size={14} />
+                    </Button>
+                  }
+                />
+                <TooltipContent side="bottom">Toggle filters</TooltipContent>
+              </Tooltip>
             </div>
             {/* Provider filters */}
-            {connectedProviders.length > 0 && (
+            {showProviderFilters && (
               <div className="flex gap-1.5 mt-2 flex-wrap">
-                {connectedProviders.map((providerId) => {
-                  const provider = AI_PROVIDERS[providerId]
-                  const Icon = provider.icon
-                  const count = displayCounts[providerId]
-                  const isSelected = selectedProvider === providerId
-                  return (
-                    <button
-                      key={providerId}
-                      onClick={() => handleProviderFilter(providerId)}
-                      className={`flex items-center gap-1.5 px-2 py-1 text-xs rounded border transition-colors ${
-                        isSelected
-                          ? 'bg-primary text-primary-foreground border-primary'
-                          : 'bg-transparent text-muted-foreground border-border hover:border-muted-foreground'
-                      }`}
-                      title={`Filter by ${provider.name}`}
-                    >
-                      <Icon size={14} />
-                      <span>{count}</span>
-                    </button>
-                  )
-                })}
+                {(Object.keys(AI_PROVIDERS) as Array<'chatgpt' | 'claude' | 'perplexity'>).map(
+                  (providerId) => {
+                    const provider = AI_PROVIDERS[providerId]
+                    const Icon = provider.icon
+                    const count = displayCounts[providerId]
+                    const isSelected = selectedProvider === providerId
+                    return (
+                      <Button
+                        key={providerId}
+                        onClick={() => handleProviderFilter(providerId)}
+                        variant={isSelected ? 'default' : 'outline'}
+                        size="xs"
+                        title={`Filter by ${provider.name}`}
+                      >
+                        <Icon size={14} />
+                        <span>{count}</span>
+                      </Button>
+                    )
+                  }
+                )}
               </div>
             )}
           </div>
@@ -564,7 +559,7 @@ export default function App() {
               }}
             />
           ) : (
-            <div className="flex items-center justify-center h-full text-muted-foreground">
+            <div className="flex items-center justify-center h-full text-muted-foreground text-sm">
               Select a conversation to view
             </div>
           )}
@@ -574,55 +569,55 @@ export default function App() {
       {/* Debug Toolbar */}
       {showDebugPanel && (
         <div className="h-10 flex items-center justify-between px-4 bg-yellow-700 border-b border-border">
-        <div className="flex items-center gap-2">
-          <span className="font-semibold text-sm">Debug Mode</span>
-        </div>
-        <div className="no-drag flex items-center gap-2">
-          <button
-            onClick={() => window.api?.debug.toggleChatGPTView()}
-            className="text-xs px-2 py-1 bg-foreground text-background rounded active:bg-foreground/90"
-            title="Toggle ChatGPT WebContentsView visibility"
-          >
-            View ChatGPT
-          </button>
-          <button
-            onClick={() => window.api?.debug.toggleClaudeView()}
-            className="text-xs px-2 py-1 bg-foreground text-background rounded active:bg-foreground/90"
-            title="Toggle Claude WebContentsView visibility"
-          >
-            View Claude
-          </button>
-          <button
-            onClick={() => window.api?.debug.togglePerplexityView()}
-            className="text-xs px-2 py-1 bg-foreground text-background rounded active:bg-foreground/90"
-            title="Toggle Perplexity WebContentsView visibility"
-          >
-            View Perplexity
-          </button>
+          <div className="flex items-center gap-2">
+            <span className="font-semibold text-sm">Debug Mode</span>
+          </div>
+          <div className="no-drag flex items-center gap-2">
+            <button
+              onClick={() => window.api?.debug.toggleChatGPTView()}
+              className="text-xs px-2 py-1 bg-foreground text-background rounded active:bg-foreground/90"
+              title="Toggle ChatGPT WebContentsView visibility"
+            >
+              View ChatGPT
+            </button>
+            <button
+              onClick={() => window.api?.debug.toggleClaudeView()}
+              className="text-xs px-2 py-1 bg-foreground text-background rounded active:bg-foreground/90"
+              title="Toggle Claude WebContentsView visibility"
+            >
+              View Claude
+            </button>
+            <button
+              onClick={() => window.api?.debug.togglePerplexityView()}
+              className="text-xs px-2 py-1 bg-foreground text-background rounded active:bg-foreground/90"
+              title="Toggle Perplexity WebContentsView visibility"
+            >
+              View Perplexity
+            </button>
 
-          <button
-            onClick={() => window.api?.debug.openChatGPTDevTools()}
-            className="text-xs px-2 py-1 bg-foreground text-background rounded active:bg-foreground/90"
-            title="Open DevTools for ChatGPT WebContentsView"
-          >
-            DevTools (ChatGPT)
-          </button>
+            <button
+              onClick={() => window.api?.debug.openChatGPTDevTools()}
+              className="text-xs px-2 py-1 bg-foreground text-background rounded active:bg-foreground/90"
+              title="Open DevTools for ChatGPT WebContentsView"
+            >
+              DevTools (ChatGPT)
+            </button>
 
-          <button
-            onClick={() => window.api?.debug.openClaudeDevTools()}
-            className="text-xs px-2 py-1 bg-foreground text-background rounded active:bg-foreground/90"
-            title="Open DevTools for Claude WebContentsView"
-          >
-            DevTools (Claude)
-          </button>
-          <button
-            onClick={() => window.api?.debug.openPerplexityDevTools()}
-            className="text-xs px-2 py-1 bg-foreground text-background rounded active:bg-foreground/90"
-            title="Open DevTools for Perplexity WebContentsView"
-          >
-            DevTools (Perplexity)
-          </button>
-        </div>
+            <button
+              onClick={() => window.api?.debug.openClaudeDevTools()}
+              className="text-xs px-2 py-1 bg-foreground text-background rounded active:bg-foreground/90"
+              title="Open DevTools for Claude WebContentsView"
+            >
+              DevTools (Claude)
+            </button>
+            <button
+              onClick={() => window.api?.debug.openPerplexityDevTools()}
+              className="text-xs px-2 py-1 bg-foreground text-background rounded active:bg-foreground/90"
+              title="Open DevTools for Perplexity WebContentsView"
+            >
+              DevTools (Perplexity)
+            </button>
+          </div>
         </div>
       )}
 

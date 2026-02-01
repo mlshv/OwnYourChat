@@ -8,21 +8,7 @@ OwnYourChat is an Electron desktop application that syncs AI conversations from 
 
 ## Detailed Specifications
 
-For deeper documentation including engineering decisions and rationale, see `specs/`:
-
-| Spec | Description |
-|------|-------------|
-| [architecture.md](specs/architecture.md) | System overview, 3-process Electron model, directory structure |
-| [providers.md](specs/providers.md) | ChatGPT/Claude/Perplexity sync, authentication, polling |
-| [database.md](specs/database.md) | SQLite schema, message tree structure, upsert patterns |
-| [ipc.md](specs/ipc.md) | IPC channels, stale-while-revalidate, preload bridge |
-| [state-management.md](specs/state-management.md) | Zustand + Zubridge, cross-process state sync |
-| [mcp-server.md](specs/mcp-server.md) | MCP server for AI assistants, HTTP transport |
-| [frontend.md](specs/frontend.md) | React components, branch navigation, virtualization |
-| [attachments.md](specs/attachments.md) | File downloading, caching, custom protocol |
-| [export.md](specs/export.md) | Markdown/JSON export, attachment handling |
-| [electron-qa-debug-agent.md](specs/electron-qa-debug-agent.md) | QA/debug subagent spec, MCP integration |
-| [electron-qa-debug-agent-implementation-plan.md](specs/electron-qa-debug-agent-implementation-plan.md) | Step-by-step setup guide |
+For deeper documentation including engineering decisions and rationale, see [specs/README.md](specs/README.md).
 
 ## Development Commands
 
@@ -65,6 +51,7 @@ Communication flows Main ← IPC → Renderer, defined in `src/shared/types.ts` 
 **Provider Registry** (`src/main/sync/providers/registry.ts`): Singleton managing all sync providers (ChatGPT, Claude, Perplexity).
 
 Each provider extends `BaseProvider` (`src/main/sync/providers/base.ts`) and implements:
+
 - `sync()`: Fetch conversations from provider API and persist to database
 - `showLogin()` / `logout()`: Authentication via WebContentsView
 - `restoreConnection()`: Re-authenticate on app restart
@@ -133,6 +120,7 @@ Use `type` for type aliases, not `interface` (unless defining OOP interfaces int
 All elements have `corner-shape: squircle` applied globally (`src/renderer/src/globals.css`). This makes rounded corners use squircle shapes instead of circular arcs.
 
 **For elements that must be truly circular (not squircle):**
+
 ```css
 .round-element {
   corner-shape: round;
@@ -140,6 +128,7 @@ All elements have `corner-shape: squircle` applied globally (`src/renderer/src/g
 ```
 
 Common cases requiring `corner-shape: round`:
+
 - Radio button indicators
 - Checkbox indicators (when using `rounded-full`)
 - Avatar/profile images

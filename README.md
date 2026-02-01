@@ -38,10 +38,12 @@ Enable the MCP server from Settings in the app.
 ## Roadmap
 
 **Coming soon:**
+
 - [ ] Gemini support
 - [ ] Grok support
 
 **Future vision:**
+
 - [ ] Plugin system — build and share extensions
 - [ ] Cross-provider context — continue any chat with any model
 - [ ] Native chat UI with BYOK (Bring Your Own API Keys)

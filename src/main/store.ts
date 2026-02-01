@@ -47,6 +47,10 @@ export const store = createStore<AppState>((set) => ({
     mcpPort: 3000
   },
 
+  ui: {
+    connectingProvider: null
+  },
+
   // Actions
   updateProviderState: (provider, providerState) => {
     set((state) => {
@@ -101,6 +105,16 @@ export const store = createStore<AppState>((set) => ({
       auth: {
         ...state.auth,
         ...auth
+      }
+    }))
+  },
+
+  setConnectingProvider: (provider) => {
+    set((state) => ({
+      ...state,
+      ui: {
+        ...state.ui,
+        connectingProvider: provider
       }
     }))
   }

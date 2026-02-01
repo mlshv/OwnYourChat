@@ -9,6 +9,7 @@ Attachments (images, files) are downloaded from providers and cached locally. Se
 Local cache: `~/.config/ownyourchat/attachments/{conversationId}/{fileId}_{filename}`
 
 Database table `attachments`:
+
 - `originalUrl` - Provider's remote URL
 - `localPath` - Cached local path (null if not downloaded)
 - `type` - 'image' | 'file'
@@ -40,6 +41,7 @@ Each provider implements `downloadAttachment(fileId, filename, conversationId)`:
 ### ChatGPT (`chatgpt-provider.ts`)
 
 Uses WebContentsView JavaScript execution:
+
 ```typescript
 const result = await this.view.webContents.executeJavaScript(`
   (async () => {
@@ -102,17 +104,18 @@ Files: user clicks to download on demand.
 ## File Type Handling
 
 `AssistantMessage` renders file attachments with:
+
 - Type-specific colors (PDF=red, Word=blue, Excel=green, etc.)
 - Icons from Hugeicons library
 - Click to open in default app (`shell:open-external`)
 
 ## IPC Channels
 
-| Channel | Purpose |
-|---------|---------|
+| Channel               | Purpose                      |
+| --------------------- | ---------------------------- |
 | `attachment:download` | Download file to local cache |
-| `attachment:open` | Open file in default app |
-| `attachment:exists` | Check if already cached |
+| `attachment:open`     | Open file in default app     |
+| `attachment:exists`   | Check if already cached      |
 
 ## Caching Strategy
 

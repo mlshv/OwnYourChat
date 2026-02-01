@@ -1,10 +1,9 @@
 import { WebContentsView, session } from 'electron'
-import { join } from 'path'
-import { WEBAUTHN_INJECTION_SCRIPT } from '../../webauthn/inject'
 import { BaseProvider, type SyncResult, type ProviderName } from './base.js'
 import type { IStorage } from '../../storage/interface.js'
 import type { ClaudeMetadata } from './types'
 import { getMainWindow } from '../../index.js'
+import { viewBoundsManager } from '../../view-bounds-manager'
 import { IPC_CHANNELS } from '../../../shared/types'
 import { findCachedFile, getExtensionFromMimeType } from '../attachment-utils.js'
 import { getAttachmentsPath } from '../../settings.js'
@@ -14,8 +13,6 @@ import {
 } from './claude/utils'
 import fs from 'fs'
 import path from 'path'
-
-const TOOLBAR_HEIGHT = 40
 
 // ============================================================================
 // TYPES - Exported for external use
@@ -150,32 +147,19 @@ export class ClaudeProvider extends BaseProvider<ClaudeMetadata> {
   }
 
   showLogin(): void {
-    const mainWindow = getMainWindow()
-    if (!mainWindow || !this.view) return
+    if (!this.view) return
 
-    mainWindow.contentView.addChildView(this.view)
-
-    const bounds = mainWindow.getContentBounds()
-    this.view.setBounds({
-      x: 0,
-      y: 0,
-      width: bounds.width,
-      height: bounds.height - TOOLBAR_HEIGHT
-    })
-
+    viewBoundsManager.attachView(this.view, this.name)
     this.view.webContents.loadURL('https://claude.ai/')
     this.isViewVisible = true
 
-    mainWindow.on('resize', this.updateViewBounds)
     this.startLoginMonitor()
   }
 
   hideView(): void {
-    const mainWindow = getMainWindow()
-    if (!mainWindow || !this.view) return
+    if (!this.view) return
 
-    mainWindow.contentView.removeChildView(this.view)
-    mainWindow.off('resize', this.updateViewBounds)
+    viewBoundsManager.detachView(this.view)
     this.isViewVisible = false
   }
 
@@ -1154,21 +1138,11 @@ export class ClaudeProvider extends BaseProvider<ClaudeMetadata> {
       webPreferences: {
         contextIsolation: true,
         nodeIntegration: false,
-        partition: 'persist:claude',
-        preload: join(__dirname, '../preload/provider-webauthn.js')
+        partition: 'persist:claude'
       }
     })
 
-    // Inject WebAuthn bridge override when DOM is ready
-    this.view.webContents.on('dom-ready', () => {
-      this.view?.webContents.executeJavaScript(WEBAUTHN_INJECTION_SCRIPT).catch((err) => {
-        console.error(`[${this.name}] Failed to inject WebAuthn bridge:`, err)
-      })
-    })
-
     const claudeSession = session.fromPartition('persist:claude')
-
-    // Enable WebAuthn/passkey support by allowing required permissions
     claudeSession.setPermissionRequestHandler((_webContents, permission, callback) => {
       const allowedPermissions = ['hid', 'usb', 'clipboard-read', 'clipboard-sanitized-write']
       callback(allowedPermissions.includes(permission))
@@ -1220,19 +1194,6 @@ export class ClaudeProvider extends BaseProvider<ClaudeMetadata> {
     } catch (error) {
       console.error(`[${this.name}] Error extracting organization ID:`, error)
     }
-  }
-
-  private updateViewBounds = (): void => {
-    const mainWindow = getMainWindow()
-    if (!mainWindow || !this.view || !this.isViewVisible) return
-
-    const bounds = mainWindow.getContentBounds()
-    this.view.setBounds({
-      x: 0,
-      y: 0,
-      width: bounds.width,
-      height: bounds.height - TOOLBAR_HEIGHT
-    })
   }
 
   private startLoginMonitor(): void {

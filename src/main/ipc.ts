@@ -2,13 +2,10 @@ import { ipcMain, dialog, shell } from 'electron'
 import { IPC_CHANNELS, type ExportProgress } from '../shared/types'
 import { getMainWindow, providerRegistry } from './index.js'
 import * as db from './db/operations'
-import {
-  startExportWorker,
-  startExportAllWorker,
-  cancelExport
-} from './export/worker-manager'
+import { startExportWorker, startExportAllWorker, cancelExport } from './export/worker-manager'
 import { getSettings, updateSettings } from './settings'
 import { startMcpServer, stopMcpServer, isMcpServerRunning } from './mcp/server'
+import { viewBoundsManager } from './view-bounds-manager'
 import fs from 'fs'
 
 export function setupIpcHandlers(): void {
@@ -141,11 +138,7 @@ export function setupIpcHandlers(): void {
 
   ipcMain.handle(IPC_CHANNELS.EXPORT_ALL, async (_event, options) => {
     try {
-      const result = await startExportAllWorker(
-        { options },
-        sendProgressUpdate,
-        downloadAttachment
-      )
+      const result = await startExportAllWorker({ options }, sendProgressUpdate, downloadAttachment)
       return result
     } catch (error) {
       console.error('[IPC] Export all error:', error)
@@ -181,6 +174,10 @@ export function setupIpcHandlers(): void {
       console.log('[Auth] Logged out all providers')
     }
     return { success: true }
+  })
+
+  ipcMain.handle(IPC_CHANNELS.AUTH_CANCEL_CONNECTION, async () => {
+    viewBoundsManager.cancelConnection()
   })
 
   // Settings handlers
@@ -226,7 +223,14 @@ export function setupIpcHandlers(): void {
   })
 
   ipcMain.handle(IPC_CHANNELS.USER_PREFERENCES_SET, async (_event, preferences) => {
-    return db.setUserPreferences(preferences)
+    const result = await db.setUserPreferences(preferences)
+
+    // Sync debug panel state to view bounds manager
+    if (preferences.showDebugPanel !== undefined) {
+      viewBoundsManager.setDebugPanelVisible(preferences.showDebugPanel)
+    }
+
+    return result
   })
 
   // Debug handlers

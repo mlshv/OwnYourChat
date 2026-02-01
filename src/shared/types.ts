@@ -58,6 +58,11 @@ export interface AppState {
     mcpPort: number
   }
 
+  // UI state
+  ui: {
+    connectingProvider: 'chatgpt' | 'claude' | 'perplexity' | null
+  }
+
   // Actions
   updateProviderState: (
     provider: 'chatgpt' | 'claude' | 'perplexity',
@@ -66,6 +71,7 @@ export interface AppState {
   updateSyncState: (state: Partial<AppState['sync']>) => void
   updateSettings: (settings: Partial<AppState['settings']>) => void
   setAuthState: (auth: Partial<AppState['auth']>) => void
+  setConnectingProvider: (provider: 'chatgpt' | 'claude' | 'perplexity' | null) => void
 }
 
 export interface Conversation {
@@ -178,6 +184,7 @@ export const enum IPC_CHANNELS {
   AUTH_STATUS_CHANGED = 'auth:status-changed',
   AUTH_LOGIN = 'auth:login',
   AUTH_LOGOUT = 'auth:logout',
+  AUTH_CANCEL_CONNECTION = 'auth:cancel-connection',
 
   // Debug
   DEBUG_TOGGLE_CHATGPT_VIEW = 'debug:toggle-chatgpt-view',
@@ -209,11 +216,7 @@ export const enum IPC_CHANNELS {
   // Menu events
   MENU_EXPORT_CLICK = 'menu:export-click',
   MENU_SETTINGS_CLICK = 'menu:settings-click',
-  MENU_DEBUG_PANEL_TOGGLE = 'menu:debug-panel-toggle',
-
-  // WebAuthn
-  WEBAUTHN_CREATE = 'webauthn:create',
-  WEBAUTHN_GET = 'webauthn:get'
+  MENU_DEBUG_PANEL_TOGGLE = 'menu:debug-panel-toggle'
 }
 
 // ElectronAPI type definition for window.api
@@ -276,6 +279,7 @@ export interface ElectronAPI {
   auth: {
     login: (provider: 'chatgpt' | 'claude' | 'perplexity') => Promise<{ success: boolean }>
     logout: (provider?: 'chatgpt' | 'claude' | 'perplexity') => Promise<{ success: boolean }>
+    cancelConnection: () => Promise<void>
   }
   settings: {
     get: () => Promise<{

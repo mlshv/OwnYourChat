@@ -21,8 +21,14 @@ const createMcpServer = () => {
       description:
         'List conversations from the local database. Returns a paginated list of ChatGPT and Claude conversations synced to the local database.',
       inputSchema: {
-        limit: z.number().optional().describe('Maximum number of conversations to return (default: 50)'),
-        offset: z.number().optional().describe('Number of conversations to skip for pagination (default: 0)')
+        limit: z
+          .number()
+          .optional()
+          .describe('Maximum number of conversations to return (default: 50)'),
+        offset: z
+          .number()
+          .optional()
+          .describe('Number of conversations to skip for pagination (default: 0)')
       }
     },
     async ({ limit, offset }) => {
@@ -46,7 +52,10 @@ const createMcpServer = () => {
       console.log('[MCP] Tool call: get_conversation_with_messages', JSON.stringify({ id, limit }))
       const result = await db.getConversationWithMessages(id, limit ? { limit } : undefined)
       if (!result) {
-        return { content: [{ type: 'text', text: JSON.stringify({ error: 'Conversation not found' }) }], isError: true }
+        return {
+          content: [{ type: 'text', text: JSON.stringify({ error: 'Conversation not found' }) }],
+          isError: true
+        }
       }
       return { content: [{ type: 'text', text: JSON.stringify(result, null, 2) }] }
     }
@@ -58,7 +67,9 @@ const createMcpServer = () => {
       description:
         'Search conversations by keywords in their titles. Returns conversations where the title contains ANY of the provided keywords.',
       inputSchema: {
-        keywords: z.array(z.string()).describe('Array of keywords to search for in conversation titles'),
+        keywords: z
+          .array(z.string())
+          .describe('Array of keywords to search for in conversation titles'),
         limit: z.number().optional().describe('Maximum number of results to return (default: 50)'),
         caseInsensitive: z
           .boolean()
@@ -67,7 +78,10 @@ const createMcpServer = () => {
       }
     },
     async ({ keywords, limit, caseInsensitive }) => {
-      console.log('[MCP] Tool call: search_conversations', JSON.stringify({ keywords, limit, caseInsensitive }))
+      console.log(
+        '[MCP] Tool call: search_conversations',
+        JSON.stringify({ keywords, limit, caseInsensitive })
+      )
       const result = await db.searchConversationsByKeywords(keywords, { limit, caseInsensitive })
       return { content: [{ type: 'text', text: JSON.stringify(result, null, 2) }] }
     }
@@ -79,7 +93,9 @@ const createMcpServer = () => {
       description:
         'Search messages by keywords in their content. Returns messages where the content contains ANY of the provided keywords. Each result includes the message, its parent conversation, and which keywords matched.',
       inputSchema: {
-        keywords: z.array(z.string()).describe('Array of keywords to search for in message content'),
+        keywords: z
+          .array(z.string())
+          .describe('Array of keywords to search for in message content'),
         limit: z.number().optional().describe('Maximum number of results to return (default: 50)'),
         caseInsensitive: z
           .boolean()
@@ -88,7 +104,10 @@ const createMcpServer = () => {
       }
     },
     async ({ keywords, limit, caseInsensitive }) => {
-      console.log('[MCP] Tool call: search_messages', JSON.stringify({ keywords, limit, caseInsensitive }))
+      console.log(
+        '[MCP] Tool call: search_messages',
+        JSON.stringify({ keywords, limit, caseInsensitive })
+      )
       const result = await db.searchMessagesByKeywords(keywords, { limit, caseInsensitive })
       return { content: [{ type: 'text', text: JSON.stringify(result, null, 2) }] }
     }
@@ -164,7 +183,9 @@ export async function startMcpServer(port: number = 37777): Promise<void> {
 
           // Log JSON-RPC method details
           const jsonRpcBody = body as { method?: string; id?: unknown }
-          console.log(`[MCP]    method=${jsonRpcBody.method ?? 'unknown'} id=${jsonRpcBody.id ?? '-'}`)
+          console.log(
+            `[MCP]    method=${jsonRpcBody.method ?? 'unknown'} id=${jsonRpcBody.id ?? '-'}`
+          )
 
           if (sessionId && transports.has(sessionId)) {
             const transport = transports.get(sessionId)!
@@ -212,11 +233,13 @@ export async function startMcpServer(port: number = 37777): Promise<void> {
           if (!sessionId || !transports.has(sessionId)) {
             console.log(`[MCP] -> 404 Session not found: ${sessionId ?? 'none'}`)
             res.writeHead(404, { 'Content-Type': 'application/json' })
-            res.end(JSON.stringify({
-              jsonrpc: '2.0',
-              error: { code: -32001, message: 'Session not found. Please reinitialize.' },
-              id: null
-            }))
+            res.end(
+              JSON.stringify({
+                jsonrpc: '2.0',
+                error: { code: -32001, message: 'Session not found. Please reinitialize.' },
+                id: null
+              })
+            )
             return
           }
           const transport = transports.get(sessionId)!

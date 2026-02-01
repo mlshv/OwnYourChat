@@ -331,12 +331,7 @@ async function exportConversation(
 
   // Download missing attachments if requested
   if (options.includeAttachments) {
-    await downloadMissingAttachments(
-      data.messages,
-      id,
-      data.conversation.title,
-      cumulativeProgress
-    )
+    await downloadMissingAttachments(data.messages, id, data.conversation.title, cumulativeProgress)
   }
 
   checkCancelled()

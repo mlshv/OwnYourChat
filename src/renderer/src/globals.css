@@ -1,6 +1,6 @@
 @import 'tailwindcss';
-@import "tw-animate-css";
-@import "shadcn/tailwind.css";
+@import 'tw-animate-css';
+@import 'shadcn/tailwind.css';
 
 @font-face {
   font-family: 'Libre Caslon Condensed';
@@ -9,7 +9,6 @@
   font-style: normal;
   font-display: swap;
 }
-
 
 @theme inline {
   --color-background: var(--background);

@@ -186,7 +186,8 @@ const MemoizedMarkdownBlock = memo(
           },
           li: ({ children, marker }: { children?: React.ReactNode; marker?: string }) => (
             <li className="[&>p]:inline [&>p]:m-0">
-              <span className="text-muted-foreground">{marker || '-'}</span> {processChildren(children)}
+              <span className="text-muted-foreground">{marker || '-'}</span>{' '}
+              {processChildren(children)}
             </li>
           ),
           table: ({ children }) => (
@@ -196,9 +197,7 @@ const MemoizedMarkdownBlock = memo(
               </table>
             </div>
           ),
-          thead: ({ children }) => (
-            <thead className="bg-muted">{processChildren(children)}</thead>
-          ),
+          thead: ({ children }) => <thead className="bg-muted">{processChildren(children)}</thead>,
           tbody: ({ children }) => <tbody>{processChildren(children)}</tbody>,
           tr: ({ children }) => (
             <tr className="border-b border-border">{processChildren(children)}</tr>

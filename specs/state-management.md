@@ -5,6 +5,7 @@
 Zustand store in main process, synced to renderer via `@zubridge/electron`.
 
 **Files**:
+
 - `src/main/store.ts` - Main process Zustand store (source of truth)
 - `src/renderer/src/lib/store.ts` - Renderer hooks
 
@@ -29,7 +30,7 @@ type AppState = {
     perplexity: ProviderStateSlice
   }
   auth: {
-    isLoggedIn: boolean  // true if ANY provider connected
+    isLoggedIn: boolean // true if ANY provider connected
     errorReason: string | null
   }
   sync: {
@@ -55,27 +56,29 @@ type AppState = {
 
 ## Renderer Hooks
 
-| Hook | Returns |
-|------|---------|
-| `useProvidersState()` | All provider states |
-| `useAuthState()` | `{isLoggedIn, errorReason}` |
-| `useSettings()` | App settings |
-| `useUpdateProviderState()` | Action to update provider |
-| `useUpdateSyncState()` | Action to update sync |
-| `useUpdateSettings()` | Action to update settings |
-| `useSetAuthState()` | Action to update auth |
+| Hook                       | Returns                     |
+| -------------------------- | --------------------------- |
+| `useProvidersState()`      | All provider states         |
+| `useAuthState()`           | `{isLoggedIn, errorReason}` |
+| `useSettings()`            | App settings                |
+| `useUpdateProviderState()` | Action to update provider   |
+| `useUpdateSyncState()`     | Action to update sync       |
+| `useUpdateSettings()`      | Action to update settings   |
+| `useSetAuthState()`        | Action to update auth       |
 
 ## What's NOT in Zustand
 
 **Decision (Dec 20, 2025)**: Conversations list kept in React component state, not Zustand.
 
 **Why**:
+
 - Conversations are large (10k+ items possible)
 - Need pagination + virtualization anyway
 - Zubridge overhead for large arrays
 - Simpler to manage locally with `useState`
 
 **Zubridge is used for**:
+
 - Auth state (small, needs real-time sync)
 - Provider states (small, needs real-time sync)
 - Settings (small, needs persistence)
@@ -91,7 +94,7 @@ const isAtTop = useRef(true)
 
 useEffect(() => {
   if (isAtTop.current) {
-    fetchConversations()  // Only refresh if at top
+    fetchConversations() // Only refresh if at top
   }
 }, [lastSyncAt])
 ```

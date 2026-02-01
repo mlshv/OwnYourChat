@@ -172,7 +172,9 @@ describe('transformPerplexityMessageToParts', () => {
     // Should have: text with markdown link + citation + remaining text
     expect(result).toHaveLength(2)
     expect(result[0].type).toBe('text')
-    expect((result[0] as TextPart).text).toBe('Check [this link](https://example.com) and this source.')
+    expect((result[0] as TextPart).text).toBe(
+      'Check [this link](https://example.com) and this source.'
+    )
     expect(result[1].type).toBe('source-url')
     expect((result[1] as SourceUrlPart).url).toBe('https://source.com')
   })
@@ -202,12 +204,8 @@ describe('transformPerplexityMessageToParts', () => {
   it('should handle real conversation data from first entry (normal query)', () => {
     // Find the first entry
     const firstEntry = conversationData.entries[0]
-    const markdownBlock = firstEntry.blocks.find(
-      (block) => block.intended_usage === 'ask_text'
-    )
-    const webResultBlock = firstEntry.blocks.find(
-      (block) => block.intended_usage === 'web_results'
-    )
+    const markdownBlock = firstEntry.blocks.find((block) => block.intended_usage === 'ask_text')
+    const webResultBlock = firstEntry.blocks.find((block) => block.intended_usage === 'web_results')
 
     expect(markdownBlock).toBeDefined()
     expect(webResultBlock).toBeDefined()
@@ -243,9 +241,7 @@ describe('transformPerplexityMessageToParts', () => {
   it('should handle real conversation data from second entry (deep research)', () => {
     // Find the second entry (deep research)
     const secondEntry = conversationData.entries[1]
-    const markdownBlock = secondEntry.blocks.find(
-      (block) => block.intended_usage === 'ask_text'
-    )
+    const markdownBlock = secondEntry.blocks.find((block) => block.intended_usage === 'ask_text')
     const webResultBlock = secondEntry.blocks.find(
       (block) => block.intended_usage === 'web_results'
     )
@@ -278,7 +274,9 @@ describe('transformPerplexityMessageToParts', () => {
     })
 
     // Verify content starts with expected deep research text
-    expect((textParts[0] as TextPart).text).toContain('comprehensive overview of Bengal cat history')
+    expect((textParts[0] as TextPart).text).toContain(
+      'comprehensive overview of Bengal cat history'
+    )
   })
 
   it('should handle multiple consecutive citations', () => {
@@ -315,9 +313,7 @@ describe('transformPerplexityMessageToParts', () => {
     const result = transformPerplexityMessageToParts(input)
 
     // Reconstruct the text without source markers
-    const reconstructed = result
-      .map((part) => (part.type === 'text' ? part.text : ''))
-      .join('')
+    const reconstructed = result.map((part) => (part.type === 'text' ? part.text : '')).join('')
 
     expect(reconstructed).toContain('# Heading')
     expect(reconstructed).toContain('**Bold text**')

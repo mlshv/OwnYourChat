@@ -13,10 +13,10 @@ import { getAttachmentsPath, getSettings } from './settings'
 import { pathToFileURL } from 'url'
 import { initDatabase } from './db'
 import { setupIpcHandlers } from './ipc'
-import { setupWebAuthnHandlers } from './webauthn/handler'
 import { stopSyncScheduler } from './sync/scheduler'
 import { shell } from 'electron'
 import { providerRegistry } from './sync/providers/registry'
+import { viewBoundsManager } from './view-bounds-manager'
 import { store } from './store'
 import { createZustandBridge } from '@zubridge/electron/main'
 import { startMcpServer, stopMcpServer } from './mcp/server'
@@ -222,6 +222,7 @@ function createWindow(): void {
     width: 900,
     height: 670,
     show: false,
+    titleBarStyle: 'hidden',
     autoHideMenuBar: true,
     ...(process.platform === 'linux' ? { icon } : {}),
     webPreferences: {
@@ -294,9 +295,6 @@ app.whenReady().then(async () => {
   // Set up IPC handlers
   setupIpcHandlers()
 
-  // Set up WebAuthn handlers for passkey support
-  setupWebAuthnHandlers()
-
   // Default open or close DevTools by F12 in development
   // and ignore CommandOrControl + R in production.
   // see https://github.com/alex8088/electron-toolkit/tree/master/packages/utils
@@ -335,6 +333,9 @@ app.whenReady().then(async () => {
       console.error('[App] Failed to start MCP server:', error)
     }
   }
+
+  // Initialize view bounds manager (reads debug panel state from database)
+  await viewBoundsManager.init()
 
   // Initialize provider registry and start connected providers
   console.log('[App] Initializing provider registry...')

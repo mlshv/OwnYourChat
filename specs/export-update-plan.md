@@ -11,22 +11,26 @@ Update JSON export format to OpenAI Chat API compatibility and add progress/canc
 ## 1. JSON Format Changes
 
 **Current format** (`src/main/export/json.ts:67-85`):
+
 ```json
 {
   "id": "...",
   "title": "...",
   "createdAt": "2026-01-07T10:00:00Z",
-  "messages": [{
-    "id": "...",
-    "role": "user",
-    "parts": [{"type": "text", "text": "Hello"}],
-    "createdAt": "...",
-    "orderIndex": 0
-  }]
+  "messages": [
+    {
+      "id": "...",
+      "role": "user",
+      "parts": [{ "type": "text", "text": "Hello" }],
+      "createdAt": "...",
+      "orderIndex": 0
+    }
+  ]
 }
 ```
 
 **New OpenAI-compatible format**:
+
 ```json
 {
   "id": "...",
@@ -52,6 +56,7 @@ Update JSON export format to OpenAI Chat API compatibility and add progress/canc
 ```
 
 **Changes**:
+
 - `createdAt` → `created_at` (snake_case, Unix timestamp for API compat)
 - `parts` → `content` (flattened text parts to string)
 - `source-url` parts → `sources` array (extracted from parts, `{title?, url}`)
@@ -60,6 +65,7 @@ Update JSON export format to OpenAI Chat API compatibility and add progress/canc
 - Remove `orderIndex` (redundant with parent_id tree)
 
 **Files to modify**:
+
 - `src/main/export/json.ts` - Format transformation
 - `src/shared/types.ts` - Export type definitions (if needed)
 
@@ -76,6 +82,7 @@ Update JSON export format to OpenAI Chat API compatibility and add progress/canc
 - Send progress via IPC to renderer
 
 **New IPC channel**:
+
 ```typescript
 // src/shared/types.ts - add to IPC_CHANNELS enum
 EXPORT_PROGRESS = 'export:progress'
@@ -90,6 +97,7 @@ type ExportProgress = {
 ```
 
 **Files to modify**:
+
 - `src/shared/types.ts` - Add IPC channel and progress type
 - `src/main/export/index.ts` - Add progress callbacks
 - `src/main/ipc/export.ts` (or wherever IPC handlers live) - Emit progress events
@@ -109,6 +117,7 @@ type ExportProgress = {
 - Signal abort via shared controller reference
 
 **Abort flow**:
+
 ```
 ExportModal clicks Cancel
         │
@@ -124,6 +133,7 @@ Main process: abortController.abort()
 ```
 
 **Files to modify**:
+
 - `src/shared/types.ts` - Add `EXPORT_CANCEL` IPC channel
 - `src/main/export/index.ts` - Accept AbortSignal, check before each operation
 - `src/main/ipc/export.ts` - Store AbortController, handle cancel channel
@@ -134,10 +144,12 @@ Main process: abortController.abort()
 ## 4. UI Changes
 
 **Current state** (`src/renderer/src/components/ExportModal.tsx`):
+
 - Simple "Exporting..." text during export (line 294)
 - Cancel button closes modal (line 290-291)
 
 **New UI during export**:
+
 ```
 ┌─────────────────────────────────────┐
 │ Export conversations                │
@@ -154,6 +166,7 @@ Main process: abortController.abort()
 ```
 
 **Components**:
+
 - Progress bar (use existing shadcn Progress or custom)
 - Phase text ("Downloading attachments..." / "Exporting...")
 - Current/total counter
@@ -161,6 +174,7 @@ Main process: abortController.abort()
 - Cancel button transforms to "Cancel Export" during export
 
 **Files to modify**:
+
 - `src/renderer/src/components/ExportModal.tsx` - Add progress UI, cancel handler
 
 ---
@@ -222,6 +236,7 @@ Main process: abortController.abort()
 ## Implementation Summary (Jan 14, 2026)
 
 ### Files Modified:
+
 1. `src/shared/types.ts` - Added `ExportProgress` type and `EXPORT_PROGRESS`, `EXPORT_CANCEL` IPC channels
 2. `src/main/export/index.ts` - Added `AbortSignal` and progress callback support
 3. `src/main/export/json.ts` - Complete rewrite to OpenAI-compatible format
@@ -231,12 +246,15 @@ Main process: abortController.abort()
 7. `src/renderer/src/components/ui/progress.tsx` - New Progress component (shadcn)
 
 ### Files Added:
+
 1. `src/main/export/__test__/json.test.ts` - 10 unit tests for JSON export format
 
 ### Dependencies Added:
+
 1. `@radix-ui/react-progress` - For progress bar component
 
 ### Tests:
+
 - All 52 tests pass (including 10 JSON export tests + 7 new cumulative progress tests)
 - TypeScript compilation passes
 
@@ -247,6 +265,7 @@ Main process: abortController.abort()
 **Symptom**: During batch export, attachment download progress resets per conversation instead of showing cumulative total.
 
 **Root cause** (`src/main/export/index.ts`):
+
 - `exportAllConversations` called `exportConversation` without cumulative progress tracking
 - `exportConversation` called `downloadMissingAttachments` **without** `cumulativeProgress` parameter
 - Each conversation counted attachments separately, so progress reset: "1/3" → "1/2" → "1/5" instead of "1/10" → "4/10" → "9/10"
@@ -254,6 +273,7 @@ Main process: abortController.abort()
 **Fix implemented (Jan 14, 2026)**:
 
 1. **Pre-count all attachments** in `exportAllConversations` before starting export (lines 165-180):
+
    ```typescript
    let cumulativeProgress: { downloaded: number; total: number } | undefined
    if (options.includeAttachments) {
@@ -272,6 +292,7 @@ Main process: abortController.abort()
    ```
 
 2. **Modified `exportConversation` signature** to accept optional `cumulativeProgress` (line 121):
+
    ```typescript
    export async function exportConversation(
      id: string,
@@ -282,6 +303,7 @@ Main process: abortController.abort()
    ```
 
 3. **Forward `cumulativeProgress`** to `downloadMissingAttachments` (lines 134-141):
+
    ```typescript
    await downloadMissingAttachments(
      data.messages,
@@ -298,9 +320,11 @@ Main process: abortController.abort()
    ```
 
 **Files modified**:
+
 - `src/main/export/index.ts` - Added cumulative progress tracking
 
 **Files added**:
+
 - `src/main/export/__test__/cumulative-progress.test.ts` - 7 unit tests for cumulative progress
 
 STATUS: DONE

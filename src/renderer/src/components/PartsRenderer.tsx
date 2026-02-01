@@ -129,9 +129,7 @@ const MarkdownPart = memo(
               </table>
             </div>
           ),
-          thead: ({ children }) => (
-            <thead className="bg-muted">{processChildren(children)}</thead>
-          ),
+          thead: ({ children }) => <thead className="bg-muted">{processChildren(children)}</thead>,
           tbody: ({ children }) => <tbody>{processChildren(children)}</tbody>,
           tr: ({ children }) => (
             <tr className="border-b border-border">{processChildren(children)}</tr>

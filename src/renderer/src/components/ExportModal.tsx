@@ -202,7 +202,8 @@ export function ExportModal({
   }
 
   // Calculate progress percentage
-  const progressPercent = progress && progress.total > 0 ? (progress.current / progress.total) * 100 : 0
+  const progressPercent =
+    progress && progress.total > 0 ? (progress.current / progress.total) * 100 : 0
 
   // Get phase label
   const getPhaseLabel = () => {
