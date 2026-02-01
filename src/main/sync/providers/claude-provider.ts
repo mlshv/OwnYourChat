@@ -1,4 +1,6 @@
 import { WebContentsView, session } from 'electron'
+import { join } from 'path'
+import { WEBAUTHN_INJECTION_SCRIPT } from '../../webauthn/inject'
 import { BaseProvider, type SyncResult, type ProviderName } from './base.js'
 import type { IStorage } from '../../storage/interface.js'
 import type { ClaudeMetadata } from './types'
@@ -1152,11 +1154,30 @@ export class ClaudeProvider extends BaseProvider<ClaudeMetadata> {
       webPreferences: {
         contextIsolation: true,
         nodeIntegration: false,
-        partition: 'persist:claude'
+        partition: 'persist:claude',
+        preload: join(__dirname, '../preload/provider-webauthn.js')
       }
     })
 
+    // Inject WebAuthn bridge override when DOM is ready
+    this.view.webContents.on('dom-ready', () => {
+      this.view?.webContents.executeJavaScript(WEBAUTHN_INJECTION_SCRIPT).catch((err) => {
+        console.error(`[${this.name}] Failed to inject WebAuthn bridge:`, err)
+      })
+    })
+
     const claudeSession = session.fromPartition('persist:claude')
+
+    // Enable WebAuthn/passkey support by allowing required permissions
+    claudeSession.setPermissionRequestHandler((_webContents, permission, callback) => {
+      const allowedPermissions = ['hid', 'usb', 'clipboard-read', 'clipboard-sanitized-write']
+      callback(allowedPermissions.includes(permission))
+    })
+
+    claudeSession.setPermissionCheckHandler((_webContents, permission) => {
+      const allowedPermissions = ['hid', 'usb', 'clipboard-read', 'clipboard-sanitized-write']
+      return allowedPermissions.includes(permission)
+    })
 
     claudeSession.webRequest.onBeforeSendHeaders(
       { urls: ['*://claude.ai/api/*'] },

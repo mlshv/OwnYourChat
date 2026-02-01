@@ -209,7 +209,11 @@ export const enum IPC_CHANNELS {
   // Menu events
   MENU_EXPORT_CLICK = 'menu:export-click',
   MENU_SETTINGS_CLICK = 'menu:settings-click',
-  MENU_DEBUG_PANEL_TOGGLE = 'menu:debug-panel-toggle'
+  MENU_DEBUG_PANEL_TOGGLE = 'menu:debug-panel-toggle',
+
+  // WebAuthn
+  WEBAUTHN_CREATE = 'webauthn:create',
+  WEBAUTHN_GET = 'webauthn:get'
 }
 
 // ElectronAPI type definition for window.api

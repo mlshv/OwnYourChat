@@ -1,4 +1,6 @@
 import { WebContentsView, session } from 'electron'
+import { join } from 'path'
+import { WEBAUTHN_INJECTION_SCRIPT } from '../../webauthn/inject'
 import { BaseProvider, type SyncResult, type ProviderName } from './base'
 import type { IStorage } from '../../storage/interface'
 import type { ChatGPTMetadata } from './types'
@@ -1263,11 +1265,30 @@ export class ChatGPTProvider extends BaseProvider<ChatGPTMetadata> {
       webPreferences: {
         contextIsolation: true,
         nodeIntegration: false,
-        partition: 'persist:chatgpt'
+        partition: 'persist:chatgpt',
+        preload: join(__dirname, '../preload/provider-webauthn.js')
       }
     })
 
+    // Inject WebAuthn bridge override when DOM is ready
+    this.view.webContents.on('dom-ready', () => {
+      this.view?.webContents.executeJavaScript(WEBAUTHN_INJECTION_SCRIPT).catch((err) => {
+        console.error(`[${this.name}] Failed to inject WebAuthn bridge:`, err)
+      })
+    })
+
     const chatGPTSession = session.fromPartition('persist:chatgpt')
+
+    // Enable WebAuthn/passkey support by allowing required permissions
+    chatGPTSession.setPermissionRequestHandler((_webContents, permission, callback) => {
+      const allowedPermissions = ['hid', 'usb', 'clipboard-read', 'clipboard-sanitized-write']
+      callback(allowedPermissions.includes(permission))
+    })
+
+    chatGPTSession.setPermissionCheckHandler((_webContents, permission) => {
+      const allowedPermissions = ['hid', 'usb', 'clipboard-read', 'clipboard-sanitized-write']
+      return allowedPermissions.includes(permission)
+    })
 
     chatGPTSession.webRequest.onBeforeSendHeaders(
       { urls: ['*://chatgpt.com/backend-api/*', '*://chat.openai.com/backend-api/*'] },

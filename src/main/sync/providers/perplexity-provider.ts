@@ -1,4 +1,6 @@
 import { WebContentsView, session, net } from 'electron'
+import { join } from 'path'
+import { WEBAUTHN_INJECTION_SCRIPT } from '../../webauthn/inject'
 import { BaseProvider, type SyncResult, type ProviderName } from './base.js'
 import type { IStorage } from '../../storage/interface.js'
 import type { PerplexityMetadata } from './types'
@@ -979,11 +981,30 @@ export class PerplexityProvider extends BaseProvider<PerplexityMetadata> {
       webPreferences: {
         contextIsolation: true,
         nodeIntegration: false,
-        partition: 'persist:perplexity'
+        partition: 'persist:perplexity',
+        preload: join(__dirname, '../preload/provider-webauthn.js')
       }
     })
 
+    // Inject WebAuthn bridge override when DOM is ready
+    this.view.webContents.on('dom-ready', () => {
+      this.view?.webContents.executeJavaScript(WEBAUTHN_INJECTION_SCRIPT).catch((err) => {
+        console.error(`[${this.name}] Failed to inject WebAuthn bridge:`, err)
+      })
+    })
+
     const perplexitySession = session.fromPartition('persist:perplexity')
+
+    // Enable WebAuthn/passkey support by allowing required permissions
+    perplexitySession.setPermissionRequestHandler((_webContents, permission, callback) => {
+      const allowedPermissions = ['hid', 'usb', 'clipboard-read', 'clipboard-sanitized-write']
+      callback(allowedPermissions.includes(permission))
+    })
+
+    perplexitySession.setPermissionCheckHandler((_webContents, permission) => {
+      const allowedPermissions = ['hid', 'usb', 'clipboard-read', 'clipboard-sanitized-write']
+      return allowedPermissions.includes(permission)
+    })
 
     perplexitySession.webRequest.onBeforeSendHeaders(
       { urls: ['*://www.perplexity.ai/rest/*'] },

@@ -13,6 +13,7 @@ import { getAttachmentsPath, getSettings } from './settings'
 import { pathToFileURL } from 'url'
 import { initDatabase } from './db'
 import { setupIpcHandlers } from './ipc'
+import { setupWebAuthnHandlers } from './webauthn/handler'
 import { stopSyncScheduler } from './sync/scheduler'
 import { shell } from 'electron'
 import { providerRegistry } from './sync/providers/registry'
@@ -292,6 +293,9 @@ app.whenReady().then(async () => {
 
   // Set up IPC handlers
   setupIpcHandlers()
+
+  // Set up WebAuthn handlers for passkey support
+  setupWebAuthnHandlers()
 
   // Default open or close DevTools by F12 in development
   // and ignore CommandOrControl + R in production.
