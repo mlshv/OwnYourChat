@@ -1,5 +1,5 @@
 import { app, BrowserWindow, protocol, net, Menu } from 'electron'
-import { join } from 'path'
+import { join, resolve, sep } from 'path'
 import fs from 'fs'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 
@@ -210,7 +210,7 @@ protocol.registerSchemesAsPrivileged([
     privileges: {
       secure: true,
       supportFetchAPI: true,
-      bypassCSP: true,
+      // SECURITY: bypassCSP removed to prevent potential XSS via attachment content
       stream: true
     }
   }
@@ -277,16 +277,26 @@ app.whenReady().then(async () => {
     if (!conversationId || !filename) {
       return new Response('Invalid attachment URL', { status: 400 })
     }
-    const filePath = join(getAttachmentsPath(), conversationId, filename)
+
+    // SECURITY: Validate path to prevent directory traversal attacks
+    const attachmentsBasePath = resolve(getAttachmentsPath())
+    const filePath = join(attachmentsBasePath, conversationId, filename)
+    const resolvedPath = resolve(filePath)
+
+    // Ensure the resolved path is within the attachments directory
+    if (!resolvedPath.startsWith(attachmentsBasePath + sep)) {
+      console.error(`[Attachment] Path traversal attempt blocked: ${filePath}`)
+      return new Response('Invalid path', { status: 400 })
+    }
 
     // Check if file exists
-    if (!fs.existsSync(filePath)) {
-      console.error(`[Attachment] File not found: ${filePath}`)
+    if (!fs.existsSync(resolvedPath)) {
+      console.error(`[Attachment] File not found: ${resolvedPath}`)
       return new Response('File not found', { status: 404 })
     }
 
     // Return the file using net.fetch with file:// URL
-    return net.fetch(pathToFileURL(filePath).toString())
+    return net.fetch(pathToFileURL(resolvedPath).toString())
   })
 
   // Initialize database

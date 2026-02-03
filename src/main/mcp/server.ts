@@ -145,7 +145,12 @@ export async function startMcpServer(port: number = 37777): Promise<void> {
       // Log all incoming requests
       console.log(`[MCP] <- ${req.method} ${req.url} session=${sessionId ?? 'none'}`)
 
-      res.setHeader('Access-Control-Allow-Origin', '*')
+      // SECURITY: Restrict CORS to localhost origins only
+      const origin = req.headers['origin'] as string | undefined
+      const isLocalhost =
+        origin &&
+        (origin.startsWith('http://localhost:') || origin.startsWith('http://127.0.0.1:'))
+      res.setHeader('Access-Control-Allow-Origin', isLocalhost ? origin : 'http://localhost')
       res.setHeader('Access-Control-Allow-Methods', 'GET, POST, DELETE, OPTIONS')
       res.setHeader('Access-Control-Allow-Headers', 'Content-Type, mcp-session-id')
       res.setHeader('Access-Control-Expose-Headers', 'mcp-session-id')

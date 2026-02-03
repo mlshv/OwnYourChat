@@ -7,6 +7,7 @@ import { viewBoundsManager } from '../../view-bounds-manager'
 import { IPC_CHANNELS } from '../../../shared/types'
 import { findCachedFile, getExtensionFromMimeType } from '../attachment-utils.js'
 import { getAttachmentsPath } from '../../settings.js'
+import { sanitizeFilename } from '../../export/utils.js'
 import {
   transformClaudeMessageToParts,
   type ClaudeContentBlock as UtilsClaudeContentBlock
@@ -307,8 +308,10 @@ export class ClaudeProvider extends BaseProvider<ClaudeMetadata> {
       displayName += ext
     }
 
+    // SECURITY: Sanitize filename to prevent path traversal
+    const safeDisplayName = sanitizeFilename(displayName)
     // Filename format: fileId_displayName (allows lookup by fileId prefix)
-    const uniqueFilename = `${fileId}_${displayName}`
+    const uniqueFilename = `${fileId}_${safeDisplayName}`
     const localPath = path.join(conversationDir, uniqueFilename)
 
     // Write file to disk
@@ -1039,6 +1042,8 @@ export class ClaudeProvider extends BaseProvider<ClaudeMetadata> {
     limit: number = 30,
     offset: number = 0
   ): string {
+    // SECURITY: Encode organizationId to prevent JavaScript injection
+    const safeOrgId = encodeURIComponent(organizationId)
     return `
 (async function() {
   const headers = ${JSON.stringify({
@@ -1047,7 +1052,7 @@ export class ClaudeProvider extends BaseProvider<ClaudeMetadata> {
   })};
 
   const response = await fetch(
-    'https://claude.ai/api/organizations/${organizationId}/chat_conversations?limit=${limit}&offset=${offset}&consistency=eventual',
+    'https://claude.ai/api/organizations/${safeOrgId}/chat_conversations?limit=${limit}&offset=${offset}&consistency=eventual',
     {
       credentials: 'include',
       headers: headers,
@@ -1074,6 +1079,9 @@ export class ClaudeProvider extends BaseProvider<ClaudeMetadata> {
     conversationId: string,
     headers: ClaudeApiHeaders
   ): string {
+    // SECURITY: Encode IDs to prevent JavaScript injection
+    const safeOrgId = encodeURIComponent(organizationId)
+    const safeConvId = encodeURIComponent(conversationId)
     return `
 (async function() {
   const headers = ${JSON.stringify({
@@ -1082,7 +1090,7 @@ export class ClaudeProvider extends BaseProvider<ClaudeMetadata> {
   })};
 
   const response = await fetch(
-    'https://claude.ai/api/organizations/${organizationId}/chat_conversations/${conversationId}?tree=True&rendering_mode=messages&render_all_tools=true&consistency=eventual',
+    'https://claude.ai/api/organizations/${safeOrgId}/chat_conversations/${safeConvId}?tree=True&rendering_mode=messages&render_all_tools=true&consistency=eventual',
     {
       credentials: 'include',
       headers: headers,
@@ -1101,6 +1109,8 @@ export class ClaudeProvider extends BaseProvider<ClaudeMetadata> {
   }
 
   private makeFetchTotalCountScript(organizationId: string, headers: ClaudeApiHeaders): string {
+    // SECURITY: Encode organizationId to prevent JavaScript injection
+    const safeOrgId = encodeURIComponent(organizationId)
     return `
 (async function() {
   const headers = ${JSON.stringify({
@@ -1109,7 +1119,7 @@ export class ClaudeProvider extends BaseProvider<ClaudeMetadata> {
   })};
 
   const response = await fetch(
-    'https://claude.ai/api/organizations/${organizationId}/chat_conversations/count_all',
+    'https://claude.ai/api/organizations/${safeOrgId}/chat_conversations/count_all',
     {
       credentials: 'include',
       headers: headers,
