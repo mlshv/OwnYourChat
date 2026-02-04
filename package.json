@@ -45,7 +45,7 @@
     "@modelcontextprotocol/sdk": "^1.25.1",
     "@radix-ui/react-progress": "^1.1.8",
     "@zubridge/electron": "^2.1.1",
-    "better-sqlite3": "^12.5.0",
+    "better-sqlite3": "npm:better-sqlite3-multiple-ciphers@^12.4.1",
     "drizzle-orm": "^0.45.1",
     "electron-updater": "^6.7.3",
     "vitest": "^4.0.16",
@@ -96,10 +96,10 @@
   "pnpm": {
     "onlyBuiltDependencies": [
       "electron",
-      "esbuild"
+      "esbuild",
+      "better-sqlite3-multiple-ciphers"
     ],
     "ignoredBuiltDependencies": [
-      "better-sqlite3",
       "electron-winstaller",
       "msw"
     ]

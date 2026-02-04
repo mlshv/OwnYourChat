@@ -1,4 +1,4 @@
-import { app, BrowserWindow, protocol, net, Menu } from 'electron'
+import { app, BrowserWindow, protocol, net, Menu, ipcMain } from 'electron'
 import { join, resolve, sep } from 'path'
 import fs from 'fs'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
@@ -11,7 +11,7 @@ import icon from '../../build/icon.png?asset'
 import { IPC_CHANNELS } from '../shared/types'
 import { getAttachmentsPath, getSettings } from './settings'
 import { pathToFileURL } from 'url'
-import { initDatabase } from './db'
+import { initDatabase, databaseFileExists } from './db'
 import { setupIpcHandlers } from './ipc'
 import { stopSyncScheduler } from './sync/scheduler'
 import { shell } from 'electron'
@@ -252,6 +252,55 @@ function createWindow(): void {
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
+/**
+ * Post-database initialization: set up IPC handlers, providers, MCP server, etc.
+ * Called after the database has been successfully unlocked.
+ */
+async function initializeAfterDbUnlock(): Promise<void> {
+  // Set up IPC handlers (requires database)
+  setupIpcHandlers()
+
+  // Initialize MCP server if enabled
+  const settings = getSettings()
+  if (settings.mcpEnabled) {
+    console.log('[App] Starting MCP server...')
+    try {
+      await startMcpServer(settings.mcpPort)
+      console.log(`[App] MCP server started on port ${settings.mcpPort}`)
+    } catch (error) {
+      console.error('[App] Failed to start MCP server:', error)
+    }
+  }
+
+  // Initialize view bounds manager (reads debug panel state from database)
+  await viewBoundsManager.init()
+
+  // Initialize provider registry and start connected providers
+  console.log('[App] Initializing provider registry...')
+  await providerRegistry.init()
+
+  const connectedProviders = providerRegistry.getConnectedProviders()
+  console.log(`[App] Found ${connectedProviders.length} connected provider(s)`)
+
+  if (connectedProviders.length > 0) {
+    console.log('[App] Starting polling for connected providers...')
+    await providerRegistry.startAll()
+
+    // Notify renderer about auth status
+    mainWindow?.webContents.send(IPC_CHANNELS.AUTH_STATUS_CHANGED, {
+      isLoggedIn: true,
+      errorReason: null
+    })
+  } else {
+    console.log('[App] No providers connected')
+    // Notify renderer that user needs to log in
+    mainWindow?.webContents.send(IPC_CHANNELS.AUTH_STATUS_CHANGED, {
+      isLoggedIn: false,
+      errorReason: null
+    })
+  }
+}
+
 app.whenReady().then(async () => {
   // Create application menu
   createApplicationMenu()
@@ -299,11 +348,43 @@ app.whenReady().then(async () => {
     return net.fetch(pathToFileURL(resolvedPath).toString())
   })
 
-  // Initialize database
-  await initDatabase()
+  // Register database IPC handlers BEFORE window creation
+  // These handlers work without database initialization
+  let dbInitialized = false
 
-  // Set up IPC handlers
-  setupIpcHandlers()
+  ipcMain.handle(IPC_CHANNELS.DATABASE_STATUS, async () => {
+    return {
+      isNew: !databaseFileExists(),
+      isUnlocked: dbInitialized
+    }
+  })
+
+  ipcMain.handle(IPC_CHANNELS.DATABASE_UNLOCK, async (_event, key: string) => {
+    if (dbInitialized) {
+      return { success: true }
+    }
+
+    try {
+      await initDatabase(key)
+      dbInitialized = true
+      console.log('[App] Database unlocked successfully')
+
+      // Now initialize everything that depends on the database
+      await initializeAfterDbUnlock()
+
+      return { success: true }
+    } catch (error) {
+      console.error('[App] Database unlock failed:', error)
+      const message =
+        error instanceof Error ? error.message : 'Failed to unlock database'
+      const isWrongKey =
+        message.includes('SQLITE_NOTADB') || message.includes('file is not a database')
+      return {
+        success: false,
+        error: isWrongKey ? 'Incorrect encryption key' : message
+      }
+    }
+  })
 
   // Default open or close DevTools by F12 in development
   // and ignore CommandOrControl + R in production.
@@ -312,6 +393,7 @@ app.whenReady().then(async () => {
     optimizer.watchWindowShortcuts(window)
   })
 
+  // Create window first so the unlock screen can be shown
   createWindow()
 
   // Enable Chrome DevTools Protocol for electron-mcp-server (QA/debug agent)
@@ -330,46 +412,6 @@ app.whenReady().then(async () => {
     const bridge = createZustandBridge(store)
     bridge.subscribe([mainWindow])
     console.log('[App] Zubridge subscribed to main window')
-  }
-
-  // Initialize MCP server if enabled
-  const settings = getSettings()
-  if (settings.mcpEnabled) {
-    console.log('[App] Starting MCP server...')
-    try {
-      await startMcpServer(settings.mcpPort)
-      console.log(`[App] MCP server started on port ${settings.mcpPort}`)
-    } catch (error) {
-      console.error('[App] Failed to start MCP server:', error)
-    }
-  }
-
-  // Initialize view bounds manager (reads debug panel state from database)
-  await viewBoundsManager.init()
-
-  // Initialize provider registry and start connected providers
-  console.log('[App] Initializing provider registry...')
-  await providerRegistry.init()
-
-  const connectedProviders = providerRegistry.getConnectedProviders()
-  console.log(`[App] Found ${connectedProviders.length} connected provider(s)`)
-
-  if (connectedProviders.length > 0) {
-    console.log('[App] Starting polling for connected providers...')
-    await providerRegistry.startAll()
-
-    // Notify renderer about auth status
-    mainWindow?.webContents.send(IPC_CHANNELS.AUTH_STATUS_CHANGED, {
-      isLoggedIn: true,
-      errorReason: null
-    })
-  } else {
-    console.log('[App] No providers connected')
-    // Notify renderer that user needs to log in
-    mainWindow?.webContents.send(IPC_CHANNELS.AUTH_STATUS_CHANGED, {
-      isLoggedIn: false,
-      errorReason: null
-    })
   }
 
   app.on('activate', function () {

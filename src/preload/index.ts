@@ -208,6 +208,20 @@ const api: ElectronAPI = {
       ipcRenderer.on(IPC_CHANNELS.MENU_DEBUG_PANEL_TOGGLE, handler)
       return () => ipcRenderer.removeListener(IPC_CHANNELS.MENU_DEBUG_PANEL_TOGGLE, handler)
     }
+  },
+
+  // Database encryption
+  database: {
+    status: () =>
+      ipcRenderer.invoke(IPC_CHANNELS.DATABASE_STATUS) as Promise<{
+        isNew: boolean
+        isUnlocked: boolean
+      }>,
+    unlock: (key: string) =>
+      ipcRenderer.invoke(IPC_CHANNELS.DATABASE_UNLOCK, key) as Promise<{
+        success: boolean
+        error?: string
+      }>
   }
 }
 

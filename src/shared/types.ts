@@ -216,7 +216,11 @@ export const enum IPC_CHANNELS {
   // Menu events
   MENU_EXPORT_CLICK = 'menu:export-click',
   MENU_SETTINGS_CLICK = 'menu:settings-click',
-  MENU_DEBUG_PANEL_TOGGLE = 'menu:debug-panel-toggle'
+  MENU_DEBUG_PANEL_TOGGLE = 'menu:debug-panel-toggle',
+
+  // Database encryption
+  DATABASE_STATUS = 'database:status',
+  DATABASE_UNLOCK = 'database:unlock'
 }
 
 // ElectronAPI type definition for window.api
@@ -345,5 +349,9 @@ export interface ElectronAPI {
     onExportClick: (callback: () => void) => () => void
     onSettingsClick: (callback: () => void) => () => void
     onDebugPanelToggle: (callback: () => void) => () => void
+  }
+  database: {
+    status: () => Promise<{ isNew: boolean; isUnlocked: boolean }>
+    unlock: (key: string) => Promise<{ success: boolean; error?: string }>
   }
 }
