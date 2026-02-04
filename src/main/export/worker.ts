@@ -57,12 +57,21 @@ export type ExportAllPayload = {
 
 // Worker initialization
 const dbPath = workerData?.dbPath as string
+const dbEncryptionKey = workerData?.encryptionKey as string | undefined
 if (!dbPath) {
   parentPort?.postMessage({ type: 'error', payload: { message: 'No database path provided' } })
   process.exit(1)
 }
 
 const sqlite = new Database(dbPath)
+
+// Apply SQLCipher encryption if key is provided
+if (dbEncryptionKey) {
+  sqlite.pragma(`cipher='sqlcipher'`)
+  sqlite.pragma(`legacy=4`)
+  sqlite.pragma(`key='${dbEncryptionKey.replace(/'/g, "''")}'`)
+}
+
 const db = drizzle(sqlite, { schema })
 
 // Cancellation flag

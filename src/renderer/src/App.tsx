@@ -8,6 +8,7 @@ import { ConnectionBar } from './components/ConnectionBar'
 import { ExportModal } from './components/ExportModal'
 import { SettingsModal } from './components/SettingsModal'
 import { OnboardingScreen } from './components/OnboardingScreen'
+import { UnlockScreen } from './components/UnlockScreen'
 import { SearchInput } from './components/SearchInput'
 import { Button } from './components/ui/button'
 import { Tooltip, TooltipTrigger, TooltipContent } from './components/ui/tooltip'
@@ -61,6 +62,8 @@ export default function App() {
   const [caseSensitiveSearch, setCaseSensitiveSearch] = useState(false)
   const [searchInMessages, setSearchInMessages] = useState(false)
   const [showProviderFilters, setShowProviderFilters] = useState(false)
+  const [dbUnlocked, setDbUnlocked] = useState(false)
+  const [isNewDatabase, setIsNewDatabase] = useState(false)
   const [hasCompletedOnboarding, setHasCompletedOnboarding] = useState(false)
   const [showDebugPanel, setShowDebugPanel] = useState(false)
   const [isUserAtTop, setIsUserAtTop] = useState(true)
@@ -158,11 +161,35 @@ export default function App() {
   // Check if we're in Electron
   const isElectron = typeof window !== 'undefined' && window.api
 
+  // Check database status on startup
   useEffect(() => {
     if (!isElectron) {
       setIsLoading(false)
       return
     }
+
+    async function checkDbStatus() {
+      try {
+        const status = await window.api!.database.status()
+        setIsNewDatabase(status.isNew)
+
+        if (status.isUnlocked) {
+          // Database already unlocked (shouldn't normally happen on fresh start)
+          setDbUnlocked(true)
+        }
+      } catch (error) {
+        console.error('Failed to check database status:', error)
+      } finally {
+        setIsLoading(false)
+      }
+    }
+
+    checkDbStatus()
+  }, [isElectron])
+
+  // Load app data after database is unlocked
+  useEffect(() => {
+    if (!isElectron || !dbUnlocked) return
 
     // Initial load - load user preferences and conversations
     async function init() {
@@ -181,8 +208,6 @@ export default function App() {
         setTotalProviderCounts(counts)
       } catch (error) {
         console.error('Failed to initialize:', error)
-      } finally {
-        setIsLoading(false)
       }
     }
 
@@ -211,7 +236,7 @@ export default function App() {
       unsubscribeMenuSettings()
       unsubscribeDebugPanelToggle()
     }
-  }, [isElectron, showDebugPanel]) // Only run once on mount
+  }, [isElectron, dbUnlocked, showDebugPanel])
 
   // Handle sync completion with scroll-aware updates
   useEffect(() => {
@@ -394,6 +419,11 @@ export default function App() {
         </div>
       </div>
     )
+  }
+
+  // Show unlock screen before any app content
+  if (!dbUnlocked) {
+    return <UnlockScreen isNewDatabase={isNewDatabase} onUnlocked={() => setDbUnlocked(true)} />
   }
 
   return (

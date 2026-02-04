@@ -7,6 +7,7 @@ import { viewBoundsManager } from '../../view-bounds-manager'
 import { IPC_CHANNELS } from '../../../shared/types'
 import { findCachedFile, getExtensionFromMimeType } from '../attachment-utils.js'
 import { getAttachmentsPath } from '../../settings.js'
+import { sanitizeFilename } from '../../export/utils.js'
 import { transformPerplexityMessageToParts, type PerplexityWebResult } from './perplexity/utils'
 import fs from 'fs'
 import path from 'path'
@@ -369,8 +370,10 @@ export class PerplexityProvider extends BaseProvider<PerplexityMetadata> {
       displayName += ext
     }
 
+    // SECURITY: Sanitize filename to prevent path traversal
+    const safeDisplayName = sanitizeFilename(displayName)
     // Filename format: fileId_displayName (allows lookup by fileId prefix)
-    const uniqueFilename = `${fileId}_${displayName}`
+    const uniqueFilename = `${fileId}_${safeDisplayName}`
     const localPath = path.join(conversationDir, uniqueFilename)
 
     // Write file to disk
@@ -922,6 +925,8 @@ export class PerplexityProvider extends BaseProvider<PerplexityMetadata> {
   }
 
   private makeFetchThreadScript(threadSlug: string): string {
+    // SECURITY: Encode threadSlug to prevent JavaScript injection
+    const safeThreadSlug = encodeURIComponent(threadSlug)
     return `
 (async function() {
   const headers = {
@@ -931,7 +936,7 @@ export class PerplexityProvider extends BaseProvider<PerplexityMetadata> {
   };
 
   const response = await fetch(
-    'https://www.perplexity.ai/rest/thread/${threadSlug}?with_parent_info=true&with_schematized_response=true&version=2.18&source=default&limit=10&offset=0&from_first=true',
+    'https://www.perplexity.ai/rest/thread/${safeThreadSlug}?with_parent_info=true&with_schematized_response=true&version=2.18&source=default&limit=10&offset=0&from_first=true',
     {
       credentials: 'include',
       headers: headers

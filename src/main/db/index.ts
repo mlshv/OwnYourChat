@@ -8,13 +8,50 @@ import * as schema from './schema'
 
 let db: ReturnType<typeof drizzle<typeof schema>> | null = null
 let sqlite: Database.Database | null = null
+let encryptionKey: string | null = null
 
 export function getDbPath(): string {
   const userDataPath = app.getPath('userData')
   return path.join(userDataPath, 'ownyourchat.db')
 }
 
-export async function initDatabase(): Promise<void> {
+export function getEncryptionKey(): string | null {
+  return encryptionKey
+}
+
+/**
+ * Check if a database file exists at the default path.
+ */
+export function databaseFileExists(): boolean {
+  return fs.existsSync(getDbPath())
+}
+
+/**
+ * Apply SQLCipher encryption pragmas to a database connection.
+ * Must be called immediately after opening the database, before any other operations.
+ */
+function applyEncryptionKey(sqliteDb: Database.Database, key: string): void {
+  sqliteDb.pragma(`cipher='sqlcipher'`)
+  sqliteDb.pragma(`legacy=4`)
+  sqliteDb.pragma(`key='${key.replace(/'/g, "''")}'`)
+}
+
+/**
+ * Verify that the database can be read with the current encryption key.
+ * Throws if the key is wrong or the database is corrupted.
+ */
+function verifyDatabaseAccess(sqliteDb: Database.Database): void {
+  // Attempt a simple read to verify the key is correct
+  // This will throw "SQLITE_NOTADB" if the key is wrong
+  sqliteDb.pragma('schema_version')
+}
+
+/**
+ * Initialize the database with an encryption key.
+ * For new databases, creates an encrypted database.
+ * For existing databases, unlocks with the provided key.
+ */
+export async function initDatabase(key: string): Promise<void> {
   if (db) return
 
   const dbPath = getDbPath()
@@ -26,6 +63,15 @@ export async function initDatabase(): Promise<void> {
   }
 
   sqlite = new Database(dbPath)
+
+  // Apply encryption key
+  applyEncryptionKey(sqlite, key)
+
+  // Verify the key works (throws if wrong key)
+  verifyDatabaseAccess(sqlite)
+
+  // Store the key for use by worker threads
+  encryptionKey = key
 
   // Register custom function for Unicode-aware lowercase (SQLite's built-in lower() only handles ASCII)
   sqlite.function('unicode_lower', (str: string | null) => str?.toLowerCase() ?? null)
@@ -60,5 +106,6 @@ export function closeDatabase(): void {
     sqlite.close()
     sqlite = null
     db = null
+    encryptionKey = null
   }
 }

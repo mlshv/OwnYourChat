@@ -7,6 +7,7 @@ import { viewBoundsManager } from '../../view-bounds-manager'
 import { IPC_CHANNELS } from '@shared/types'
 import { findCachedFile, getExtensionFromMimeType } from '../attachment-utils.js'
 import { getAttachmentsPath } from '../../settings.js'
+import { sanitizeFilename } from '../../export/utils.js'
 import { transformChatGPTMessageToParts } from './chatgpt/utils'
 import fs from 'fs'
 import path from 'path'
@@ -382,8 +383,10 @@ export class ChatGPTProvider extends BaseProvider<ChatGPTMetadata> {
       displayName += ext
     }
 
+    // SECURITY: Sanitize filename to prevent path traversal
+    const safeDisplayName = sanitizeFilename(displayName)
     // Filename format: fileId_displayName (allows lookup by fileId prefix)
-    const uniqueFilename = `${fileId}_${displayName}`
+    const uniqueFilename = `${fileId}_${safeDisplayName}`
     const localPath = path.join(conversationDir, uniqueFilename)
 
     // Write file to disk
@@ -869,12 +872,14 @@ export class ChatGPTProvider extends BaseProvider<ChatGPTMetadata> {
   }
 
   private makeFetchConversationScript(conversationId: string, headers: ApiHeaders): string {
+    // SECURITY: Encode conversationId to prevent JavaScript injection
+    const safeConversationId = encodeURIComponent(conversationId)
     return `
 (async function() {
   const headers = ${JSON.stringify(headers)};
 
   const response = await fetch(
-    'https://chatgpt.com/backend-api/conversation/${conversationId}',
+    'https://chatgpt.com/backend-api/conversation/${safeConversationId}',
     {
       credentials: 'include',
       headers: headers,
@@ -1188,12 +1193,14 @@ export class ChatGPTProvider extends BaseProvider<ChatGPTMetadata> {
   }
 
   private makeGetFileDownloadUrlScript(fileId: string, headers: ApiHeaders): string {
+    // SECURITY: Encode fileId to prevent JavaScript injection
+    const safeFileId = encodeURIComponent(fileId)
     return `
 (async function() {
   const headers = ${JSON.stringify(headers)};
 
   const response = await fetch(
-    'https://chatgpt.com/backend-api/files/download/${fileId}?post_id=&inline=false',
+    'https://chatgpt.com/backend-api/files/download/${safeFileId}?post_id=&inline=false',
     {
       credentials: 'include',
       headers: headers,

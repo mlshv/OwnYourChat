@@ -1,5 +1,5 @@
-import { app, BrowserWindow, protocol, net, Menu } from 'electron'
-import { join } from 'path'
+import { app, BrowserWindow, protocol, net, Menu, ipcMain } from 'electron'
+import { join, resolve, sep } from 'path'
 import fs from 'fs'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 
@@ -11,7 +11,7 @@ import icon from '../../build/icon.png?asset'
 import { IPC_CHANNELS } from '../shared/types'
 import { getAttachmentsPath, getSettings } from './settings'
 import { pathToFileURL } from 'url'
-import { initDatabase } from './db'
+import { initDatabase, databaseFileExists } from './db'
 import { setupIpcHandlers } from './ipc'
 import { stopSyncScheduler } from './sync/scheduler'
 import { shell } from 'electron'
@@ -210,7 +210,7 @@ protocol.registerSchemesAsPrivileged([
     privileges: {
       secure: true,
       supportFetchAPI: true,
-      bypassCSP: true,
+      // SECURITY: bypassCSP removed to prevent potential XSS via attachment content
       stream: true
     }
   }
@@ -252,75 +252,13 @@ function createWindow(): void {
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
-app.whenReady().then(async () => {
-  // Create application menu
-  createApplicationMenu()
-
-  // Set up callback to rebuild menu when update is downloaded
-  onUpdateDownloaded(() => {
-    console.log('[App] Update downloaded, rebuilding menu...')
-    createApplicationMenu()
-  })
-
-  // Set app user model id for windows
-  electronApp.setAppUserModelId('ownyourchat')
-
-  // Register protocol handler for attachment:// URLs
-  // Format: attachment://conversationId/filename
-  protocol.handle('attachment', (request) => {
-    // Parse the URL: attachment://conversationId/filename
-    // Note: URL parser treats conversationId as host, not path
-    const url = new URL(request.url)
-    const conversationId = url.host
-    const filename = decodeURIComponent(url.pathname.slice(1)) // Remove leading /
-
-    if (!conversationId || !filename) {
-      return new Response('Invalid attachment URL', { status: 400 })
-    }
-    const filePath = join(getAttachmentsPath(), conversationId, filename)
-
-    // Check if file exists
-    if (!fs.existsSync(filePath)) {
-      console.error(`[Attachment] File not found: ${filePath}`)
-      return new Response('File not found', { status: 404 })
-    }
-
-    // Return the file using net.fetch with file:// URL
-    return net.fetch(pathToFileURL(filePath).toString())
-  })
-
-  // Initialize database
-  await initDatabase()
-
-  // Set up IPC handlers
+/**
+ * Post-database initialization: set up IPC handlers, providers, MCP server, etc.
+ * Called after the database has been successfully unlocked.
+ */
+async function initializeAfterDbUnlock(): Promise<void> {
+  // Set up IPC handlers (requires database)
   setupIpcHandlers()
-
-  // Default open or close DevTools by F12 in development
-  // and ignore CommandOrControl + R in production.
-  // see https://github.com/alex8088/electron-toolkit/tree/master/packages/utils
-  app.on('browser-window-created', (_, window) => {
-    optimizer.watchWindowShortcuts(window)
-  })
-
-  createWindow()
-
-  // Enable Chrome DevTools Protocol for electron-mcp-server (QA/debug agent)
-  if (is.dev && mainWindow) {
-    try {
-      mainWindow.webContents.debugger.attach('1.3')
-      console.log('[App] CDP debugger attached for electron-mcp-server')
-    } catch (error) {
-      console.error('[App] Failed to attach CDP debugger:', error)
-    }
-  }
-
-  // Initialize Zubridge
-  if (mainWindow) {
-    console.log('[App] Initializing Zubridge...')
-    const bridge = createZustandBridge(store)
-    bridge.subscribe([mainWindow])
-    console.log('[App] Zubridge subscribed to main window')
-  }
 
   // Initialize MCP server if enabled
   const settings = getSettings()
@@ -360,6 +298,120 @@ app.whenReady().then(async () => {
       isLoggedIn: false,
       errorReason: null
     })
+  }
+}
+
+app.whenReady().then(async () => {
+  // Create application menu
+  createApplicationMenu()
+
+  // Set up callback to rebuild menu when update is downloaded
+  onUpdateDownloaded(() => {
+    console.log('[App] Update downloaded, rebuilding menu...')
+    createApplicationMenu()
+  })
+
+  // Set app user model id for windows
+  electronApp.setAppUserModelId('ownyourchat')
+
+  // Register protocol handler for attachment:// URLs
+  // Format: attachment://conversationId/filename
+  protocol.handle('attachment', (request) => {
+    // Parse the URL: attachment://conversationId/filename
+    // Note: URL parser treats conversationId as host, not path
+    const url = new URL(request.url)
+    const conversationId = url.host
+    const filename = decodeURIComponent(url.pathname.slice(1)) // Remove leading /
+
+    if (!conversationId || !filename) {
+      return new Response('Invalid attachment URL', { status: 400 })
+    }
+
+    // SECURITY: Validate path to prevent directory traversal attacks
+    const attachmentsBasePath = resolve(getAttachmentsPath())
+    const filePath = join(attachmentsBasePath, conversationId, filename)
+    const resolvedPath = resolve(filePath)
+
+    // Ensure the resolved path is within the attachments directory
+    if (!resolvedPath.startsWith(attachmentsBasePath + sep)) {
+      console.error(`[Attachment] Path traversal attempt blocked: ${filePath}`)
+      return new Response('Invalid path', { status: 400 })
+    }
+
+    // Check if file exists
+    if (!fs.existsSync(resolvedPath)) {
+      console.error(`[Attachment] File not found: ${resolvedPath}`)
+      return new Response('File not found', { status: 404 })
+    }
+
+    // Return the file using net.fetch with file:// URL
+    return net.fetch(pathToFileURL(resolvedPath).toString())
+  })
+
+  // Register database IPC handlers BEFORE window creation
+  // These handlers work without database initialization
+  let dbInitialized = false
+
+  ipcMain.handle(IPC_CHANNELS.DATABASE_STATUS, async () => {
+    return {
+      isNew: !databaseFileExists(),
+      isUnlocked: dbInitialized
+    }
+  })
+
+  ipcMain.handle(IPC_CHANNELS.DATABASE_UNLOCK, async (_event, key: string) => {
+    if (dbInitialized) {
+      return { success: true }
+    }
+
+    try {
+      await initDatabase(key)
+      dbInitialized = true
+      console.log('[App] Database unlocked successfully')
+
+      // Now initialize everything that depends on the database
+      await initializeAfterDbUnlock()
+
+      return { success: true }
+    } catch (error) {
+      console.error('[App] Database unlock failed:', error)
+      const message =
+        error instanceof Error ? error.message : 'Failed to unlock database'
+      const isWrongKey =
+        message.includes('SQLITE_NOTADB') || message.includes('file is not a database')
+      return {
+        success: false,
+        error: isWrongKey ? 'Incorrect encryption key' : message
+      }
+    }
+  })
+
+  // Default open or close DevTools by F12 in development
+  // and ignore CommandOrControl + R in production.
+  // see https://github.com/alex8088/electron-toolkit/tree/master/packages/utils
+  app.on('browser-window-created', (_, window) => {
+    optimizer.watchWindowShortcuts(window)
+  })
+
+  // Create window first so the unlock screen can be shown
+  createWindow()
+
+  // Enable Chrome DevTools Protocol for electron-mcp-server (QA/debug agent)
+  if (is.dev && mainWindow) {
+    try {
+      mainWindow.webContents.debugger.attach('1.3')
+      console.log('[App] CDP debugger attached for electron-mcp-server')
+    } catch (error) {
+      console.error('[App] Failed to attach CDP debugger:', error)
+    }
+  }
+
+  // Initialize Zubridge
+  if (mainWindow) {
+    console.log('[App] Initializing Zubridge...')
+    const bridge = createZustandBridge(store)
+    bridge.subscribe([mainWindow])
+    console.log('[App] Zubridge subscribed to main window')
   }
 
   app.on('activate', function () {

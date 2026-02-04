@@ -7,7 +7,7 @@
 import { Worker } from 'worker_threads'
 import path from 'path'
 import { app } from 'electron'
-import { getDbPath } from '../db'
+import { getDbPath, getEncryptionKey } from '../db'
 import type { ExportProgress } from '../../shared/types'
 import type {
   WorkerInboundMessage,
@@ -86,13 +86,14 @@ function startWorker(
 
     const workerPath = getWorkerPath()
     const dbPath = getDbPath()
+    const encryptionKey = getEncryptionKey()
 
     console.log('[Export Manager] Starting worker:', workerPath)
     console.log('[Export Manager] DB path:', dbPath)
 
     try {
       activeWorker = new Worker(workerPath, {
-        workerData: { dbPath }
+        workerData: { dbPath, encryptionKey }
       })
     } catch (error) {
       console.error('[Export Manager] Failed to create worker:', error)
