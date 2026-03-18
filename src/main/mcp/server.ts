@@ -11,6 +11,21 @@ let httpServer: HttpServer | null = null
 let isRunning = false
 
 const transports: Map<string, StreamableHTTPServerTransport> = new Map()
+const sessionAliases: Map<string, string> = new Map()
+
+const resolveSessionId = (sessionId?: string): string | undefined => {
+  if (!sessionId) return undefined
+
+  let current: string | undefined = sessionId
+  const visited = new Set<string>()
+
+  while (current && sessionAliases.has(current) && !visited.has(current)) {
+    visited.add(current)
+    current = sessionAliases.get(current)
+  }
+
+  return current
+}
 
 const createMcpServer = () => {
   const server = new McpServer({ name: 'ownyourchat', version: '1.0.0' })
@@ -140,10 +155,22 @@ export async function startMcpServer(port: number = 37777): Promise<void> {
 
   try {
     httpServer = createServer(async (req: IncomingMessage, res: ServerResponse) => {
-      const sessionId = req.headers['mcp-session-id'] as string | undefined
+      const originalSessionId = req.headers['mcp-session-id'] as string | undefined
+      const resolvedSessionId = resolveSessionId(originalSessionId)
+      const sessionId = resolvedSessionId ?? originalSessionId
 
       // Log all incoming requests
-      console.log(`[MCP] <- ${req.method} ${req.url} session=${sessionId ?? 'none'}`)
+      console.log(
+        `[MCP] <- ${req.method} ${req.url} session=${sessionId ?? 'none'}${
+          originalSessionId && originalSessionId !== sessionId
+            ? ` (aliased from ${originalSessionId})`
+            : ''
+        }`
+      )
+
+      if (sessionId && req.headers['mcp-session-id'] !== sessionId) {
+        req.headers['mcp-session-id'] = sessionId
+      }
 
       res.setHeader('Access-Control-Allow-Origin', '*')
       res.setHeader('Access-Control-Allow-Methods', 'GET, POST, DELETE, OPTIONS')
@@ -187,19 +214,32 @@ export async function startMcpServer(port: number = 37777): Promise<void> {
             `[MCP]    method=${jsonRpcBody.method ?? 'unknown'} id=${jsonRpcBody.id ?? '-'}`
           )
 
-          if (sessionId && transports.has(sessionId)) {
-            const transport = transports.get(sessionId)!
-            await transport.handleRequest(req, res, body)
-            return
-          }
+          // Accept initialize requests regardless of whether the client sent a stale session header.
+          // Some clients reuse mcp-session-id across app restarts; sessions are in-memory and must be recreated.
+          if (isInitializeRequest(body)) {
+            if (sessionId && transports.has(sessionId)) {
+              const transport = transports.get(sessionId)!
+              await transport.handleRequest(req, res, body)
+              return
+            }
 
-          if (!sessionId && isInitializeRequest(body)) {
-            console.log('[MCP] New initialization request')
+            if (sessionId && !transports.has(sessionId)) {
+              console.log(`[MCP] Stale session on initialize (${sessionId}), creating a new session`)
+            } else {
+              console.log('[MCP] New initialization request')
+            }
+
+            const staleSessionId = sessionId && !transports.has(sessionId) ? sessionId : null
+
             const transport = new StreamableHTTPServerTransport({
               sessionIdGenerator: () => randomUUID(),
               onsessioninitialized: (newSessionId) => {
                 console.log(`[MCP] Session initialized: ${newSessionId}`)
                 transports.set(newSessionId, transport)
+                if (staleSessionId && staleSessionId !== newSessionId) {
+                  sessionAliases.set(staleSessionId, newSessionId)
+                  console.log(`[MCP] Session alias registered: ${staleSessionId} -> ${newSessionId}`)
+                }
               }
             })
 
@@ -208,11 +248,22 @@ export async function startMcpServer(port: number = 37777): Promise<void> {
               if (sid && transports.has(sid)) {
                 console.log(`[MCP] Transport closed for session ${sid}`)
                 transports.delete(sid)
+                for (const [oldSessionId, mappedSessionId] of sessionAliases) {
+                  if (oldSessionId === sid || mappedSessionId === sid) {
+                    sessionAliases.delete(oldSessionId)
+                  }
+                }
               }
             }
 
             const server = createMcpServer()
             await server.connect(transport)
+            await transport.handleRequest(req, res, body)
+            return
+          }
+
+          if (sessionId && transports.has(sessionId)) {
+            const transport = transports.get(sessionId)!
             await transport.handleRequest(req, res, body)
             return
           }
@@ -230,7 +281,21 @@ export async function startMcpServer(port: number = 37777): Promise<void> {
         }
 
         if (req.method === 'GET') {
-          if (!sessionId || !transports.has(sessionId)) {
+          if (!sessionId) {
+            // Compatibility path for browser checks and simple connection tests.
+            // Proper MCP clients should initialize with POST /mcp first.
+            res.writeHead(200, { 'Content-Type': 'application/json' })
+            res.end(
+              JSON.stringify({
+                status: 'ok',
+                server: 'ownyourchat-mcp',
+                message: 'Session required. Initialize via POST /mcp to start an MCP session.'
+              })
+            )
+            return
+          }
+
+          if (!transports.has(sessionId)) {
             console.log(`[MCP] -> 404 Session not found: ${sessionId ?? 'none'}`)
             res.writeHead(404, { 'Content-Type': 'application/json' })
             res.end(
@@ -312,6 +377,7 @@ export async function stopMcpServer(): Promise<void> {
       }
     }
     transports.clear()
+    sessionAliases.clear()
 
     if (httpServer) {
       await new Promise<void>((resolve, reject) => {

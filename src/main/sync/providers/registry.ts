@@ -23,9 +23,9 @@ class ProviderRegistry {
     console.log('[ProviderRegistry] Initializing providers...')
 
     // Create provider instances
-    const chatgptProvider = new ChatGPTProvider(this.storage, 60000) // 1 minute polling
-    const claudeProvider = new ClaudeProvider(this.storage, 60000)
-    const perplexityProvider = new PerplexityProvider(this.storage, 60000)
+    const chatgptProvider = new ChatGPTProvider(this.storage)
+    const claudeProvider = new ClaudeProvider(this.storage)
+    const perplexityProvider = new PerplexityProvider(this.storage)
 
     // Initialize each provider
     await chatgptProvider.initialize()

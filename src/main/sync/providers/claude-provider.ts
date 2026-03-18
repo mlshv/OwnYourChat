@@ -1,5 +1,10 @@
 import { WebContentsView, session } from 'electron'
-import { BaseProvider, type SyncResult, type ProviderName } from './base.js'
+import {
+  BaseProvider,
+  PROVIDER_DEFAULT_POLLING_INTERVAL_MS,
+  type SyncResult,
+  type ProviderName
+} from './base.js'
 import type { IStorage } from '../../storage/interface.js'
 import type { ClaudeMetadata } from './types'
 import { getMainWindow } from '../../index.js'
@@ -87,6 +92,8 @@ interface FetchConversationsOptions {
   onPage?: (conversations: ClaudeConversationListItem[], pageNumber: number) => Promise<void>
 }
 
+const MAX_CLAUDE_SYNC_OFFSET = 100000
+
 // ============================================================================
 // PROVIDER CLASS
 // ============================================================================
@@ -101,7 +108,7 @@ export class ClaudeProvider extends BaseProvider<ClaudeMetadata> {
   private isViewVisible: boolean = false
   private loginCheckInterval: NodeJS.Timeout | null = null
 
-  constructor(storage: IStorage, pollingIntervalMs: number = 60000) {
+  constructor(storage: IStorage, pollingIntervalMs: number = PROVIDER_DEFAULT_POLLING_INTERVAL_MS) {
     super(storage, pollingIntervalMs)
   }
 
@@ -650,8 +657,10 @@ export class ClaudeProvider extends BaseProvider<ClaudeMetadata> {
         }
 
         // Safety limit
-        if (offset > 10000) {
-          console.warn(`[${this.name}] Reached safety limit of 10000 conversations`)
+        if (offset > MAX_CLAUDE_SYNC_OFFSET) {
+          console.warn(
+            `[${this.name}] Reached safety limit of ${MAX_CLAUDE_SYNC_OFFSET} conversations`
+          )
           break
         }
       }
@@ -860,7 +869,12 @@ export class ClaudeProvider extends BaseProvider<ClaudeMetadata> {
         offset += pageSize
         pageNumber++
 
-        if (offset > 10000) break
+        if (offset > MAX_CLAUDE_SYNC_OFFSET) {
+          console.warn(
+            `[${this.name}] Reached safety limit of ${MAX_CLAUDE_SYNC_OFFSET} conversations while paginating`
+          )
+          break
+        }
       }
 
       console.log(`[${this.name}] Finished fetching ${allConversations.length} conversations`)

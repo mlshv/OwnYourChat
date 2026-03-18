@@ -1,5 +1,10 @@
 import { WebContentsView, session } from 'electron'
-import { BaseProvider, type SyncResult, type ProviderName } from './base'
+import {
+  BaseProvider,
+  PROVIDER_DEFAULT_POLLING_INTERVAL_MS,
+  type SyncResult,
+  type ProviderName
+} from './base'
 import type { IStorage } from '../../storage/interface'
 import type { ChatGPTMetadata } from './types'
 import { getMainWindow } from '../../index'
@@ -74,6 +79,9 @@ interface FetchConversationsOptions {
   onPage?: (conversations: ConversationListItem[], pageNumber: number) => Promise<void>
 }
 
+const CHATGPT_PAGE_SIZE = 50
+const MAX_CHATGPT_SYNC_OFFSET = 100000
+
 // ============================================================================
 // PROVIDER CLASS
 // ============================================================================
@@ -88,7 +96,7 @@ export class ChatGPTProvider extends BaseProvider<ChatGPTMetadata> {
   private loginCheckInterval: NodeJS.Timeout | null = null
   private syncingConversations = new Set<string>() // In-memory tracking of conversations being synced
 
-  constructor(storage: IStorage, pollingIntervalMs: number = 60000) {
+  constructor(storage: IStorage, pollingIntervalMs: number = PROVIDER_DEFAULT_POLLING_INTERVAL_MS) {
     super(storage, pollingIntervalMs)
   }
 
@@ -410,6 +418,27 @@ export class ChatGPTProvider extends BaseProvider<ChatGPTMetadata> {
         console.log(`[${this.name}] Starting full sync from offset ${metadata.lastCompletedOffset}`)
         return await this.fullSync(metadata)
       } else {
+        if (metadata.lastCompletedOffset > 0) {
+          const hasMoreHistory = await this.hasMoreHistoryAtOffset(
+            this.capturedHeaders,
+            metadata.lastCompletedOffset
+          )
+
+          if (hasMoreHistory) {
+            console.log(
+              `[${this.name}] Found additional history beyond offset ${metadata.lastCompletedOffset}, resuming full sync`
+            )
+
+            const resumedMetadata: ChatGPTMetadata = {
+              ...metadata,
+              isFullSyncComplete: false
+            }
+
+            await this.setMetadata(resumedMetadata)
+            return await this.fullSync(resumedMetadata)
+          }
+        }
+
         console.log(`[${this.name}] Starting incremental sync`)
         return await this.incrementalSync()
       }
@@ -431,14 +460,13 @@ export class ChatGPTProvider extends BaseProvider<ChatGPTMetadata> {
 
     let offset = metadata.lastCompletedOffset
     let newChatsFound = 0
-    const PAGE_SIZE = 50
 
     try {
       while (true) {
         console.log(`[${this.name}] Fetching page at offset ${offset}...`)
 
         const result = await this.view.webContents.executeJavaScript(
-          this.makeFetchConversationPageScript(this.capturedHeaders, offset, PAGE_SIZE)
+          this.makeFetchConversationPageScript(this.capturedHeaders, offset, CHATGPT_PAGE_SIZE)
         )
 
         if (result.error) {
@@ -467,7 +495,7 @@ export class ChatGPTProvider extends BaseProvider<ChatGPTMetadata> {
         }
 
         // Only mark offset complete after ALL conversations succeed
-        offset += PAGE_SIZE
+        offset += CHATGPT_PAGE_SIZE
         await this.setMetadata({
           ...metadata,
           lastCompletedOffset: offset
@@ -489,8 +517,10 @@ export class ChatGPTProvider extends BaseProvider<ChatGPTMetadata> {
         }
 
         // Safety limit
-        if (offset > 10000) {
-          console.warn(`[${this.name}] Reached safety limit of 10000 conversations`)
+        if (offset > MAX_CHATGPT_SYNC_OFFSET) {
+          console.warn(
+            `[${this.name}] Reached safety limit of ${MAX_CHATGPT_SYNC_OFFSET} conversations`
+          )
           break
         }
       }
@@ -644,7 +674,7 @@ export class ChatGPTProvider extends BaseProvider<ChatGPTMetadata> {
 
       const allConversations: ConversationListItem[] = []
       const stopBeforeTimestamp = options?.stopBeforeTimestamp ?? null
-      const pageSize = 50
+      const pageSize = CHATGPT_PAGE_SIZE
       let offset = 0
       let hasMore = true
       let pageNumber = 0
@@ -694,7 +724,12 @@ export class ChatGPTProvider extends BaseProvider<ChatGPTMetadata> {
         offset += pageSize
         pageNumber++
 
-        if (offset > 10000) break
+        if (offset > MAX_CHATGPT_SYNC_OFFSET) {
+          console.warn(
+            `[${this.name}] Reached safety limit of ${MAX_CHATGPT_SYNC_OFFSET} conversations while paginating`
+          )
+          break
+        }
       }
 
       console.log(`[${this.name}] Finished fetching ${allConversations.length} conversations`)
@@ -702,6 +737,26 @@ export class ChatGPTProvider extends BaseProvider<ChatGPTMetadata> {
     } catch (error) {
       console.error(`[${this.name}] Error fetching conversation list:`, error)
       throw error
+    }
+  }
+
+  private async hasMoreHistoryAtOffset(headers: ApiHeaders, offset: number): Promise<boolean> {
+    if (!this.view) return false
+
+    try {
+      const result = await this.view.webContents.executeJavaScript(
+        this.makeFetchConversationPageScript(headers, offset, 1)
+      )
+
+      if (result?.error) {
+        console.warn(`[${this.name}] Backfill probe failed at offset ${offset}:`, result.error)
+        return false
+      }
+
+      return Array.isArray(result?.items) && result.items.length > 0
+    } catch (error) {
+      console.warn(`[${this.name}] Backfill probe error at offset ${offset}:`, error)
+      return false
     }
   }
 
@@ -831,14 +886,14 @@ export class ChatGPTProvider extends BaseProvider<ChatGPTMetadata> {
   private makeFetchConversationPageScript(
     headers: ApiHeaders,
     offset: number,
-    limit: number = 50
+    limit: number = CHATGPT_PAGE_SIZE
   ): string {
     return `
 (async function() {
   const headers = ${JSON.stringify(headers)};
 
   const response = await fetch(
-    'https://chatgpt.com/backend-api/conversations?offset=${offset}&limit=${limit}&order=updated&is_archived=false&is_starred=false',
+    'https://chatgpt.com/backend-api/conversations?offset=${offset}&limit=${limit}&order=updated',
     {
       credentials: 'include',
       headers: headers,

@@ -1,5 +1,10 @@
 import { WebContentsView, session, net } from 'electron'
-import { BaseProvider, type SyncResult, type ProviderName } from './base.js'
+import {
+  BaseProvider,
+  PROVIDER_DEFAULT_POLLING_INTERVAL_MS,
+  type SyncResult,
+  type ProviderName
+} from './base.js'
 import type { IStorage } from '../../storage/interface.js'
 import type { PerplexityMetadata } from './types'
 import { getMainWindow } from '../../index.js'
@@ -128,6 +133,8 @@ interface FetchThreadsOptions {
   onPage?: (threads: PerplexityThreadListItem[], pageNumber: number) => Promise<void>
 }
 
+const MAX_PERPLEXITY_SYNC_OFFSET = 100000
+
 // ============================================================================
 // PROVIDER CLASS
 // ============================================================================
@@ -141,7 +148,7 @@ export class PerplexityProvider extends BaseProvider<PerplexityMetadata> {
   private isViewVisible: boolean = false
   private loginCheckInterval: NodeJS.Timeout | null = null
 
-  constructor(storage: IStorage, pollingIntervalMs: number = 60000) {
+  constructor(storage: IStorage, pollingIntervalMs: number = PROVIDER_DEFAULT_POLLING_INTERVAL_MS) {
     super(storage, pollingIntervalMs)
   }
 
@@ -515,8 +522,8 @@ export class PerplexityProvider extends BaseProvider<PerplexityMetadata> {
         }
 
         // Safety limit
-        if (offset > 10000) {
-          console.warn(`[${this.name}] Reached safety limit of 10000 threads`)
+        if (offset > MAX_PERPLEXITY_SYNC_OFFSET) {
+          console.warn(`[${this.name}] Reached safety limit of ${MAX_PERPLEXITY_SYNC_OFFSET} threads`)
           break
         }
       }
@@ -686,7 +693,12 @@ export class PerplexityProvider extends BaseProvider<PerplexityMetadata> {
         offset += pageSize
         pageNumber++
 
-        if (offset > 10000) break
+        if (offset > MAX_PERPLEXITY_SYNC_OFFSET) {
+          console.warn(
+            `[${this.name}] Reached safety limit of ${MAX_PERPLEXITY_SYNC_OFFSET} threads while paginating`
+          )
+          break
+        }
       }
 
       console.log(`[${this.name}] Finished fetching ${allThreads.length} threads`)

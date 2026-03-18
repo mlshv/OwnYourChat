@@ -3,6 +3,25 @@ import type { IStorage } from '../../storage/interface.js'
 import { store } from '../../store.js'
 import type { Conversation, Message } from '../../../shared/types'
 
+const DEFAULT_POLLING_INTERVAL_MS = 60000
+
+function resolvePollingIntervalMs(): number {
+  const raw = process.env.OYC_SYNC_INTERVAL_MS
+  if (!raw) return DEFAULT_POLLING_INTERVAL_MS
+
+  const parsed = Number(raw)
+  if (!Number.isFinite(parsed) || parsed <= 0) {
+    console.warn(
+      `[sync] Invalid OYC_SYNC_INTERVAL_MS value "${raw}", using default ${DEFAULT_POLLING_INTERVAL_MS}ms`
+    )
+    return DEFAULT_POLLING_INTERVAL_MS
+  }
+
+  return Math.floor(parsed)
+}
+
+export const PROVIDER_DEFAULT_POLLING_INTERVAL_MS = resolvePollingIntervalMs()
+
 export type ProviderName = 'chatgpt' | 'claude' | 'perplexity'
 
 export type ProviderStatus =

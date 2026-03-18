@@ -28,6 +28,7 @@ import {
 } from './update-manager'
 
 let mainWindow: BrowserWindow | null = null
+const isBackgroundMode = process.env.OYC_BACKGROUND === '1'
 
 function createApplicationMenu(): void {
   const isMac = process.platform === 'darwin'
@@ -232,7 +233,9 @@ function createWindow(): void {
   })
 
   mainWindow.on('ready-to-show', () => {
-    mainWindow?.show()
+    if (!isBackgroundMode) {
+      mainWindow?.show()
+    }
   })
 
   mainWindow.webContents.setWindowOpenHandler((details) => {
@@ -253,6 +256,10 @@ function createWindow(): void {
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(async () => {
+  if (isBackgroundMode && process.platform === 'darwin') {
+    app.dock?.hide()
+  }
+
   // Create application menu
   createApplicationMenu()
 
@@ -363,6 +370,8 @@ app.whenReady().then(async () => {
   }
 
   app.on('activate', function () {
+    if (isBackgroundMode) return
+
     // On macOS it's common to re-create a window in the app when the
     // dock icon is clicked and there are no other windows open.
     if (BrowserWindow.getAllWindows().length === 0) createWindow()
