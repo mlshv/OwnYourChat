@@ -14,6 +14,16 @@ We pay for these tools. We give them our data. And we get no practical way to ac
 
 OwnYourChat is the fix. Think **Obsidian, but for AI chats** — open, hackable, and yours.
 
+## This Fork
+
+This fork is focused on one operational goal:
+
+- Run OwnYourChat on macOS as a local background service.
+- Keep local chat data synchronized on a schedule.
+- Expose that local data over MCP so another AI agent can query it.
+
+In practical terms, this lets me use one agent as my working assistant and give it access to my historical context synced from ChatGPT/Claude/Perplexity.
+
 ## Features
 
 - **🔄 Automatic Sync** — Syncs conversations from ChatGPT, Claude, and Perplexity to a local SQLite database
@@ -62,6 +72,46 @@ cd ownyourchat
 pnpm install
 pnpm dev
 ```
+
+## macOS Background Agent Setup
+
+This setup starts OwnYourChat automatically when you log in and keeps it running in background mode.
+
+### 1) Build once
+
+```bash
+pnpm build
+```
+
+### 2) Install launchd agent
+
+```bash
+./scripts/install-launchagent-mac.sh
+```
+
+What this does:
+
+- Creates a LaunchAgent plist in `~/Library/LaunchAgents`.
+- Starts OwnYourChat with `OYC_BACKGROUND=1` so no window is required.
+- Sets `OYC_SYNC_INTERVAL_MS=1800000` (30 minutes) by default.
+- Configures `RunAtLoad` so sync starts after each macOS login.
+
+### 3) Verify MCP server from terminal
+
+```bash
+curl -i -sS http://localhost:37777/health | sed -n '1,20p'
+```
+
+### 4) Uninstall launchd agent
+
+```bash
+./scripts/uninstall-launchagent-mac.sh
+```
+
+### Notes
+
+- If you want a different sync interval, edit `OYC_SYNC_INTERVAL_MS` in the install script and re-run it.
+- If your MCP port is changed in app settings, update your client config and health-check command.
 
 ## Development
 
