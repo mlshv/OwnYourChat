@@ -81,6 +81,12 @@ export abstract class BaseProvider<TMetadata = Record<string, unknown>> implemen
   protected _errorMessage: string | null = null
   protected _isConnectedFromDb: boolean = false
 
+  // Rate limit backoff: providers can return 429 when we poll too aggressively.
+  // Retrying on the normal interval risks extending the limit, so hold off for
+  // an exponentially growing window instead.
+  protected _rateLimitedUntil: number | null = null
+  protected _consecutiveRateLimits: number = 0
+
   constructor(storage: IStorage, pollingIntervalMs: number = 60000) {
     this.storage = storage
     this.pollingIntervalMs = pollingIntervalMs
@@ -172,6 +178,32 @@ export abstract class BaseProvider<TMetadata = Record<string, unknown>> implemen
     }
   }
 
+  /**
+   * Rate limit errors surface as an HTTP status embedded in the error string,
+   * e.g. "Failed to fetch total count: 429".
+   */
+  protected isRateLimitError(error: string | undefined): boolean {
+    if (!error) {
+      return false
+    }
+    return /\b429\b/.test(error) || /rate.?limit/i.test(error)
+  }
+
+  /**
+   * Grow the retry window on each consecutive rate limit: 5m, 10m, 20m, 40m,
+   * then hold at 60m. Returns the backoff applied, in milliseconds.
+   */
+  protected applyRateLimitBackoff(): number {
+    const baseMs = 5 * 60 * 1000
+    const maxMs = 60 * 60 * 1000
+
+    const backoffMs = Math.min(baseMs * 2 ** this._consecutiveRateLimits, maxMs)
+    this._consecutiveRateLimits++
+    this._rateLimitedUntil = Date.now() + backoffMs
+
+    return backoffMs
+  }
+
   protected async runSync(): Promise<void> {
     if (this._isSyncing) {
       return
@@ -180,6 +212,16 @@ export abstract class BaseProvider<TMetadata = Record<string, unknown>> implemen
     if (!this.isConnected()) {
       console.log(`[${this.name}] Not connected, skipping sync`)
       return
+    }
+
+    if (this._rateLimitedUntil !== null) {
+      if (Date.now() < this._rateLimitedUntil) {
+        const secondsLeft = Math.ceil((this._rateLimitedUntil - Date.now()) / 1000)
+        console.log(`[${this.name}] Rate limited, skipping sync (retry in ${secondsLeft}s)`)
+        return
+      }
+      console.log(`[${this.name}] Rate limit backoff elapsed, retrying sync`)
+      this._rateLimitedUntil = null
     }
 
     console.log(`[${this.name}] Starting sync...`)
@@ -196,6 +238,8 @@ export abstract class BaseProvider<TMetadata = Record<string, unknown>> implemen
         this._status = 'connected'
         this._lastSyncAt = new Date()
         this._errorMessage = null
+        this._rateLimitedUntil = null
+        this._consecutiveRateLimits = 0
         console.log(`[${this.name}] Sync completed: ${result.newChatsFound} new chats`)
 
         // Persist state
@@ -237,7 +281,24 @@ export abstract class BaseProvider<TMetadata = Record<string, unknown>> implemen
           // Timeout or other transient error - keep polling
           this._status = 'timeout'
           this._errorMessage = result.error || 'Unknown error'
-          console.log(`[${this.name}] Sync failed (will retry): ${result.error}`)
+
+          if (this.isRateLimitError(result.error)) {
+            const backoffMs = this.applyRateLimitBackoff()
+            console.log(
+              `[${this.name}] Rate limited (429), backing off ${Math.round(backoffMs / 1000)}s: ${result.error}`
+            )
+          } else {
+            console.log(`[${this.name}] Sync failed (will retry): ${result.error}`)
+          }
+
+          // Persist so the failure is visible outside this process
+          await this.storage.setProviderState({
+            providerName: this.name,
+            isOnline: true,
+            lastSyncAt: this._lastSyncAt,
+            status: this._status,
+            errorMessage: this._errorMessage
+          })
 
           // Update store
           this.updateStoreState()

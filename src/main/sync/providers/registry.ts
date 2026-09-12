@@ -24,7 +24,9 @@ class ProviderRegistry {
 
     // Create provider instances
     const chatgptProvider = new ChatGPTProvider(this.storage, 60000) // 1 minute polling
-    const claudeProvider = new ClaudeProvider(this.storage, 60000)
+    // claude.ai rate limits its conversation APIs more aggressively than the
+    // other providers, so poll it less often
+    const claudeProvider = new ClaudeProvider(this.storage, 300000) // 5 minute polling
     const perplexityProvider = new PerplexityProvider(this.storage, 60000)
 
     // Initialize each provider
