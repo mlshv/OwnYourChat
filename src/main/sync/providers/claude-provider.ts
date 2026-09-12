@@ -583,9 +583,18 @@ export class ClaudeProvider extends BaseProvider<ClaudeMetadata> {
     const PAGE_SIZE = 30
 
     try {
-      // Fetch total count first
-      const total = await this.fetchTotalConversations()
+      // The page fetch runs inside the provider view, so it must be on claude.ai
+      // for the credentialed fetch to work.
+      const url = this.view.webContents.getURL()
+      if (!url.includes('claude.ai')) {
+        await this.view.webContents.loadURL('https://claude.ai/')
+        await new Promise((r) => setTimeout(r, 2000))
+      }
 
+      // Note: no up-front total count. claude.ai rate limits
+      // chat_conversations/count_all aggressively (429), and the total is not
+      // needed — the page response's has_more signals the end of pagination,
+      // same as incremental sync.
       while (true) {
         console.log(`[${this.name}] Fetching page at offset ${offset}...`)
 
@@ -618,8 +627,9 @@ export class ClaudeProvider extends BaseProvider<ClaudeMetadata> {
           `[${this.name}] Processing ${pageConversations.length} conversations at offset ${offset}`
         )
 
-        // Report progress
-        this.updateSyncProgress(offset, total, newChatsFound)
+        // Report progress. Total is unknown without count_all; the UI hides the
+        // current/total readout when total is 0 and still shows new chats found.
+        this.updateSyncProgress(offset, 0, newChatsFound)
 
         // Process entire page atomically
         for (const conv of pageConversations) {
@@ -634,13 +644,11 @@ export class ClaudeProvider extends BaseProvider<ClaudeMetadata> {
           lastCompletedOffset: offset
         })
 
-        console.log(`[${this.name}] Completed offset ${offset}, total: ${total}`)
+        console.log(`[${this.name}] Completed offset ${offset}`)
 
         // Check if last page
-        if (offset >= total) {
-          console.log(
-            `[${this.name}] Reached end of pagination (offset ${offset} >= total ${total})`
-          )
+        if (!result.has_more) {
+          console.log(`[${this.name}] Reached end of pagination at offset ${offset}`)
           await this.setMetadata({
             ...metadata,
             lastCompletedOffset: offset,
@@ -751,39 +759,6 @@ export class ClaudeProvider extends BaseProvider<ClaudeMetadata> {
         )
         await new Promise((r) => setTimeout(r, backoffMs))
       }
-    }
-  }
-
-  // ============================================================================
-  // TOTAL COUNT FETCHER
-  // ============================================================================
-
-  private async fetchTotalConversations(): Promise<number> {
-    if (!this.view || !this.organizationId) {
-      throw new Error('View or organization ID not initialized')
-    }
-
-    try {
-      const url = this.view.webContents.getURL()
-      if (!url.includes('claude.ai')) {
-        await this.view.webContents.loadURL('https://claude.ai/')
-        await new Promise((r) => setTimeout(r, 2000))
-      }
-
-      console.log(`[${this.name}] Fetching total conversation count...`)
-      const result = await this.view.webContents.executeJavaScript(
-        this.makeFetchTotalCountScript(this.organizationId, this.capturedHeaders!)
-      )
-
-      if (result.error) {
-        throw new Error(`Failed to fetch total count: ${result.error}`)
-      }
-
-      console.log(`[${this.name}] Total conversations: ${result.count}`)
-      return result.count
-    } catch (error) {
-      console.error(`[${this.name}] Error fetching total conversation count:`, error)
-      throw error
     }
   }
 
@@ -1092,33 +1067,6 @@ export class ClaudeProvider extends BaseProvider<ClaudeMetadata> {
   if (!response.ok) {
     console.error('[Claude API] Failed to fetch conversation:', response.status);
     return null;
-  }
-
-  const data = await response.json();
-  return data;
-})();
-`
-  }
-
-  private makeFetchTotalCountScript(organizationId: string, headers: ClaudeApiHeaders): string {
-    return `
-(async function() {
-  const headers = ${JSON.stringify({
-    ...headers,
-    'content-type': 'application/json'
-  })};
-
-  const response = await fetch(
-    'https://claude.ai/api/organizations/${organizationId}/chat_conversations/count_all',
-    {
-      credentials: 'include',
-      headers: headers,
-    }
-  );
-
-  if (!response.ok) {
-    console.error('[Claude API] Failed to fetch conversation count:', response.status);
-    return { error: response.status };
   }
 
   const data = await response.json();
