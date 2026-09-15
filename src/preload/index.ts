@@ -162,6 +162,8 @@ const api: ElectronAPI = {
 
   // Attachment operations
   attachments: {
+    openCitation: (messageId: string, marker: string) =>
+      ipcRenderer.invoke(IPC_CHANNELS.FILE_CITATION_OPEN, messageId, marker),
     download: (attachmentId: string, conversationId: string) =>
       ipcRenderer.invoke(
         IPC_CHANNELS.ATTACHMENT_DOWNLOAD,

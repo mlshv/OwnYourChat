@@ -7,6 +7,11 @@ import { getSettings, updateSettings } from './settings'
 import { startMcpServer, stopMcpServer, isMcpServerRunning } from './mcp/server'
 import { viewBoundsManager } from './view-bounds-manager'
 import fs from 'fs'
+import { eq } from 'drizzle-orm'
+import { getDatabase } from './db'
+import { messages, conversations } from './db/schema'
+import { openFileCitation } from './file-citations'
+import type { MessagePart } from '../shared/types'
 
 export function setupIpcHandlers(): void {
   // Conversation handlers
@@ -319,6 +324,30 @@ export function setupIpcHandlers(): void {
         return { success: false, error: (error as Error).message }
       }
     }
+  )
+
+  ipcMain.handle(IPC_CHANNELS.FILE_CITATION_OPEN, (_event, messageId: string, marker: string) =>
+    openFileCitation(messageId, marker, {
+      loadMessage: async (id) => {
+        const [row] = await getDatabase()
+          .select({
+            conversationId: conversations.id,
+            provider: conversations.provider,
+            parts: messages.parts
+          })
+          .from(messages)
+          .innerJoin(conversations, eq(messages.conversationId, conversations.id))
+          .where(eq(messages.id, id))
+        return row ? { ...row, parts: JSON.parse(row.parts) as MessagePart[] } : null
+      },
+      downloadFile: async (fileId, filename, conversationId) => {
+        const provider = providerRegistry.getProvider('chatgpt')
+        if (!provider) throw new Error('ChatGPT provider unavailable')
+        return provider.downloadAttachment(fileId, filename, conversationId)
+      },
+      openPath: (localPath) => shell.openPath(localPath),
+      openExternal: (url) => shell.openExternal(url)
+    })
   )
 
   // Open file in default system app

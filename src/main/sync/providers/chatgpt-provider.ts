@@ -7,7 +7,7 @@ import { viewBoundsManager } from '../../view-bounds-manager'
 import { IPC_CHANNELS } from '@shared/types'
 import { findCachedFile, getExtensionFromMimeType } from '../attachment-utils.js'
 import { getAttachmentsPath } from '../../settings.js'
-import { transformChatGPTMessageToParts } from './chatgpt/utils'
+import { transformChatGPTMessageToParts, type ChatGPTContentReference } from './chatgpt/utils'
 import fs from 'fs'
 import path from 'path'
 
@@ -34,14 +34,7 @@ export interface ExtractedAttachment {
   size?: number
 }
 
-export interface ExtractedContentReference {
-  matched_text: string
-  type: 'webpage' | 'webpage_extended' | 'image_inline'
-  title?: string
-  url?: string
-  snippet?: string
-  attribution?: string
-}
+export type ExtractedContentReference = ChatGPTContentReference
 
 export interface ExtractedMessage {
   id: string
@@ -1080,14 +1073,19 @@ export class ChatGPTProvider extends BaseProvider<ChatGPTMetadata> {
           const rawRefs = msg.metadata?.content_references;
           if (rawRefs && Array.isArray(rawRefs) && rawRefs.length > 0) {
             contentReferences = rawRefs
-              .filter(ref => ref.type === 'webpage' || ref.type === 'webpage_extended' || ref.type === 'image_inline')
+              .filter(ref => ref.type === 'webpage' || ref.type === 'webpage_extended' || ref.type === 'image_inline' || ref.type === 'grouped_webpages' || ref.type === 'file')
               .map(ref => ({
                 matched_text: ref.matched_text,
+                id: ref.id,
+                name: ref.name,
+                cloud_doc_url: ref.cloud_doc_url,
                 type: ref.type,
                 title: ref.title,
                 url: ref.url,
                 snippet: ref.snippet,
                 attribution: ref.attribution,
+                items: ref.items,
+                fallback_items: ref.fallback_items,
               }));
             if (contentReferences.length === 0) contentReferences = undefined;
           }

@@ -91,6 +91,14 @@ export type MessagePart = TextPart | SourceUrlPart
 export type TextPart = {
   type: 'text'
   text: string
+  fileCitations?: FileCitation[]
+}
+
+export type FileCitation = {
+  marker: string
+  fileId?: string
+  filename?: string
+  url?: string
 }
 
 export type SourceUrlPart = {
@@ -204,6 +212,7 @@ export const enum IPC_CHANNELS {
 
   // Attachments
   ATTACHMENT_DOWNLOAD = 'attachment:download',
+  FILE_CITATION_OPEN = 'citation:open-file',
   ATTACHMENT_OPEN = 'attachment:open',
   ATTACHMENT_EXISTS = 'attachment:exists',
 
@@ -328,6 +337,10 @@ export interface ElectronAPI {
     openPerplexityDevTools: () => Promise<void>
   }
   attachments: {
+    openCitation: (
+      messageId: string,
+      marker: string
+    ) => Promise<{ success: boolean; error?: string }>
     download: (
       attachmentId: string,
       conversationId: string
