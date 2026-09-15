@@ -3,6 +3,7 @@ import { getDatabase } from './index'
 import { conversations, messages, attachments, syncState, userPreferences } from './schema'
 import type { NewConversation, NewMessage, NewAttachment } from './schema'
 import type { Conversation, Message, Attachment, MessagePart } from '../../shared/types'
+import { parseMessageMetadata } from '../../shared/message-metadata'
 
 // Conversation operations
 export async function countConversations(): Promise<number> {
@@ -396,6 +397,9 @@ export async function upsertMessages(data: NewMessage[]): Promise<void> {
           role: message.role,
           parts: message.parts,
           createdAt: message.createdAt,
+          updatedAt: message.updatedAt,
+          model: message.model,
+          metadata: message.metadata,
           orderIndex: message.orderIndex,
           parentId: message.parentId,
           siblingIds: message.siblingIds,
@@ -540,7 +544,10 @@ function mapMessage(
     conversationId: row.conversationId ?? '',
     role: row.role as 'user' | 'assistant' | 'system',
     parts,
-    createdAt: row.createdAt ?? new Date(),
+    createdAt: row.createdAt ?? null,
+    updatedAt: row.updatedAt ?? null,
+    model: row.model ?? null,
+    metadata: parseMessageMetadata(row.metadata),
     orderIndex: row.orderIndex,
     attachments: messageAttachments,
     // Branch/tree structure fields

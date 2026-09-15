@@ -15,6 +15,7 @@ import type { Conversation, Message, ElectronAPI } from '@shared/types'
 import { buildMessageTree, getDisplayPath, updateBranchSelection } from './lib/branch-utils'
 import { useAuthState, useProvidersState, useSyncState, useUIState } from './lib/store'
 import { AI_PROVIDERS } from './constants'
+import { mergeRefreshedMessages } from './lib/merge-refreshed-messages'
 
 // Type augmentation for window.api
 declare global {
@@ -291,20 +292,9 @@ export default function App() {
         if (pendingConversationIdRef.current !== requestId) {
           return
         }
-        if (refreshed && refreshed.messages.length !== data.messages.length) {
-          // Only update if message count changed (new messages)
-          // Note: refresh returns all messages, so we need to slice to keep pagination
+        if (refreshed) {
           setSelectedConversation(refreshed.conversation)
-          // Keep only the recent messages + any we've already loaded
-          const currentMessageIds = new Set(data.messages.map((m) => m.id))
-          const newMessages = refreshed.messages.filter((m) => !currentMessageIds.has(m.id))
-          if (newMessages.length > 0) {
-            // Append new messages to the end
-            setAllMessages((prev) => [
-              ...prev,
-              ...newMessages.filter((m) => m.orderIndex > (prev[prev.length - 1]?.orderIndex ?? -1))
-            ])
-          }
+          setAllMessages((prev) => mergeRefreshedMessages(prev, refreshed.messages))
         }
       })
     }

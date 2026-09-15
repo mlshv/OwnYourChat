@@ -108,7 +108,10 @@ export interface Message {
   conversationId: string
   role: 'user' | 'assistant' | 'system'
   parts: MessagePart[]
-  createdAt: Date
+  createdAt: Date | null
+  updatedAt?: Date | null
+  model?: string | null
+  metadata?: import('./message-metadata').MessageMetadata
   orderIndex: number
   attachments?: Attachment[]
   // Branch/tree structure fields

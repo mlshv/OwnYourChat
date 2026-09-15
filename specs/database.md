@@ -38,12 +38,24 @@ Index on `provider` for filtering.
 | `conversationId` | TEXT FK | References conversations          |
 | `role`           | TEXT    | 'user' \| 'assistant' \| 'system' |
 | `parts`          | TEXT    | JSON array of MessagePart objects |
+| `createdAt`      | INTEGER | Provider message timestamp; nullable |
+| `updatedAt`      | INTEGER | Provider update timestamp, when supplied |
+| `model`          | TEXT    | Assistant model identifier supplied by provider |
+| `metadata`       | TEXT    | Allowlisted JSON: selectedModel, mode, searchFocus, finishReason |
 | `orderIndex`     | INTEGER | Position in conversation          |
 | `parentId`       | TEXT    | Parent message (null for root)    |
 | `siblingIds`     | TEXT    | JSON array of sibling IDs         |
 | `siblingIndex`   | INTEGER | Position among siblings           |
 
 Cascade delete on conversation deletion.
+
+Message details are available through the info button beside each timestamp. Chat dates,
+sync time, and total message count are available via **Chat details** in the header menu.
+New metadata is collected on sync and on the existing background refresh when opening a chat;
+older records remain unknown until refreshed. Model identifiers are never inferred from the
+conversation's current/default model. Perplexity's display model and selected model are separate;
+its message timestamp is the shared entry update time. Claude's model is only stored when
+explicitly supplied on a message. JSON exports preserve model, update time, and metadata.
 
 ### attachments
 

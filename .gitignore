@@ -7,3 +7,4 @@ out
 .context
 .env
 .claude
+!src/main/db/migrations/*.sql

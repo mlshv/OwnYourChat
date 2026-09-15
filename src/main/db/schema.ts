@@ -28,6 +28,8 @@ export const messages = sqliteTable(
     }),
     role: text('role').notNull(), // 'user' | 'assistant' | 'system'
     parts: text('parts').notNull(), // JSON array of MessagePart objects
+    model: text('model'),
+    metadata: text('metadata'), // JSON: selectedModel, mode, searchFocus, finishReason
     createdAt: integer('created_at', { mode: 'timestamp' }),
     updatedAt: integer('updated_at', { mode: 'timestamp' }),
     orderIndex: integer('order_index').notNull(),

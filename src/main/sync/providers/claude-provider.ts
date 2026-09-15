@@ -1,3 +1,4 @@
+import { claudeMessageMetadata } from './message-metadata'
 import { WebContentsView, session } from 'electron'
 import { BaseProvider, type SyncResult, type ProviderName } from './base.js'
 import type { IStorage } from '../../storage/interface.js'
@@ -63,6 +64,8 @@ export interface ClaudeMessage {
   text: string
   content: ClaudeContentBlock[]
   sender: 'human' | 'assistant'
+  model?: string
+  stop_reason?: string | null
   index: number
   created_at: string
   updated_at: string
@@ -418,6 +421,7 @@ export class ClaudeProvider extends BaseProvider<ClaudeMetadata> {
           role: msg.sender === 'human' ? ('user' as const) : ('assistant' as const),
           parts: JSON.stringify(parts),
           createdAt: msg.created_at ? new Date(msg.created_at) : undefined,
+          ...claudeMessageMetadata(msg),
           orderIndex: msg.index,
           parentId: msg.parent_message_uuid,
           siblingIds: JSON.stringify([]),
@@ -922,6 +926,8 @@ export class ClaudeProvider extends BaseProvider<ClaudeMetadata> {
           text: msg.text || '',
           content: msg.content || [],
           sender: msg.sender,
+          model: msg.model,
+          stop_reason: msg.stop_reason,
           index: msg.index,
           created_at: msg.created_at,
           updated_at: msg.updated_at,
@@ -1022,6 +1028,7 @@ export class ClaudeProvider extends BaseProvider<ClaudeMetadata> {
       role: msg.sender === 'human' ? ('user' as const) : ('assistant' as const),
       parts: JSON.stringify(parts),
       createdAt: msg.created_at ? new Date(msg.created_at) : undefined,
+      ...claudeMessageMetadata(msg),
       orderIndex: msg.index,
       parentId: msg.parent_message_uuid,
       siblingIds: JSON.stringify([]),

@@ -15,6 +15,7 @@ import { drizzle } from 'drizzle-orm/better-sqlite3'
 import { eq, desc, asc, count } from 'drizzle-orm'
 import fs from 'fs'
 import * as schema from '../db/schema'
+import { parseMessageMetadata } from '../../shared/message-metadata'
 import { exportToMarkdown } from './markdown'
 import { exportToJson } from './json'
 import type {
@@ -151,7 +152,10 @@ function mapMessage(
     conversationId: row.conversationId ?? '',
     role: row.role as 'user' | 'assistant' | 'system',
     parts,
-    createdAt: row.createdAt ?? new Date(),
+    createdAt: row.createdAt ?? null,
+    updatedAt: row.updatedAt ?? null,
+    model: row.model ?? null,
+    metadata: parseMessageMetadata(row.metadata),
     orderIndex: row.orderIndex,
     attachments: messageAttachments,
     parentId: row.parentId ?? null,

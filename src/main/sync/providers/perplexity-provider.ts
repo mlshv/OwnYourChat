@@ -1,3 +1,4 @@
+import { perplexityMessageMetadata } from './message-metadata'
 import { WebContentsView, session, net } from 'electron'
 import { BaseProvider, type SyncResult, type ProviderName } from './base.js'
 import type { IStorage } from '../../storage/interface.js'
@@ -765,6 +766,8 @@ export class PerplexityProvider extends BaseProvider<PerplexityMetadata> {
       role: 'user' | 'assistant'
       parts: string
       createdAt: Date | undefined
+      model?: string
+      metadata?: string
       orderIndex: number
       parentId: string | null
       siblingIds: string
@@ -793,6 +796,7 @@ export class PerplexityProvider extends BaseProvider<PerplexityMetadata> {
         id: userMessageId,
         conversationId: threadId,
         role: 'user',
+        ...perplexityMessageMetadata(entry, 'user'),
         parts: JSON.stringify([{ type: 'text', text: entry.query_str }]),
         createdAt: new Date(entry.updated_datetime),
         orderIndex: orderIndex++,
@@ -836,6 +840,7 @@ export class PerplexityProvider extends BaseProvider<PerplexityMetadata> {
           id: `${entry.uuid}-answer`,
           conversationId: threadId,
           role: 'assistant',
+          ...perplexityMessageMetadata(entry, 'assistant'),
           parts: JSON.stringify(parts),
           createdAt: new Date(entry.updated_datetime),
           orderIndex: orderIndex++,

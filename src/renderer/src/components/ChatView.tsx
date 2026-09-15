@@ -5,6 +5,8 @@ import { VList, VListHandle } from 'virtua'
 import type { Conversation, Message, MessagePart, SourceUrlPart } from '@shared/types'
 import { UserMessageBubble } from './UserMessageBubble'
 import { AssistantMessage } from './AssistantMessage'
+import { MessageTimestamp } from './MessageTimestamp'
+import { MessageDetails, ConversationDetails } from './MetadataDetails'
 import { BranchNavigation } from './BranchNavigation'
 import { AI_PROVIDERS } from '@/constants'
 import { HugeiconsIcon } from '@hugeicons/react'
@@ -107,6 +109,10 @@ const buildJsonExport = (conversation: Conversation, messages: Message[]): strin
       parent_id: msg.parentId
     }
 
+    if (msg.model) messageObj.model = msg.model
+    if (msg.updatedAt) messageObj.updated_at = toUnixTimestamp(msg.updatedAt)
+    if (msg.metadata && Object.keys(msg.metadata).length > 0) messageObj.metadata = msg.metadata
+
     if (sources.length > 0) {
       messageObj.sources = sources
     }
@@ -138,6 +144,7 @@ export function ChatView({
   onOpenExport
 }: ChatViewProps) {
   const listRef = useRef<VListHandle>(null)
+  const [showDetails, setShowDetails] = useState(false)
   // Track downloaded attachment paths: { attachmentId: localPath }
   const [downloadedPaths, setDownloadedPaths] = useState<Record<string, string>>({})
 
@@ -231,6 +238,7 @@ export function ChatView({
             <HugeiconsIcon size={16} icon={MoreVerticalCircle01Icon} strokeWidth={2} />
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" sideOffset={4} className="w-44">
+            <DropdownMenuItem onClick={() => setShowDetails(true)}>Chat details</DropdownMenuItem>
             <DropdownMenuItem onClick={() => onOpenExport?.()}>
               <HugeiconsIcon icon={FileExportIcon} />
               Export
@@ -246,6 +254,12 @@ export function ChatView({
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
+
+      <ConversationDetails
+        conversation={conversation}
+        open={showDetails}
+        onOpenChange={setShowDetails}
+      />
 
       {/* Messages */}
       <VList ref={listRef} className="flex-1 px-4" onScroll={handleScroll} shift={true}>
@@ -295,6 +309,15 @@ export function ChatView({
                 onDownloaded={handleDownloaded}
               />
             )}
+            <div
+              className={`mt-1 flex items-center gap-1 ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
+            >
+              <MessageTimestamp
+                createdAt={msg.createdAt}
+                isUpdatedTime={conversation.provider === 'perplexity'}
+              />
+              <MessageDetails message={msg} provider={conversation.provider} />
+            </div>
           </div>
         ))}
         <div className="max-w-3xl mx-auto pt-4 pb-12 flex justify-center">

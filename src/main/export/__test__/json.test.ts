@@ -259,6 +259,29 @@ describe('exportToJson', () => {
     expect(exported.messages[0].created_at).toBe(Math.floor(msgCreatedAt.getTime() / 1000))
   })
 
+  it('preserves model metadata and unknown creation time in JSON export', async () => {
+    const updatedAt = new Date('2026-09-15T12:00:00Z')
+    const message = createMessage({
+      role: 'assistant',
+      createdAt: null,
+      updatedAt,
+      model: 'gpt-4o',
+      metadata: { finishReason: 'stop' }
+    })
+    const exportPath = await exportToJson(createConversation(), [message], {
+      format: 'json',
+      includeAttachments: false,
+      outputPath: tempDir
+    })
+    const exported = JSON.parse(fs.readFileSync(exportPath, 'utf-8'))
+    expect(exported.messages[0]).toMatchObject({
+      created_at: null,
+      updated_at: updatedAt.getTime() / 1000,
+      model: 'gpt-4o',
+      metadata: { finishReason: 'stop' }
+    })
+  })
+
   it('should add date prefix to folder name when prefixTimestamp is true', async () => {
     const conversation = createConversation({ createdAt: new Date('2026-01-07T10:00:00Z') })
     const messages = [createMessage()]

@@ -115,6 +115,10 @@ export async function exportToJson(
       parent_id: msg.parentId
     }
 
+    if (msg.model) messageObj.model = msg.model
+    if (msg.updatedAt) messageObj.updated_at = toUnixTimestamp(msg.updatedAt)
+    if (msg.metadata && Object.keys(msg.metadata).length > 0) messageObj.metadata = msg.metadata
+
     // Only include sources if there are any
     if (sources.length > 0) {
       messageObj.sources = sources
