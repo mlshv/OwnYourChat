@@ -258,3 +258,12 @@ body {
 .prose strong {
   @apply font-semibold;
 }
+
+::highlight(chat-search) {
+  background-color: #fde047;
+  color: #171717;
+}
+::highlight(chat-search-active) {
+  background-color: #f97316;
+  color: #171717;
+}
