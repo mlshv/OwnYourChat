@@ -2,6 +2,7 @@
 
 import { useRef, useEffect, useState, useCallback } from 'react'
 import { VList, VListHandle } from 'virtua'
+import { ChatSearch } from './ChatSearch'
 import type { Conversation, Message, MessagePart, SourceUrlPart } from '@shared/types'
 import { UserMessageBubble } from './UserMessageBubble'
 import { AssistantMessage } from './AssistantMessage'
@@ -30,7 +31,7 @@ interface ChatViewProps {
   onBranchSelect?: (parentId: string, selectedChildId: string) => void
   hasMoreMessages?: boolean
   isLoadingMore?: boolean
-  onLoadMore?: () => void
+  onLoadMore?: () => void | Promise<void>
   onOpenExport?: () => void
 }
 
@@ -138,6 +139,18 @@ export function ChatView({
   onOpenExport
 }: ChatViewProps) {
   const listRef = useRef<VListHandle>(null)
+  const [searchOpen, setSearchOpen] = useState(false)
+  useEffect(() => {
+    const handleFind = (event: KeyboardEvent) => {
+      if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'f') {
+        event.preventDefault()
+        setSearchOpen(true)
+      }
+      if (event.key === 'Escape') setSearchOpen(false)
+    }
+    window.addEventListener('keydown', handleFind)
+    return () => window.removeEventListener('keydown', handleFind)
+  }, [])
   // Track downloaded attachment paths: { attachmentId: localPath }
   const [downloadedPaths, setDownloadedPaths] = useState<Record<string, string>>({})
 
@@ -216,13 +229,84 @@ export function ChatView({
     [conversation, messages]
   )
 
+  const messageContent = (
+    <>
+      {/* Loading indicator at top */}
+      {hasMoreMessages && (
+        <div className="py-4 text-center max-w-3xl mx-auto">
+          {isLoadingMore ? (
+            <span className="text-sm text-muted-foreground">Loading older messages...</span>
+          ) : (
+            <button
+              onClick={onLoadMore}
+              className="text-sm text-muted-foreground hover:text-foreground"
+            >
+              Load more messages
+            </button>
+          )}
+        </div>
+      )}
+      {messages.map((msg) => (
+        <div key={msg.id} data-search-message className="py-3 max-w-3xl mx-auto">
+          {msg.role === 'user' ? (
+            <>
+              <UserMessageBubble
+                message={msg}
+                conversationId={conversation.id}
+                downloadedPaths={downloadedPaths}
+                onDownloaded={handleDownloaded}
+              />
+              {msg.siblingIds && msg.siblingIds.length > 1 && onBranchSelect && (
+                <div className="mt-1 flex justify-end">
+                  <BranchNavigation
+                    message={msg}
+                    onSelectSibling={(siblingId) => {
+                      if (msg.parentId) {
+                        onBranchSelect(msg.parentId, siblingId)
+                      }
+                    }}
+                  />
+                </div>
+              )}
+            </>
+          ) : (
+            <AssistantMessage
+              message={msg}
+              conversationId={conversation.id}
+              downloadedPaths={downloadedPaths}
+              onDownloaded={handleDownloaded}
+            />
+          )}
+        </div>
+      ))}
+      <div className="max-w-3xl mx-auto pt-4 pb-12 flex justify-center">
+        <Button
+          onClick={() => AI_PROVIDERS[conversation.provider].openConversation(conversation.id)}
+          variant="outline"
+          className="gap-2 rounded-xl "
+        >
+          <Icon size={24} />
+          <span>Continue conversation in {AI_PROVIDERS[conversation.provider].name}</span>
+        </Button>
+      </div>
+    </>
+  )
+
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col h-full min-h-0">
       {/* Header */}
       <div className="px-4 py-2 border-b border-border flex items-center">
         <h2 className="font-semibold text-lg truncate-gradient flex-1" title={conversation.title}>
           {conversation.title}
         </h2>
+        <Button
+          variant="ghost"
+          size="sm"
+          title="Find in conversation (⌘F / Ctrl+F)"
+          onClick={() => setSearchOpen((open) => !open)}
+        >
+          Find
+        </Button>
         <DropdownMenu>
           <DropdownMenuTrigger
             aria-label="Options"
@@ -248,66 +332,21 @@ export function ChatView({
       </div>
 
       {/* Messages */}
-      <VList ref={listRef} className="flex-1 px-4" onScroll={handleScroll} shift={true}>
-        {/* Loading indicator at top */}
-        {hasMoreMessages && (
-          <div className="py-4 text-center max-w-3xl mx-auto">
-            {isLoadingMore ? (
-              <span className="text-sm text-muted-foreground">Loading older messages...</span>
-            ) : (
-              <button
-                onClick={onLoadMore}
-                className="text-sm text-muted-foreground hover:text-foreground"
-              >
-                Load more messages
-              </button>
-            )}
-          </div>
-        )}
-        {messages.map((msg) => (
-          <div key={msg.id} className="py-3 max-w-3xl mx-auto">
-            {msg.role === 'user' ? (
-              <>
-                <UserMessageBubble
-                  message={msg}
-                  conversationId={conversation.id}
-                  downloadedPaths={downloadedPaths}
-                  onDownloaded={handleDownloaded}
-                />
-                {msg.siblingIds && msg.siblingIds.length > 1 && onBranchSelect && (
-                  <div className="mt-1 flex justify-end">
-                    <BranchNavigation
-                      message={msg}
-                      onSelectSibling={(siblingId) => {
-                        if (msg.parentId) {
-                          onBranchSelect(msg.parentId, siblingId)
-                        }
-                      }}
-                    />
-                  </div>
-                )}
-              </>
-            ) : (
-              <AssistantMessage
-                message={msg}
-                conversationId={conversation.id}
-                downloadedPaths={downloadedPaths}
-                onDownloaded={handleDownloaded}
-              />
-            )}
-          </div>
-        ))}
-        <div className="max-w-3xl mx-auto pt-4 pb-12 flex justify-center">
-          <Button
-            onClick={() => AI_PROVIDERS[conversation.provider].openConversation(conversation.id)}
-            variant="outline"
-            className="gap-2 rounded-xl "
-          >
-            <Icon size={24} />
-            <span>Continue conversation in {AI_PROVIDERS[conversation.provider].name}</span>
-          </Button>
-        </div>
-      </VList>
+      {searchOpen ? (
+        <ChatSearch
+          key={conversation.id}
+          hasMore={hasMoreMessages}
+          loading={isLoadingMore}
+          onLoadMore={onLoadMore}
+          onClose={() => setSearchOpen(false)}
+        >
+          {messageContent}
+        </ChatSearch>
+      ) : (
+        <VList ref={listRef} className="flex-1 px-4" onScroll={handleScroll} shift={true}>
+          {messageContent.props.children}
+        </VList>
+      )}
     </div>
   )
 }

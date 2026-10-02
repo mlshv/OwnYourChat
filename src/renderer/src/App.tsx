@@ -134,14 +134,14 @@ export default function App() {
         beforeOrderIndex: oldestLoadedOrderIndex
       })
 
-      if (result) {
+      if (result && pendingConversationIdRef.current === selectedConversation.id) {
         // Prepend older messages to existing array
         setAllMessages((prev) => [...result.messages, ...prev])
         setHasMoreMessages(result.hasMore)
         setOldestLoadedOrderIndex(result.oldestOrderIndex)
       }
     } finally {
-      setIsLoadingMore(false)
+      if (pendingConversationIdRef.current === selectedConversation.id) setIsLoadingMore(false)
     }
   }, [selectedConversation, isLoadingMore, hasMoreMessages, oldestLoadedOrderIndex])
 
