@@ -16,10 +16,51 @@ const createMcpServer = () => {
   const server = new McpServer({ name: 'ownyourchat', version: '1.0.0' })
 
   server.registerTool(
+    'list_projects',
+    {
+      description:
+        'List ChatGPT and Claude projects (folders of related chats) synced to the local database, most recently active first. Each entry has its id, provider, name, description, custom instructions, chat count and knowledge-doc count.',
+      inputSchema: {
+        provider: z
+          .enum(['chatgpt', 'claude'])
+          .optional()
+          .describe('Only list projects from this provider')
+      }
+    },
+    async ({ provider }) => {
+      console.log('[MCP] Tool call: list_projects', JSON.stringify({ provider }))
+      const result = await db.listProjects(provider ? { provider } : undefined)
+      return { content: [{ type: 'text', text: JSON.stringify(result, null, 2) }] }
+    }
+  )
+
+  server.registerTool(
+    'get_project',
+    {
+      description:
+        "Get one project with its custom instructions and the full text of its knowledge documents (Claude projects only expose document text). Use list_conversations with projectId to get the project's chats.",
+      inputSchema: {
+        id: z.string().describe('Project id from list_projects')
+      }
+    },
+    async ({ id }) => {
+      console.log('[MCP] Tool call: get_project', JSON.stringify({ id }))
+      const result = await db.getProjectWithDocs(id)
+      if (!result) {
+        return {
+          content: [{ type: 'text', text: JSON.stringify({ error: 'Project not found' }) }],
+          isError: true
+        }
+      }
+      return { content: [{ type: 'text', text: JSON.stringify(result, null, 2) }] }
+    }
+  )
+
+  server.registerTool(
     'list_conversations',
     {
       description:
-        'List conversations from the local database. Returns a paginated list of ChatGPT and Claude conversations synced to the local database.',
+        'List conversations from the local database, newest first. Returns a paginated list of ChatGPT and Claude conversations; each has a projectId (null when not in a project). Filter by provider or projectId.',
       inputSchema: {
         limit: z
           .number()
@@ -28,12 +69,25 @@ const createMcpServer = () => {
         offset: z
           .number()
           .optional()
-          .describe('Number of conversations to skip for pagination (default: 0)')
+          .describe('Number of conversations to skip for pagination (default: 0)'),
+        provider: z.enum(['chatgpt', 'claude']).optional().describe('Only this provider'),
+        projectId: z
+          .string()
+          .optional()
+          .describe('Only chats in this project (id from list_projects)')
       }
     },
-    async ({ limit, offset }) => {
-      console.log('[MCP] Tool call: list_conversations', JSON.stringify({ limit, offset }))
-      const result = await db.listConversations({ limit: limit ?? 50, offset: offset ?? 0 })
+    async ({ limit, offset, provider, projectId }) => {
+      console.log(
+        '[MCP] Tool call: list_conversations',
+        JSON.stringify({ limit, offset, provider, projectId })
+      )
+      const result = await db.listConversations({
+        limit: limit ?? 50,
+        offset: offset ?? 0,
+        provider,
+        projectId
+      })
       return { content: [{ type: 'text', text: JSON.stringify(result, null, 2) }] }
     }
   )

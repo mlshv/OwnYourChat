@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef, useMemo, useCallback } from 'react'
 import { FunnelIcon } from '@phosphor-icons/react'
 import { ChatList } from './components/ChatList'
+import { ProjectList } from './components/ProjectList'
 import { ChatView } from './components/ChatView'
 import { ConnectionBar } from './components/ConnectionBar'
 import { ExportModal } from './components/ExportModal'
@@ -11,7 +12,7 @@ import { OnboardingScreen } from './components/OnboardingScreen'
 import { SearchInput } from './components/SearchInput'
 import { Button } from './components/ui/button'
 import { Tooltip, TooltipTrigger, TooltipContent } from './components/ui/tooltip'
-import type { Conversation, Message, ElectronAPI } from '@shared/types'
+import type { Conversation, Message, ElectronAPI, Project } from '@shared/types'
 import { buildMessageTree, getDisplayPath, updateBranchSelection } from './lib/branch-utils'
 import { useAuthState, useProvidersState, useSyncState, useUIState } from './lib/store'
 import { AI_PROVIDERS } from './constants'
@@ -64,6 +65,8 @@ export default function App() {
   const [hasCompletedOnboarding, setHasCompletedOnboarding] = useState(false)
   const [showDebugPanel, setShowDebugPanel] = useState(false)
   const [isUserAtTop, setIsUserAtTop] = useState(true)
+  const [sidebarView, setSidebarView] = useState<'chats' | 'projects'>('chats')
+  const [projects, setProjects] = useState<Project[]>([])
 
   // Pagination state
   const [hasMoreMessages, setHasMoreMessages] = useState(false)
@@ -97,6 +100,12 @@ export default function App() {
     }
     return totalProviderCounts
   }, [searchQuery, searchResultCounts, totalProviderCounts])
+
+  const projectNames = useMemo(() => new Map(projects.map((p) => [p.id, p.name])), [projects])
+  const visibleProjects = useMemo(
+    () => (selectedProvider ? projects.filter((p) => p.provider === selectedProvider) : projects),
+    [projects, selectedProvider]
+  )
 
   // Build message tree and compute display path
   const messageTree = useMemo(() => buildMessageTree(allMessages), [allMessages])
@@ -232,6 +241,17 @@ export default function App() {
     }
     // If user scrolled down, do nothing (no jarring updates)
   }, [isElectron, isUserAtTop, searchQuery, providersSyncKey])
+
+  // Projects are small; reload them on mount and after every sync
+  useEffect(() => {
+    if (!isElectron) return
+    window
+      .api!.projects.list()
+      .then(setProjects)
+      .catch((error) => {
+        console.error('Failed to load projects:', error)
+      })
+  }, [isElectron, providersSyncKey])
 
   const handleOnboardingComplete = async () => {
     if (!isElectron) return
@@ -467,11 +487,34 @@ export default function App() {
                 )}
               </div>
             )}
+            {/* Flat chat list vs. project folders (search always shows a flat list) */}
+            <div className="flex gap-1 mt-2" role="tablist" aria-label="Sidebar view">
+              {(['chats', 'projects'] as const).map((view) => (
+                <Button
+                  key={view}
+                  role="tab"
+                  aria-selected={sidebarView === view}
+                  onClick={() => setSidebarView(view)}
+                  variant={sidebarView === view ? 'default' : 'outline'}
+                  size="xs"
+                  className="flex-1"
+                >
+                  {view === 'chats' ? 'Chats' : `Projects (${visibleProjects.length})`}
+                </Button>
+              ))}
+            </div>
           </div>
 
           {/* Chat list */}
           <div className="flex-1 overflow-auto">
-            {conversations.items.length === 0 ? (
+            {sidebarView === 'projects' && !searchQuery.trim() ? (
+              <ProjectList
+                projects={visibleProjects}
+                selectedId={selectedConversation?.id}
+                onSelect={handleSelectConversation}
+                refreshKey={providersSyncKey}
+              />
+            ) : conversations.items.length === 0 ? (
               <div className="p-4 text-center text-muted-foreground text-sm">
                 {!authState.isLoggedIn
                   ? 'Connect a provider to sync your chats'
@@ -484,6 +527,7 @@ export default function App() {
                 onSelect={handleSelectConversation}
                 onScrollPositionChange={setIsUserAtTop}
                 onLoadMore={handleLoadMoreConversations}
+                projectNames={projectNames}
               />
             )}
           </div>

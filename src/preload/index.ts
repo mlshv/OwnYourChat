@@ -7,19 +7,26 @@ import {
   type ExportOptions,
   type ExportProgress,
   type ElectronAPI,
-  type AppState
+  type AppState,
+  type Project
 } from '@shared/types'
 import { preloadBridge } from '@zubridge/electron/preload'
 
 // Custom APIs for renderer
 // Expose protected methods to the renderer process
 const api: ElectronAPI = {
+  // Project operations
+  projects: {
+    list: () => ipcRenderer.invoke(IPC_CHANNELS.PROJECTS_LIST) as Promise<Project[]>
+  },
+
   // Conversation operations
   conversations: {
     list: (options?: {
       limit?: number
       offset?: number
       provider?: 'chatgpt' | 'claude' | 'perplexity'
+      projectId?: string
     }) =>
       ipcRenderer.invoke(IPC_CHANNELS.CONVERSATIONS_LIST, options) as Promise<{
         items: Conversation[]

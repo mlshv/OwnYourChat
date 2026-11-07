@@ -12,10 +12,49 @@ export const conversations = sqliteTable(
     messageCount: integer('message_count').default(0),
     currentNodeId: text('current_node_id'), // Default branch endpoint for navigation
     syncError: text('sync_error'), // Last sync error message (null if no error)
-    syncRetryCount: integer('sync_retry_count').default(0) // Number of retry attempts
+    syncRetryCount: integer('sync_retry_count').default(0), // Number of retry attempts
+    // Provider project the chat belongs to (ChatGPT "g-p-..." id or Claude project uuid).
+    // No foreign key: a chat can sync before its project row does.
+    projectId: text('project_id')
   },
   (table) => ({
-    providerIdx: index('provider_idx').on(table.provider)
+    providerIdx: index('provider_idx').on(table.provider),
+    projectIdx: index('conversations_project_idx').on(table.projectId)
+  })
+)
+
+export const projects = sqliteTable(
+  'projects',
+  {
+    id: text('id').primaryKey(), // Provider's own project id
+    provider: text('provider').notNull(), // 'chatgpt' | 'claude'
+    name: text('name').notNull(),
+    description: text('description'),
+    instructions: text('instructions'), // Project custom instructions / prompt template
+    docsCount: integer('docs_count').default(0), // Knowledge docs reported by the provider
+    createdAt: integer('created_at', { mode: 'timestamp' }),
+    updatedAt: integer('updated_at', { mode: 'timestamp' }),
+    syncedAt: integer('synced_at', { mode: 'timestamp' })
+  },
+  (table) => ({
+    providerIdx: index('projects_provider_idx').on(table.provider)
+  })
+)
+
+// Text knowledge files attached to a project (Claude exposes their content)
+export const projectDocs = sqliteTable(
+  'project_docs',
+  {
+    id: text('id').primaryKey(),
+    projectId: text('project_id')
+      .notNull()
+      .references(() => projects.id, { onDelete: 'cascade' }),
+    filename: text('filename').notNull(),
+    content: text('content'),
+    createdAt: integer('created_at', { mode: 'timestamp' })
+  },
+  (table) => ({
+    projectIdx: index('project_docs_project_idx').on(table.projectId)
   })
 )
 
@@ -89,6 +128,10 @@ export const userPreferences = sqliteTable('user_preferences', {
 // Type exports for convenience
 export type Conversation = typeof conversations.$inferSelect
 export type NewConversation = typeof conversations.$inferInsert
+export type ProjectRow = typeof projects.$inferSelect
+export type NewProject = typeof projects.$inferInsert
+export type ProjectDoc = typeof projectDocs.$inferSelect
+export type NewProjectDoc = typeof projectDocs.$inferInsert
 export type Message = typeof messages.$inferSelect
 export type NewMessage = typeof messages.$inferInsert
 export type Attachment = typeof attachments.$inferSelect

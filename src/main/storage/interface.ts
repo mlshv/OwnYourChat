@@ -1,6 +1,13 @@
 import type { Conversation, Message } from '../../shared/types'
 import type { ProviderName, ProviderStatus } from '../sync/providers/base.js'
-import type { NewConversation, NewMessage, NewAttachment } from '../db/schema.js'
+import type {
+  NewConversation,
+  NewMessage,
+  NewAttachment,
+  NewProject,
+  NewProjectDoc,
+  ProjectRow
+} from '../db/schema.js'
 
 export interface ProviderStateRecord<TMetadata = Record<string, unknown>> {
   providerName: ProviderName
@@ -37,6 +44,16 @@ export interface IStorage {
 
   // Attachment operations
   upsertAttachments(data: NewAttachment[]): Promise<void>
+
+  // Project operations
+  upsertProjects(rows: NewProject[]): Promise<void>
+  getProjectRows(provider: string): Promise<ProjectRow[]>
+  getStoredDocCounts(): Promise<Map<string, number>>
+  replaceProjectDocs(projectId: string, docs: NewProjectDoc[]): Promise<void>
+  setConversationProjectIds(
+    provider: string,
+    assignments: Map<string, string | null>
+  ): Promise<number>
 
   // Provider state operations
   getProviderState<TMetadata = Record<string, unknown>>(

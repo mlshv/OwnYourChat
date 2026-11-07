@@ -11,8 +11,12 @@ import {
   transformClaudeMessageToParts,
   type ClaudeContentBlock as UtilsClaudeContentBlock
 } from './claude/utils'
+import { makeGetJsonScript, parseClaudeProject, parseClaudeProjectDocs } from './projects-utils'
 import fs from 'fs'
 import path from 'path'
+
+// How often project names, instructions, docs and chat membership are refreshed
+const PROJECT_SYNC_INTERVAL_MS = 30 * 60 * 1000
 
 // ============================================================================
 // TYPES - Exported for external use
@@ -27,6 +31,7 @@ export interface ClaudeConversationListItem {
   created_at: string
   updated_at: string
   current_leaf_message_uuid: string | null
+  project_uuid?: string | null
 }
 
 export interface ClaudeContentBlock {
@@ -100,6 +105,8 @@ export class ClaudeProvider extends BaseProvider<ClaudeMetadata> {
   private lastApiAuthSuccess: boolean = false
   private isViewVisible: boolean = false
   private loginCheckInterval: NodeJS.Timeout | null = null
+  private lastProjectSyncAt = 0
+  private projectDetailsLoaded = false
 
   constructor(storage: IStorage, pollingIntervalMs: number = 60000) {
     super(storage, pollingIntervalMs)
@@ -552,6 +559,9 @@ export class ClaudeProvider extends BaseProvider<ClaudeMetadata> {
     }
 
     try {
+      // Projects first so folders exist before (possibly long) chat syncs finish
+      await this.syncProjectsIfDue()
+
       const metadata = await this.getMetadata()
 
       // Choose sync mode based on whether we've completed a full sync
@@ -570,6 +580,113 @@ export class ClaudeProvider extends BaseProvider<ClaudeMetadata> {
   }
 
   // ============================================================================
+  // PROJECT SYNC - names, instructions, knowledge docs and chat membership
+  // ============================================================================
+
+  private async syncProjectsIfDue(): Promise<void> {
+    if (Date.now() - this.lastProjectSyncAt < PROJECT_SYNC_INTERVAL_MS) return
+    this.lastProjectSyncAt = Date.now()
+    try {
+      await this.syncProjects()
+    } catch (error) {
+      // Never block chat sync on project sync; retry on the next interval
+      console.error(`[${this.name}] Project sync failed:`, error)
+    }
+  }
+
+  private async getJson(url: string): Promise<unknown> {
+    if (!this.view || !this.capturedHeaders) throw new Error('Not connected')
+    const result = await this.view.webContents.executeJavaScript(
+      makeGetJsonScript(url, { ...this.capturedHeaders, 'content-type': 'application/json' })
+    )
+    if (result?.error) throw new Error(`API error ${result.error} for ${url}`)
+    return result?.data
+  }
+
+  private async syncProjects(): Promise<void> {
+    if (!this.view || !this.capturedHeaders || !this.organizationId) return
+    const base = `https://claude.ai/api/organizations/${this.organizationId}`
+
+    // 1. Project list (paged defensively; the API currently returns everything at once)
+    const rawProjects: unknown[] = []
+    const seen = new Set<string>()
+    const LIMIT = 100
+    for (let offset = 0; offset <= 2000; offset += LIMIT) {
+      const page = await this.getJson(`${base}/projects?limit=${LIMIT}&offset=${offset}`)
+      const items = Array.isArray(page) ? page : []
+      const fresh = items.filter((p) => {
+        const id = (p as { uuid?: string }).uuid
+        if (!id || seen.has(id)) return false
+        seen.add(id)
+        return true
+      })
+      rawProjects.push(...fresh)
+      if (items.length < LIMIT || fresh.length === 0) break
+    }
+
+    const existing = new Map((await this.storage.getProjectRows('claude')).map((p) => [p.id, p]))
+    const storedDocCounts = await this.storage.getStoredDocCounts()
+    const listed = rawProjects.map((p) => parseClaudeProject(p)).filter((p) => p !== null)
+
+    // Save names now, but hold back updatedAt until details are fetched so a failed
+    // detail fetch is retried next time
+    await this.storage.upsertProjects(listed.map((p) => ({ ...p, updatedAt: undefined })))
+
+    // 2. Details (instructions) and knowledge docs for new or changed projects
+    let detailed = 0
+    for (const project of listed) {
+      const prev = existing.get(project.id)
+      // The DB stores whole seconds, the API sends milliseconds: compare in seconds
+      const toSeconds = (d: Date | null | undefined) => (d ? Math.floor(d.getTime() / 1000) : null)
+      // The list usually omits docs_count, so only compare it when present. Adding a doc may
+      // not bump updated_at either, hence a full refresh on the first run of each app session.
+      const listedDocs = project.docsCount
+      const changed =
+        !this.projectDetailsLoaded ||
+        !prev ||
+        toSeconds(prev.updatedAt) !== toSeconds(project.updatedAt) ||
+        (typeof listedDocs === 'number' && (storedDocCounts.get(project.id) ?? 0) !== listedDocs)
+      if (!changed) continue
+
+      try {
+        const detail = parseClaudeProject(await this.getJson(`${base}/projects/${project.id}`))
+        const docs = parseClaudeProjectDocs(
+          project.id,
+          await this.getJson(`${base}/projects/${project.id}/docs`)
+        )
+        await this.storage.upsertProjects([
+          { ...project, ...(detail ?? {}), docsCount: docs.length }
+        ])
+        await this.storage.replaceProjectDocs(project.id, docs)
+        detailed++
+      } catch (error) {
+        console.warn(`[${this.name}] Could not fetch details for project ${project.id}:`, error)
+      }
+    }
+    this.projectDetailsLoaded = true
+
+    // 3. Membership for chats that are already stored (covers chats moved between projects)
+    const assignments = new Map<string, string | null>()
+    for (let offset = 0; offset <= 10000; offset += LIMIT) {
+      const page = await this.getJson(
+        `${base}/chat_conversations?limit=${LIMIT}&offset=${offset}&consistency=eventual`
+      )
+      const items = (Array.isArray(page) ? page : []) as Array<{
+        uuid: string
+        project_uuid?: string | null
+      }>
+      for (const item of items) assignments.set(item.uuid, item.project_uuid ?? null)
+      if (items.length < LIMIT) break
+    }
+    const moved = await this.storage.setConversationProjectIds('claude', assignments)
+
+    console.log(
+      `[${this.name}] Projects synced: ${listed.length} projects, ${detailed} refreshed, ` +
+        `${moved} stored chats re-filed (scanned ${assignments.size})`
+    )
+  }
+
+  // ============================================================================
   // FULL SYNC - Resume from offset until pagination complete
   // ============================================================================
 
@@ -583,8 +700,12 @@ export class ClaudeProvider extends BaseProvider<ClaudeMetadata> {
     const PAGE_SIZE = 30
 
     try {
-      // Fetch total count first
-      const total = await this.fetchTotalConversations()
+      // Total is only used for the progress bar. claude.ai's count endpoint is often
+      // rate limited (429), so pagination ends on a short page instead.
+      const total = await this.fetchTotalConversations().catch((error) => {
+        console.warn(`[${this.name}] Total count unavailable, continuing without it:`, error)
+        return null
+      })
 
       while (true) {
         console.log(`[${this.name}] Fetching page at offset ${offset}...`)
@@ -610,7 +731,8 @@ export class ClaudeProvider extends BaseProvider<ClaudeMetadata> {
             summary: item.summary || '',
             created_at: item.created_at,
             updated_at: item.updated_at,
-            current_leaf_message_uuid: item.current_leaf_message_uuid || null
+            current_leaf_message_uuid: item.current_leaf_message_uuid || null,
+            project_uuid: item.project_uuid ?? null
           })
         )
 
@@ -618,8 +740,10 @@ export class ClaudeProvider extends BaseProvider<ClaudeMetadata> {
           `[${this.name}] Processing ${pageConversations.length} conversations at offset ${offset}`
         )
 
-        // Report progress
-        this.updateSyncProgress(offset, total, newChatsFound)
+        // Report progress (estimate the total while the real count is unknown)
+        const estimatedTotal =
+          total ?? offset + pageConversations.length + (result.has_more ? PAGE_SIZE : 0)
+        this.updateSyncProgress(offset, estimatedTotal, newChatsFound)
 
         // Process entire page atomically
         for (const conv of pageConversations) {
@@ -634,13 +758,11 @@ export class ClaudeProvider extends BaseProvider<ClaudeMetadata> {
           lastCompletedOffset: offset
         })
 
-        console.log(`[${this.name}] Completed offset ${offset}, total: ${total}`)
+        console.log(`[${this.name}] Completed offset ${offset}, total: ${total ?? 'unknown'}`)
 
-        // Check if last page
-        if (offset >= total) {
-          console.log(
-            `[${this.name}] Reached end of pagination (offset ${offset} >= total ${total})`
-          )
+        // A short page means there is nothing after it
+        if (!result.has_more) {
+          console.log(`[${this.name}] Reached end of pagination at offset ${offset}`)
           await this.setMetadata({
             ...metadata,
             lastCompletedOffset: offset,
@@ -832,7 +954,8 @@ export class ClaudeProvider extends BaseProvider<ClaudeMetadata> {
             summary: item.summary || '',
             created_at: item.created_at,
             updated_at: item.updated_at,
-            current_leaf_message_uuid: item.current_leaf_message_uuid || null
+            current_leaf_message_uuid: item.current_leaf_message_uuid || null,
+            project_uuid: item.project_uuid ?? null
           }
 
           const convTimestamp = new Date(conv.updated_at).getTime()
@@ -957,7 +1080,8 @@ export class ClaudeProvider extends BaseProvider<ClaudeMetadata> {
       updatedAt: new Date(conv.updated_at),
       syncedAt: new Date(),
       messageCount: content.chat_messages.length,
-      currentNodeId: content.current_leaf_message_uuid
+      currentNodeId: content.current_leaf_message_uuid,
+      projectId: conv.project_uuid
     })
 
     const messageInserts = content.chat_messages.map((msg) =>

@@ -101,7 +101,8 @@ function mapConversation(row: typeof schema.conversations.$inferSelect): Convers
     updatedAt: row.updatedAt ?? new Date(),
     syncedAt: row.syncedAt ?? new Date(),
     messageCount: row.messageCount ?? 0,
-    currentNodeId: row.currentNodeId ?? null
+    currentNodeId: row.currentNodeId ?? null,
+    projectId: row.projectId ?? null
   }
 }
 

@@ -83,6 +83,28 @@ export interface Conversation {
   syncedAt: Date
   messageCount: number
   currentNodeId: string | null // Default branch endpoint for navigation
+  projectId: string | null // Provider project the chat lives in (null = not in a project)
+}
+
+export interface Project {
+  id: string
+  provider: 'chatgpt' | 'claude' | 'perplexity'
+  name: string
+  description: string | null
+  instructions: string | null
+  docsCount: number
+  conversationCount: number
+  lastActivityAt: Date | null // Most recent update among the project's chats
+  createdAt: Date | null
+  updatedAt: Date | null
+}
+
+export interface ProjectDocument {
+  id: string
+  projectId: string
+  filename: string
+  content: string | null
+  createdAt: Date | null
 }
 
 // Vercel AI SDK compatible message parts
@@ -173,6 +195,9 @@ export const enum IPC_CHANNELS {
   CONVERSATIONS_PROVIDER_COUNTS = 'conversations:provider-counts',
   CONVERSATIONS_REFRESH = 'conversations:refresh',
 
+  // Projects
+  PROJECTS_LIST = 'projects:list',
+
   // Export
   EXPORT_CONVERSATION = 'export:conversation',
   EXPORT_ALL = 'export:all',
@@ -221,11 +246,15 @@ export const enum IPC_CHANNELS {
 
 // ElectronAPI type definition for window.api
 export interface ElectronAPI {
+  projects: {
+    list: () => Promise<Project[]>
+  }
   conversations: {
     list: (options?: {
       limit?: number
       offset?: number
       provider?: 'chatgpt' | 'claude' | 'perplexity'
+      projectId?: string
     }) => Promise<{
       items: Conversation[]
       total: number
