@@ -4,7 +4,14 @@ import type { ProviderName } from '../sync/providers/base'
 import * as dbOps from '../db/operations'
 import { getDatabase } from '../db/index'
 import { providerState, conversations } from '../db/schema'
-import type { NewConversation, NewMessage, NewAttachment } from '../db/schema'
+import type {
+  NewConversation,
+  NewMessage,
+  NewAttachment,
+  NewProject,
+  NewProjectDoc,
+  ProjectRow
+} from '../db/schema'
 import type { IStorage, ProviderStateRecord } from './interface'
 
 export class DrizzleStorageAdapter implements IStorage {
@@ -45,6 +52,42 @@ export class DrizzleStorageAdapter implements IStorage {
   // Attachment operations
   async upsertAttachments(data: NewAttachment[]): Promise<void> {
     return dbOps.upsertAttachments(data)
+  }
+
+  // Project operations
+  async upsertProjects(rows: NewProject[]): Promise<void> {
+    return dbOps.upsertProjects(rows)
+  }
+
+  async getProjectRows(provider: string): Promise<ProjectRow[]> {
+    return dbOps.getProjectRows(provider)
+  }
+
+  async getStoredDocCounts(): Promise<Map<string, number>> {
+    return dbOps.getStoredDocCounts()
+  }
+
+  async replaceProjectDocs(projectId: string, docs: NewProjectDoc[]): Promise<void> {
+    return dbOps.replaceProjectDocs(projectId, docs)
+  }
+
+  async setConversationProjectIds(
+    provider: string,
+    assignments: Map<string, string | null>
+  ): Promise<number> {
+    return dbOps.setConversationProjectIds(provider, assignments)
+  }
+
+  async setConversationModels(provider: string, models: Map<string, string>): Promise<number> {
+    return dbOps.setConversationModels(provider, models)
+  }
+
+  async recordConversationFailure(row: NewConversation, error: string): Promise<void> {
+    return dbOps.recordConversationFailure(row, error)
+  }
+
+  async getConversationsNeedingRepair(provider: string, limit: number): Promise<Conversation[]> {
+    return dbOps.getConversationsNeedingRepair(provider, limit)
   }
 
   // Provider state operations
@@ -157,7 +200,8 @@ export class DrizzleStorageAdapter implements IStorage {
       updatedAt: row.updatedAt || new Date(),
       syncedAt: row.syncedAt || new Date(),
       messageCount: row.messageCount || 0,
-      currentNodeId: row.currentNodeId
+      currentNodeId: row.currentNodeId,
+      projectId: row.projectId ?? null
     }))
   }
 

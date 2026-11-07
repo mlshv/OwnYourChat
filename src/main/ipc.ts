@@ -14,6 +14,10 @@ export function setupIpcHandlers(): void {
     return db.listConversations(options)
   })
 
+  ipcMain.handle(IPC_CHANNELS.PROJECTS_LIST, async () => {
+    return db.listProjects()
+  })
+
   ipcMain.handle(
     IPC_CHANNELS.CONVERSATIONS_GET,
     async (_event, id: string, options?: { limit?: number }) => {

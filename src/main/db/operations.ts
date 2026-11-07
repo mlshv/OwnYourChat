@@ -1,8 +1,30 @@
-import { eq, desc, max, lt, and, asc, ne, count, or, sql } from 'drizzle-orm'
+import { eq, desc, max, lt, and, asc, ne, count, or, sql, isNotNull } from 'drizzle-orm'
 import { getDatabase } from './index'
-import { conversations, messages, attachments, syncState, userPreferences } from './schema'
-import type { NewConversation, NewMessage, NewAttachment } from './schema'
-import type { Conversation, Message, Attachment, MessagePart } from '../../shared/types'
+import {
+  conversations,
+  messages,
+  attachments,
+  syncState,
+  userPreferences,
+  projects,
+  projectDocs
+} from './schema'
+import type {
+  NewConversation,
+  NewMessage,
+  NewAttachment,
+  NewProject,
+  NewProjectDoc,
+  ProjectRow
+} from './schema'
+import type {
+  Conversation,
+  Message,
+  Attachment,
+  MessagePart,
+  Project,
+  ProjectDocument
+} from '../../shared/types'
 
 // Conversation operations
 export async function countConversations(): Promise<number> {
@@ -15,12 +37,17 @@ export async function listConversations(options?: {
   limit?: number
   offset?: number
   provider?: 'chatgpt' | 'claude' | 'perplexity'
+  projectId?: string
 }): Promise<{ items: Conversation[]; total: number; hasMore: boolean }> {
   const db = getDatabase()
   const limit = options?.limit ?? 50
   const offset = options?.offset ?? 0
 
-  const whereClause = options?.provider ? eq(conversations.provider, options.provider) : undefined
+  const filters = [
+    options?.provider ? eq(conversations.provider, options.provider) : undefined,
+    options?.projectId ? eq(conversations.projectId, options.projectId) : undefined
+  ].filter((f) => f !== undefined)
+  const whereClause = filters.length > 0 ? and(...filters) : undefined
 
   const [results, totalResult] = await Promise.all([
     whereClause
@@ -370,7 +397,10 @@ export async function upsertConversation(data: NewConversation): Promise<void> {
         updatedAt: data.updatedAt,
         syncedAt: data.syncedAt,
         messageCount: data.messageCount,
-        currentNodeId: data.currentNodeId
+        currentNodeId: data.currentNodeId,
+        // Left undefined by callers that don't know the project; drizzle skips undefined keys
+        projectId: data.projectId,
+        model: data.model
       }
     })
 }
@@ -399,7 +429,8 @@ export async function upsertMessages(data: NewMessage[]): Promise<void> {
           orderIndex: message.orderIndex,
           parentId: message.parentId,
           siblingIds: message.siblingIds,
-          siblingIndex: message.siblingIndex
+          siblingIndex: message.siblingIndex,
+          model: message.model
         }
       })
   }
@@ -494,6 +525,280 @@ export async function setSyncState(key: string, value: string): Promise<void> {
   })
 }
 
+// Project operations
+
+export async function upsertProjects(rows: NewProject[]): Promise<void> {
+  const db = getDatabase()
+  for (const row of rows) {
+    await db
+      .insert(projects)
+      .values(row)
+      .onConflictDoUpdate({
+        target: projects.id,
+        // undefined fields (e.g. instructions from a list call that omits them) are skipped
+        set: {
+          provider: row.provider,
+          name: row.name,
+          description: row.description,
+          instructions: row.instructions,
+          docsCount: row.docsCount,
+          createdAt: row.createdAt,
+          updatedAt: row.updatedAt,
+          syncedAt: row.syncedAt
+        }
+      })
+  }
+}
+
+export async function getProjectRows(provider: string): Promise<ProjectRow[]> {
+  const db = getDatabase()
+  return db.select().from(projects).where(eq(projects.provider, provider))
+}
+
+/** Number of stored knowledge docs per project id */
+export async function getStoredDocCounts(): Promise<Map<string, number>> {
+  const db = getDatabase()
+  const rows = await db
+    .select({ projectId: projectDocs.projectId, count: count() })
+    .from(projectDocs)
+    .groupBy(projectDocs.projectId)
+  return new Map(rows.map((r) => [r.projectId, r.count]))
+}
+
+export async function replaceProjectDocs(projectId: string, docs: NewProjectDoc[]): Promise<void> {
+  const db = getDatabase()
+  await db.delete(projectDocs).where(eq(projectDocs.projectId, projectId))
+  for (const doc of docs) {
+    await db
+      .insert(projectDocs)
+      .values(doc)
+      .onConflictDoUpdate({
+        target: projectDocs.id,
+        set: {
+          projectId: doc.projectId,
+          filename: doc.filename,
+          content: doc.content,
+          createdAt: doc.createdAt
+        }
+      })
+  }
+}
+
+/**
+ * Apply project membership to already-synced chats of one provider.
+ * Only chats present in `assignments` are touched. Returns how many rows changed.
+ */
+export async function setConversationProjectIds(
+  provider: string,
+  assignments: Map<string, string | null>
+): Promise<number> {
+  const db = getDatabase()
+  const rows = await db
+    .select({ id: conversations.id, projectId: conversations.projectId })
+    .from(conversations)
+    .where(eq(conversations.provider, provider))
+
+  let changed = 0
+  for (const row of rows) {
+    if (!assignments.has(row.id)) continue
+    const next = assignments.get(row.id) ?? null
+    if ((row.projectId ?? null) === next) continue
+    await db.update(conversations).set({ projectId: next }).where(eq(conversations.id, row.id))
+    changed++
+  }
+  return changed
+}
+
+/**
+ * Record a failed download without touching stored messages. Creates a placeholder row for a
+ * chat that has never synced, so the repair pass can find and retry it.
+ */
+export async function recordConversationFailure(
+  row: NewConversation,
+  error: string
+): Promise<void> {
+  const db = getDatabase()
+  await db
+    .insert(conversations)
+    .values({ ...row, messageCount: row.messageCount ?? 0, syncError: error, syncRetryCount: 1 })
+    .onConflictDoUpdate({
+      target: conversations.id,
+      set: {
+        syncError: error,
+        syncRetryCount: sql`coalesce(${conversations.syncRetryCount}, 0) + 1`
+      }
+    })
+}
+
+/**
+ * Chats to re-download: failed ones (up to maxFailures attempts) and ones saved empty without
+ * an error (the old silent-failure behaviour). Verified-empty chats (retry count -1) are skipped.
+ */
+export async function getConversationsNeedingRepair(
+  provider: string,
+  limit: number,
+  maxFailures = 6
+): Promise<Conversation[]> {
+  const db = getDatabase()
+  const retries = sql`coalesce(${conversations.syncRetryCount}, 0)`
+  const rows = await db
+    .select()
+    .from(conversations)
+    .where(
+      and(
+        eq(conversations.provider, provider),
+        or(
+          and(isNotNull(conversations.syncError), sql`${retries} < ${maxFailures}`),
+          and(
+            eq(conversations.messageCount, 0),
+            sql`${conversations.syncError} is null`,
+            sql`${retries} = 0`
+          )
+        )
+      )
+    )
+    .orderBy(desc(conversations.updatedAt))
+    .limit(limit)
+  return rows.map(mapConversation)
+}
+
+/** Fill in chat-level model names (e.g. for chats synced before models were stored). */
+export async function setConversationModels(
+  provider: string,
+  models: Map<string, string>
+): Promise<number> {
+  const db = getDatabase()
+  const rows = await db
+    .select({ id: conversations.id, model: conversations.model })
+    .from(conversations)
+    .where(eq(conversations.provider, provider))
+
+  let changed = 0
+  for (const row of rows) {
+    const next = models.get(row.id)
+    if (!next || row.model === next) continue
+    await db.update(conversations).set({ model: next }).where(eq(conversations.id, row.id))
+    changed++
+  }
+  return changed
+}
+
+export async function listProjects(options?: {
+  provider?: 'chatgpt' | 'claude' | 'perplexity'
+}): Promise<Project[]> {
+  const db = getDatabase()
+
+  const rows = await db
+    .select({
+      project: projects,
+      conversationCount: sql<number>`count(${conversations.id})`,
+      lastActivity: sql<number | null>`max(${conversations.updatedAt})`
+    })
+    .from(projects)
+    .leftJoin(conversations, eq(conversations.projectId, projects.id))
+    .where(options?.provider ? eq(projects.provider, options.provider) : undefined)
+    .groupBy(projects.id)
+
+  const result: Project[] = rows.map((r) => ({
+    ...mapProject(r.project),
+    conversationCount: r.conversationCount ?? 0,
+    // Raw SQL aggregate returns the stored unix seconds
+    lastActivityAt: r.lastActivity ? new Date(r.lastActivity * 1000) : null
+  }))
+
+  // Chats can point at a project we have no row for (e.g. shared with the user).
+  // Surface those as placeholder projects so their chats stay reachable.
+  const known = new Set(result.map((p) => p.id))
+  const orphanRows = await db
+    .select({
+      projectId: conversations.projectId,
+      provider: conversations.provider,
+      conversationCount: count(),
+      lastActivity: sql<number | null>`max(${conversations.updatedAt})`
+    })
+    .from(conversations)
+    .where(
+      options?.provider
+        ? and(isNotNull(conversations.projectId), eq(conversations.provider, options.provider))
+        : isNotNull(conversations.projectId)
+    )
+    .groupBy(conversations.projectId, conversations.provider)
+
+  for (const o of orphanRows) {
+    if (!o.projectId || known.has(o.projectId)) continue
+    result.push({
+      id: o.projectId,
+      provider: o.provider as Project['provider'],
+      name: 'Unnamed project',
+      description: null,
+      instructions: null,
+      docsCount: 0,
+      conversationCount: o.conversationCount,
+      lastActivityAt: o.lastActivity ? new Date(o.lastActivity * 1000) : null,
+      createdAt: null,
+      updatedAt: null
+    })
+  }
+
+  const time = (d: Date | null) => d?.getTime() ?? 0
+  return result.sort(
+    (a, b) =>
+      time(b.lastActivityAt) - time(a.lastActivityAt) ||
+      time(b.updatedAt) - time(a.updatedAt) ||
+      a.name.localeCompare(b.name)
+  )
+}
+
+export async function getProjectWithDocs(
+  id: string
+): Promise<{ project: Project; docs: ProjectDocument[] } | null> {
+  const db = getDatabase()
+  const [row] = await db.select().from(projects).where(eq(projects.id, id))
+  if (!row) return null
+
+  const [stats] = await db
+    .select({
+      conversationCount: count(),
+      lastActivity: sql<number | null>`max(${conversations.updatedAt})`
+    })
+    .from(conversations)
+    .where(eq(conversations.projectId, id))
+
+  const docs = await db
+    .select()
+    .from(projectDocs)
+    .where(eq(projectDocs.projectId, id))
+    .orderBy(asc(projectDocs.filename))
+
+  return {
+    project: {
+      ...mapProject(row),
+      conversationCount: stats?.conversationCount ?? 0,
+      lastActivityAt: stats?.lastActivity ? new Date(stats.lastActivity * 1000) : null
+    },
+    docs: docs.map((d) => ({
+      id: d.id,
+      projectId: d.projectId,
+      filename: d.filename,
+      content: d.content,
+      createdAt: d.createdAt
+    }))
+  }
+}
+
+function mapProject(row: ProjectRow): Omit<Project, 'conversationCount' | 'lastActivityAt'> {
+  return {
+    id: row.id,
+    provider: row.provider as Project['provider'],
+    name: row.name,
+    description: row.description,
+    instructions: row.instructions,
+    docsCount: row.docsCount ?? 0,
+    createdAt: row.createdAt,
+    updatedAt: row.updatedAt
+  }
+}
+
 // Mappers
 function mapConversation(row: typeof conversations.$inferSelect): Conversation {
   return {
@@ -504,7 +809,8 @@ function mapConversation(row: typeof conversations.$inferSelect): Conversation {
     updatedAt: row.updatedAt ?? new Date(),
     syncedAt: row.syncedAt ?? new Date(),
     messageCount: row.messageCount ?? 0,
-    currentNodeId: row.currentNodeId ?? null
+    currentNodeId: row.currentNodeId ?? null,
+    projectId: row.projectId ?? null
   }
 }
 

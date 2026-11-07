@@ -8,8 +8,21 @@ import { IPC_CHANNELS } from '@shared/types'
 import { findCachedFile, getExtensionFromMimeType } from '../attachment-utils.js'
 import { getAttachmentsPath } from '../../settings.js'
 import { transformChatGPTMessageToParts } from './chatgpt/utils'
+import { getChatGPTProjectId, makeGetJsonScript, parseChatGPTProjectsPage } from './projects-utils'
+import type { NewProject } from '../../db/schema'
+import {
+  ConversationFetchError,
+  RateLimitGuard,
+  RateLimitedError,
+  VERIFIED_EMPTY,
+  retryDelayMs,
+  sleep
+} from './fetch-guard'
 import fs from 'fs'
 import path from 'path'
+
+// How often project names, instructions and chat membership are refreshed
+const PROJECT_SYNC_INTERVAL_MS = 30 * 60 * 1000
 
 // ============================================================================
 // TYPES - Exported for external use
@@ -22,7 +35,38 @@ export interface ConversationListItem {
   title: string
   createdAt: Date
   updatedAt: Date
+  projectId?: string | null
 }
+
+// Shape returned by makeFetchConversationPageScript
+type RawListItem = {
+  id: string
+  title: string
+  createdAt: string | number
+  updatedAt: string | number
+  conversationTemplateId: string | null
+  gizmoId: string | null
+}
+
+// Most recent assistant model slug in a conversation (null when ChatGPT doesn't say)
+const latestModel = (messages: Array<{ role: string; modelSlug?: string }>): string | null => {
+  for (let i = messages.length - 1; i >= 0; i--) {
+    if (messages[i].role === 'assistant' && messages[i].modelSlug)
+      return messages[i].modelSlug ?? null
+  }
+  return null
+}
+
+const toListItem = (item: RawListItem): ConversationListItem => ({
+  id: item.id,
+  title: item.title,
+  createdAt: new Date(item.createdAt),
+  updatedAt: new Date(item.updatedAt),
+  projectId: getChatGPTProjectId({
+    conversation_template_id: item.conversationTemplateId,
+    gizmo_id: item.gizmoId
+  })
+})
 
 export interface ExtractedAttachment {
   type: 'image' | 'file'
@@ -87,6 +131,10 @@ export class ChatGPTProvider extends BaseProvider<ChatGPTMetadata> {
   private isViewVisible: boolean = false
   private loginCheckInterval: NodeJS.Timeout | null = null
   private syncingConversations = new Set<string>() // In-memory tracking of conversations being synced
+  private lastProjectSyncAt = 0
+  private rateGuard = new RateLimitGuard()
+  // Gap between conversation downloads; bursts are what trigger ChatGPT's 429s
+  private readonly fetchGapMs = 800
 
   constructor(storage: IStorage, pollingIntervalMs: number = 60000) {
     super(storage, pollingIntervalMs)
@@ -220,7 +268,8 @@ export class ChatGPTProvider extends BaseProvider<ChatGPTMetadata> {
         updatedAt: existing.updatedAt,
         syncedAt: new Date(),
         messageCount: content.messages.length,
-        currentNodeId: content.currentNode
+        currentNodeId: content.currentNode,
+        model: latestModel(content.messages)
       })
 
       // Upsert messages
@@ -238,7 +287,8 @@ export class ChatGPTProvider extends BaseProvider<ChatGPTMetadata> {
           orderIndex: index,
           parentId: msg.parentNodeId,
           siblingIds: JSON.stringify(msg.siblingNodeIds),
-          siblingIndex: msg.siblingIndex
+          siblingIndex: msg.siblingIndex,
+          model: msg.modelSlug ?? null
         }
       })
 
@@ -402,22 +452,95 @@ export class ChatGPTProvider extends BaseProvider<ChatGPTMetadata> {
       return { success: false, error: 'Not connected' }
     }
 
+    if (this.rateGuard.coolingDown()) {
+      return { success: false, error: new RateLimitedError(this.rateGuard.until).message }
+    }
+
     try {
+      // Projects first so folders exist before (possibly long) chat syncs finish
+      await this.syncProjectsIfDue()
+
       const metadata = await this.getMetadata()
 
       // Choose sync mode based on whether we've completed a full sync
+      let result: SyncResult
       if (!metadata.isFullSyncComplete) {
         console.log(`[${this.name}] Starting full sync from offset ${metadata.lastCompletedOffset}`)
-        return await this.fullSync(metadata)
+        result = await this.fullSync(metadata)
       } else {
         console.log(`[${this.name}] Starting incremental sync`)
-        return await this.incrementalSync()
+        result = await this.incrementalSync()
       }
+
+      if (result.success) await this.repairConversations()
+      return result
     } catch (error) {
       const errorMessage = (error as Error).message
       console.error(`[${this.name}] Sync error:`, error)
       return { success: false, error: errorMessage }
     }
+  }
+
+  // ============================================================================
+  // PROJECT SYNC - names, instructions and chat membership
+  // ============================================================================
+
+  private async syncProjectsIfDue(): Promise<void> {
+    if (Date.now() - this.lastProjectSyncAt < PROJECT_SYNC_INTERVAL_MS) return
+    this.lastProjectSyncAt = Date.now()
+    try {
+      await this.syncProjects()
+    } catch (error) {
+      // Never block chat sync on project sync; retry on the next interval
+      console.error(`[${this.name}] Project sync failed:`, error)
+    }
+  }
+
+  private async getJson(url: string): Promise<unknown> {
+    if (!this.view || !this.capturedHeaders) throw new Error('Not connected')
+    const result = await this.view.webContents.executeJavaScript(
+      makeGetJsonScript(url, this.capturedHeaders)
+    )
+    if (result?.error) throw new Error(`API error ${result.error} for ${url}`)
+    return result?.data
+  }
+
+  private async syncProjects(): Promise<void> {
+    if (!this.view || !this.capturedHeaders) return
+
+    // 1. Projects ("snorlax" gizmos) from the sidebar endpoint, cursor-paged
+    const projects: NewProject[] = []
+    let cursor: string | null = null
+    for (let page = 0; page < 200; page++) {
+      const url =
+        'https://chatgpt.com/backend-api/gizmos/snorlax/sidebar?owned_only=true&conversations_per_gizmo=0' +
+        (cursor ? `&cursor=${encodeURIComponent(cursor)}` : '')
+      const parsed = parseChatGPTProjectsPage(await this.getJson(url))
+      projects.push(...parsed.projects)
+      if (!parsed.cursor || parsed.cursor === cursor || parsed.projects.length === 0) break
+      cursor = parsed.cursor
+    }
+    await this.storage.upsertProjects(projects)
+
+    // 2. Membership for chats that are already stored (covers chats moved between projects)
+    const assignments = new Map<string, string | null>()
+    const LIMIT = 100
+    for (let offset = 0; offset <= 10000; offset += LIMIT) {
+      const result = await this.view.webContents.executeJavaScript(
+        this.makeFetchConversationPageScript(this.capturedHeaders, offset, LIMIT)
+      )
+      if (result.error) throw new Error(`API error ${result.error} listing conversations`)
+      for (const item of result.items as RawListItem[]) {
+        assignments.set(item.id, toListItem(item).projectId ?? null)
+      }
+      if (!result.hasMore) break
+    }
+    const moved = await this.storage.setConversationProjectIds('chatgpt', assignments)
+
+    console.log(
+      `[${this.name}] Projects synced: ${projects.length} projects, ` +
+        `${moved} stored chats re-filed (scanned ${assignments.size})`
+    )
   }
 
   // ============================================================================
@@ -446,19 +569,21 @@ export class ChatGPTProvider extends BaseProvider<ChatGPTMetadata> {
           throw new Error(`API error: ${result.error}`)
         }
 
-        const pageConversations: ConversationListItem[] = result.items.map((item) => ({
-          id: item.id,
-          title: item.title,
-          createdAt: new Date(item.createdAt),
-          updatedAt: new Date(item.updatedAt)
-        }))
+        const pageConversations: ConversationListItem[] = (result.items as RawListItem[]).map(
+          toListItem
+        )
 
         console.log(
           `[${this.name}] Processing ${pageConversations.length} conversations at offset ${offset}`
         )
 
-        // Report progress (offset is current position, result.total is total)
-        this.updateSyncProgress(offset, result.total, newChatsFound)
+        // Report progress. ChatGPT's `total` can be far below the real count
+        // (seen: 101 reported vs 1,085 reachable), so never let it shrink below what we've seen.
+        const estimatedTotal = Math.max(
+          result.total,
+          offset + pageConversations.length + (result.hasMore ? PAGE_SIZE : 0)
+        )
+        this.updateSyncProgress(offset, estimatedTotal, newChatsFound)
 
         // Process entire page atomically
         for (const conv of pageConversations) {
@@ -475,11 +600,10 @@ export class ChatGPTProvider extends BaseProvider<ChatGPTMetadata> {
 
         console.log(`[${this.name}] Completed offset ${offset}, total: ${result.total}`)
 
-        // Check if last page (your key insight!)
-        if (result.total <= offset) {
-          console.log(
-            `[${this.name}] Reached end of pagination (total ${result.total} <= offset ${offset})`
-          )
+        // A short page means there is nothing after it. Don't trust `total` here: it
+        // under-reports and would end the full sync hundreds of chats early.
+        if (!result.hasMore) {
+          console.log(`[${this.name}] Reached end of pagination at offset ${offset}`)
           await this.setMetadata({
             ...metadata,
             lastCompletedOffset: offset,
@@ -541,6 +665,7 @@ export class ChatGPTProvider extends BaseProvider<ChatGPTMetadata> {
                 await this.syncConversationWithRetry(mostRecentApiChat)
                 newChatsFound = 1
               } catch (err) {
+                if (err instanceof RateLimitedError) throw err
                 console.error(`[${this.name}] Error syncing most recent conversation:`, err)
               }
               shouldEarlyExit = true
@@ -562,6 +687,7 @@ export class ChatGPTProvider extends BaseProvider<ChatGPTMetadata> {
             try {
               await this.syncConversationWithRetry(conv)
             } catch (err) {
+              if (err instanceof RateLimitedError) throw err
               console.error(`[${this.name}] Error syncing conversation ${conv.id}:`, err)
             }
           }
@@ -588,38 +714,76 @@ export class ChatGPTProvider extends BaseProvider<ChatGPTMetadata> {
     this.syncingConversations.add(conv.id) // Track in-memory
 
     try {
-      for (let attempt = 0; attempt < maxRetries; attempt++) {
+      for (let attempt = 0; ; attempt++) {
+        await sleep(this.fetchGapMs)
         try {
-          await this.syncConversation(conv)
-
-          // Clear error on success
-          await this.storage.updateConversationSyncError(conv.id, null, 0)
+          const messageCount = await this.syncConversation(conv)
+          this.rateGuard.recordSuccess()
+          // A chat that downloads fine with no messages is marked so repair skips it
+          await this.storage.updateConversationSyncError(
+            conv.id,
+            null,
+            messageCount === 0 ? VERIFIED_EMPTY : 0
+          )
           return
         } catch (error) {
-          if (attempt === maxRetries - 1) {
-            // Final failure - persist error
-            console.error(
-              `[${this.name}] Failed to sync conversation ${conv.id} after ${maxRetries} attempts:`,
-              error
+          if (attempt < maxRetries - 1) {
+            const backoffMs = retryDelayMs(error, attempt)
+            console.log(
+              `[${this.name}] Retry ${attempt + 1}/${maxRetries} for conversation ${conv.id} after ${backoffMs}ms`
             )
-            await this.storage.updateConversationSyncError(
-              conv.id,
-              (error as Error).message,
-              attempt + 1
-            )
-            throw error
+            await sleep(backoffMs)
+            continue
           }
 
-          // Exponential backoff: 1s, 2s, 4s
-          const backoffMs = Math.pow(2, attempt) * 1000
-          console.log(
-            `[${this.name}] Retry ${attempt + 1}/${maxRetries} for conversation ${conv.id} after ${backoffMs}ms`
+          // Final failure: record it (never save an empty chat as success) and move on.
+          // The repair pass retries it on a later cycle.
+          console.error(
+            `[${this.name}] Failed to sync conversation ${conv.id} after ${maxRetries} attempts:`,
+            error
           )
-          await new Promise((r) => setTimeout(r, backoffMs))
+          await this.storage.recordConversationFailure(
+            {
+              id: conv.id,
+              title: conv.title,
+              provider: 'chatgpt',
+              createdAt: conv.createdAt,
+              updatedAt: conv.updatedAt,
+              syncedAt: new Date(),
+              projectId: conv.projectId
+            },
+            (error as Error).message
+          )
+          if (this.rateGuard.recordFailure(error)) throw new RateLimitedError(this.rateGuard.until)
+          return
         }
       }
     } finally {
       this.syncingConversations.delete(conv.id)
+    }
+  }
+
+  /** Re-download chats that failed or were saved empty by older versions. */
+  private async repairConversations(limit = 60): Promise<void> {
+    const candidates = await this.storage.getConversationsNeedingRepair(this.name, limit)
+    if (candidates.length === 0) return
+    console.log(`[${this.name}] Repairing ${candidates.length} chats (failed or saved empty)`)
+    try {
+      for (const c of candidates) {
+        await this.syncConversationWithRetry(
+          {
+            id: c.id,
+            title: c.title,
+            createdAt: c.createdAt,
+            updatedAt: c.updatedAt,
+            projectId: c.projectId
+          },
+          2
+        )
+      }
+    } catch (error) {
+      if (!(error instanceof RateLimitedError)) throw error
+      console.warn(`[${this.name}] Repair paused: ${error.message}`)
     }
   }
 
@@ -661,13 +825,8 @@ export class ChatGPTProvider extends BaseProvider<ChatGPTMetadata> {
 
         const pageConversations: ConversationListItem[] = []
 
-        for (const item of result.items) {
-          const conv: ConversationListItem = {
-            id: item.id,
-            title: item.title,
-            createdAt: new Date(item.createdAt),
-            updatedAt: new Date(item.updatedAt)
-          }
+        for (const item of result.items as RawListItem[]) {
+          const conv = toListItem(item)
 
           const convTimestamp = Math.floor(conv.updatedAt.getTime() / 1000) * 1000
           if (stopBeforeTimestamp && convTimestamp <= stopBeforeTimestamp) {
@@ -727,9 +886,8 @@ export class ChatGPTProvider extends BaseProvider<ChatGPTMetadata> {
         this.makeFetchConversationScript(conversationId, headers)
       )
 
-      if (!result) {
-        console.warn(`[${this.name}] Failed to fetch conversation from API`)
-        return { title: 'Untitled', currentNode: null, messages: [] }
+      if (!result || result.__error) {
+        throw new ConversationFetchError(result?.__error ?? null, conversationId)
       }
 
       console.log(
@@ -760,7 +918,8 @@ export class ChatGPTProvider extends BaseProvider<ChatGPTMetadata> {
     }
   }
 
-  private async syncConversation(conv: ConversationListItem): Promise<void> {
+  /** Download one conversation and store it. Returns the number of messages saved. */
+  private async syncConversation(conv: ConversationListItem): Promise<number> {
     if (!this.view || !this.capturedHeaders) {
       throw new Error('Not connected')
     }
@@ -780,7 +939,9 @@ export class ChatGPTProvider extends BaseProvider<ChatGPTMetadata> {
       updatedAt: conv.updatedAt,
       syncedAt: new Date(),
       messageCount: content.messages.length,
-      currentNodeId: content.currentNode
+      currentNodeId: content.currentNode,
+      projectId: conv.projectId,
+      model: latestModel(content.messages)
     })
 
     const messageInserts = content.messages.map((msg, index) => {
@@ -797,7 +958,8 @@ export class ChatGPTProvider extends BaseProvider<ChatGPTMetadata> {
         orderIndex: index,
         parentId: msg.parentNodeId,
         siblingIds: JSON.stringify(msg.siblingNodeIds),
-        siblingIndex: msg.siblingIndex
+        siblingIndex: msg.siblingIndex,
+        model: msg.modelSlug ?? null
       }
     })
 
@@ -822,6 +984,7 @@ export class ChatGPTProvider extends BaseProvider<ChatGPTMetadata> {
         await this.storage.upsertAttachments(attachmentInserts)
       }
     }
+    return content.messages.length
   }
 
   // ============================================================================
@@ -838,7 +1001,7 @@ export class ChatGPTProvider extends BaseProvider<ChatGPTMetadata> {
   const headers = ${JSON.stringify(headers)};
 
   const response = await fetch(
-    'https://chatgpt.com/backend-api/conversations?offset=${offset}&limit=${limit}&order=updated&is_archived=false&is_starred=false',
+    'https://chatgpt.com/backend-api/conversations?offset=${offset}&limit=${limit}&order=updated&is_archived=false',
     {
       credentials: 'include',
       headers: headers,
@@ -856,6 +1019,8 @@ export class ChatGPTProvider extends BaseProvider<ChatGPTMetadata> {
     title: item.title || 'Untitled',
     createdAt: item.create_time,
     updatedAt: item.update_time,
+    conversationTemplateId: item.conversation_template_id || null,
+    gizmoId: item.gizmo_id || null,
   }));
 
   return {
@@ -883,7 +1048,7 @@ export class ChatGPTProvider extends BaseProvider<ChatGPTMetadata> {
 
   if (!response.ok) {
     console.error('[ChatGPT API] Failed to fetch conversation:', response.status);
-    return null;
+    return { __error: response.status };
   }
 
   const data = await response.json();
@@ -923,38 +1088,26 @@ export class ChatGPTProvider extends BaseProvider<ChatGPTMetadata> {
 
   const seenImageFileIds = new Set();
 
-  // Traverse from root to collect messages
-  function traverse(nodeId) {
+  // Process one node; returns whether its children should be visited
+  function visit(nodeId) {
     const node = mapping[nodeId];
-    if (!node) return;
+    if (!node) return false;
 
     const msg = node.message;
     if (msg && msg.content) {
       if (msg.metadata?.is_visually_hidden_from_conversation) {
-        const children = childrenMap[nodeId] || [];
-        for (const childId of children) {
-          traverse(childId);
-        }
-        return;
+        return true;
       }
 
       const contentType = msg.content.content_type;
       const role = msg.author?.role;
 
       if (contentType === 'user_editable_context' || contentType === 'model_editable_context') {
-        const children = childrenMap[nodeId] || [];
-        for (const childId of children) {
-          traverse(childId);
-        }
-        return;
+        return true;
       }
 
       if (msg.recipient && msg.recipient !== 'all') {
-        const children = childrenMap[nodeId] || [];
-        for (const childId of children) {
-          traverse(childId);
-        }
-        return;
+        return true;
       }
 
       if (role === 'tool' && contentType === 'multimodal_text') {
@@ -1010,11 +1163,7 @@ export class ChatGPTProvider extends BaseProvider<ChatGPTMetadata> {
           });
         }
 
-        const children = childrenMap[nodeId] || [];
-        for (const childId of children) {
-          traverse(childId);
-        }
-        return;
+        return true;
       }
 
       if (role === 'user' || role === 'assistant') {
@@ -1110,14 +1259,22 @@ export class ChatGPTProvider extends BaseProvider<ChatGPTMetadata> {
       }
     }
 
-    const children = childrenMap[nodeId] || [];
-    for (const childId of children) {
-      traverse(childId);
-    }
+    return true;
   }
 
-  if (rootId) {
-    traverse(rootId);
+  // Iterative pre-order walk (same order as recursion). Long agent/tool chats can have
+  // thousands of nested nodes, which overflowed the call stack when this was recursive.
+  const stack = rootId ? [rootId] : [];
+  const visited = new Set();
+  while (stack.length > 0) {
+    const nodeId = stack.pop();
+    if (visited.has(nodeId)) continue;
+    visited.add(nodeId);
+    if (!visit(nodeId)) continue;
+    const children = childrenMap[nodeId] || [];
+    for (let i = children.length - 1; i >= 0; i--) {
+      stack.push(children[i]);
+    }
   }
 
   // Post-process: fix parent references

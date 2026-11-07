@@ -16,6 +16,7 @@ function createConversation(overrides: Partial<Conversation> = {}): Conversation
     syncedAt: new Date('2026-01-07T12:00:00Z'),
     messageCount: 2,
     currentNodeId: null,
+    projectId: null,
     ...overrides
   }
 }
