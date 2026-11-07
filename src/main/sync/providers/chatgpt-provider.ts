@@ -10,6 +10,14 @@ import { getAttachmentsPath } from '../../settings.js'
 import { transformChatGPTMessageToParts } from './chatgpt/utils'
 import { getChatGPTProjectId, makeGetJsonScript, parseChatGPTProjectsPage } from './projects-utils'
 import type { NewProject } from '../../db/schema'
+import {
+  ConversationFetchError,
+  RateLimitGuard,
+  RateLimitedError,
+  VERIFIED_EMPTY,
+  retryDelayMs,
+  sleep
+} from './fetch-guard'
 import fs from 'fs'
 import path from 'path'
 
@@ -38,6 +46,15 @@ type RawListItem = {
   updatedAt: string | number
   conversationTemplateId: string | null
   gizmoId: string | null
+}
+
+// Most recent assistant model slug in a conversation (null when ChatGPT doesn't say)
+const latestModel = (messages: Array<{ role: string; modelSlug?: string }>): string | null => {
+  for (let i = messages.length - 1; i >= 0; i--) {
+    if (messages[i].role === 'assistant' && messages[i].modelSlug)
+      return messages[i].modelSlug ?? null
+  }
+  return null
 }
 
 const toListItem = (item: RawListItem): ConversationListItem => ({
@@ -115,6 +132,9 @@ export class ChatGPTProvider extends BaseProvider<ChatGPTMetadata> {
   private loginCheckInterval: NodeJS.Timeout | null = null
   private syncingConversations = new Set<string>() // In-memory tracking of conversations being synced
   private lastProjectSyncAt = 0
+  private rateGuard = new RateLimitGuard()
+  // Gap between conversation downloads; bursts are what trigger ChatGPT's 429s
+  private readonly fetchGapMs = 800
 
   constructor(storage: IStorage, pollingIntervalMs: number = 60000) {
     super(storage, pollingIntervalMs)
@@ -248,7 +268,8 @@ export class ChatGPTProvider extends BaseProvider<ChatGPTMetadata> {
         updatedAt: existing.updatedAt,
         syncedAt: new Date(),
         messageCount: content.messages.length,
-        currentNodeId: content.currentNode
+        currentNodeId: content.currentNode,
+        model: latestModel(content.messages)
       })
 
       // Upsert messages
@@ -266,7 +287,8 @@ export class ChatGPTProvider extends BaseProvider<ChatGPTMetadata> {
           orderIndex: index,
           parentId: msg.parentNodeId,
           siblingIds: JSON.stringify(msg.siblingNodeIds),
-          siblingIndex: msg.siblingIndex
+          siblingIndex: msg.siblingIndex,
+          model: msg.modelSlug ?? null
         }
       })
 
@@ -430,6 +452,10 @@ export class ChatGPTProvider extends BaseProvider<ChatGPTMetadata> {
       return { success: false, error: 'Not connected' }
     }
 
+    if (this.rateGuard.coolingDown()) {
+      return { success: false, error: new RateLimitedError(this.rateGuard.until).message }
+    }
+
     try {
       // Projects first so folders exist before (possibly long) chat syncs finish
       await this.syncProjectsIfDue()
@@ -437,13 +463,17 @@ export class ChatGPTProvider extends BaseProvider<ChatGPTMetadata> {
       const metadata = await this.getMetadata()
 
       // Choose sync mode based on whether we've completed a full sync
+      let result: SyncResult
       if (!metadata.isFullSyncComplete) {
         console.log(`[${this.name}] Starting full sync from offset ${metadata.lastCompletedOffset}`)
-        return await this.fullSync(metadata)
+        result = await this.fullSync(metadata)
       } else {
         console.log(`[${this.name}] Starting incremental sync`)
-        return await this.incrementalSync()
+        result = await this.incrementalSync()
       }
+
+      if (result.success) await this.repairConversations()
+      return result
     } catch (error) {
       const errorMessage = (error as Error).message
       console.error(`[${this.name}] Sync error:`, error)
@@ -635,6 +665,7 @@ export class ChatGPTProvider extends BaseProvider<ChatGPTMetadata> {
                 await this.syncConversationWithRetry(mostRecentApiChat)
                 newChatsFound = 1
               } catch (err) {
+                if (err instanceof RateLimitedError) throw err
                 console.error(`[${this.name}] Error syncing most recent conversation:`, err)
               }
               shouldEarlyExit = true
@@ -656,6 +687,7 @@ export class ChatGPTProvider extends BaseProvider<ChatGPTMetadata> {
             try {
               await this.syncConversationWithRetry(conv)
             } catch (err) {
+              if (err instanceof RateLimitedError) throw err
               console.error(`[${this.name}] Error syncing conversation ${conv.id}:`, err)
             }
           }
@@ -682,38 +714,76 @@ export class ChatGPTProvider extends BaseProvider<ChatGPTMetadata> {
     this.syncingConversations.add(conv.id) // Track in-memory
 
     try {
-      for (let attempt = 0; attempt < maxRetries; attempt++) {
+      for (let attempt = 0; ; attempt++) {
+        await sleep(this.fetchGapMs)
         try {
-          await this.syncConversation(conv)
-
-          // Clear error on success
-          await this.storage.updateConversationSyncError(conv.id, null, 0)
+          const messageCount = await this.syncConversation(conv)
+          this.rateGuard.recordSuccess()
+          // A chat that downloads fine with no messages is marked so repair skips it
+          await this.storage.updateConversationSyncError(
+            conv.id,
+            null,
+            messageCount === 0 ? VERIFIED_EMPTY : 0
+          )
           return
         } catch (error) {
-          if (attempt === maxRetries - 1) {
-            // Final failure - persist error
-            console.error(
-              `[${this.name}] Failed to sync conversation ${conv.id} after ${maxRetries} attempts:`,
-              error
+          if (attempt < maxRetries - 1) {
+            const backoffMs = retryDelayMs(error, attempt)
+            console.log(
+              `[${this.name}] Retry ${attempt + 1}/${maxRetries} for conversation ${conv.id} after ${backoffMs}ms`
             )
-            await this.storage.updateConversationSyncError(
-              conv.id,
-              (error as Error).message,
-              attempt + 1
-            )
-            throw error
+            await sleep(backoffMs)
+            continue
           }
 
-          // Exponential backoff: 1s, 2s, 4s
-          const backoffMs = Math.pow(2, attempt) * 1000
-          console.log(
-            `[${this.name}] Retry ${attempt + 1}/${maxRetries} for conversation ${conv.id} after ${backoffMs}ms`
+          // Final failure: record it (never save an empty chat as success) and move on.
+          // The repair pass retries it on a later cycle.
+          console.error(
+            `[${this.name}] Failed to sync conversation ${conv.id} after ${maxRetries} attempts:`,
+            error
           )
-          await new Promise((r) => setTimeout(r, backoffMs))
+          await this.storage.recordConversationFailure(
+            {
+              id: conv.id,
+              title: conv.title,
+              provider: 'chatgpt',
+              createdAt: conv.createdAt,
+              updatedAt: conv.updatedAt,
+              syncedAt: new Date(),
+              projectId: conv.projectId
+            },
+            (error as Error).message
+          )
+          if (this.rateGuard.recordFailure(error)) throw new RateLimitedError(this.rateGuard.until)
+          return
         }
       }
     } finally {
       this.syncingConversations.delete(conv.id)
+    }
+  }
+
+  /** Re-download chats that failed or were saved empty by older versions. */
+  private async repairConversations(limit = 60): Promise<void> {
+    const candidates = await this.storage.getConversationsNeedingRepair(this.name, limit)
+    if (candidates.length === 0) return
+    console.log(`[${this.name}] Repairing ${candidates.length} chats (failed or saved empty)`)
+    try {
+      for (const c of candidates) {
+        await this.syncConversationWithRetry(
+          {
+            id: c.id,
+            title: c.title,
+            createdAt: c.createdAt,
+            updatedAt: c.updatedAt,
+            projectId: c.projectId
+          },
+          2
+        )
+      }
+    } catch (error) {
+      if (!(error instanceof RateLimitedError)) throw error
+      console.warn(`[${this.name}] Repair paused: ${error.message}`)
     }
   }
 
@@ -816,9 +886,8 @@ export class ChatGPTProvider extends BaseProvider<ChatGPTMetadata> {
         this.makeFetchConversationScript(conversationId, headers)
       )
 
-      if (!result) {
-        console.warn(`[${this.name}] Failed to fetch conversation from API`)
-        return { title: 'Untitled', currentNode: null, messages: [] }
+      if (!result || result.__error) {
+        throw new ConversationFetchError(result?.__error ?? null, conversationId)
       }
 
       console.log(
@@ -849,7 +918,8 @@ export class ChatGPTProvider extends BaseProvider<ChatGPTMetadata> {
     }
   }
 
-  private async syncConversation(conv: ConversationListItem): Promise<void> {
+  /** Download one conversation and store it. Returns the number of messages saved. */
+  private async syncConversation(conv: ConversationListItem): Promise<number> {
     if (!this.view || !this.capturedHeaders) {
       throw new Error('Not connected')
     }
@@ -870,7 +940,8 @@ export class ChatGPTProvider extends BaseProvider<ChatGPTMetadata> {
       syncedAt: new Date(),
       messageCount: content.messages.length,
       currentNodeId: content.currentNode,
-      projectId: conv.projectId
+      projectId: conv.projectId,
+      model: latestModel(content.messages)
     })
 
     const messageInserts = content.messages.map((msg, index) => {
@@ -887,7 +958,8 @@ export class ChatGPTProvider extends BaseProvider<ChatGPTMetadata> {
         orderIndex: index,
         parentId: msg.parentNodeId,
         siblingIds: JSON.stringify(msg.siblingNodeIds),
-        siblingIndex: msg.siblingIndex
+        siblingIndex: msg.siblingIndex,
+        model: msg.modelSlug ?? null
       }
     })
 
@@ -912,6 +984,7 @@ export class ChatGPTProvider extends BaseProvider<ChatGPTMetadata> {
         await this.storage.upsertAttachments(attachmentInserts)
       }
     }
+    return content.messages.length
   }
 
   // ============================================================================
@@ -975,7 +1048,7 @@ export class ChatGPTProvider extends BaseProvider<ChatGPTMetadata> {
 
   if (!response.ok) {
     console.error('[ChatGPT API] Failed to fetch conversation:', response.status);
-    return null;
+    return { __error: response.status };
   }
 
   const data = await response.json();

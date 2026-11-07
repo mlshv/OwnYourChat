@@ -15,7 +15,8 @@ export const conversations = sqliteTable(
     syncRetryCount: integer('sync_retry_count').default(0), // Number of retry attempts
     // Provider project the chat belongs to (ChatGPT "g-p-..." id or Claude project uuid).
     // No foreign key: a chat can sync before its project row does.
-    projectId: text('project_id')
+    projectId: text('project_id'),
+    model: text('model') // Model used (Claude: per chat; ChatGPT: latest assistant model)
   },
   (table) => ({
     providerIdx: index('provider_idx').on(table.provider),
@@ -73,7 +74,8 @@ export const messages = sqliteTable(
     // Branch/tree structure fields
     parentId: text('parent_id'), // Parent message ID (null for root)
     siblingIds: text('sibling_ids'), // JSON array of sibling message IDs
-    siblingIndex: integer('sibling_index') // 0-based index among siblings
+    siblingIndex: integer('sibling_index'), // 0-based index among siblings
+    model: text('model') // Model that wrote this message, when the provider says
   },
   (table) => ({
     conversationIdIdx: index('conversation_id_idx').on(table.conversationId)

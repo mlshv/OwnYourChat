@@ -54,6 +54,9 @@ export interface IStorage {
     provider: string,
     assignments: Map<string, string | null>
   ): Promise<number>
+  setConversationModels(provider: string, models: Map<string, string>): Promise<number>
+  recordConversationFailure(row: NewConversation, error: string): Promise<void>
+  getConversationsNeedingRepair(provider: string, limit: number): Promise<Conversation[]>
 
   // Provider state operations
   getProviderState<TMetadata = Record<string, unknown>>(

@@ -12,6 +12,14 @@ import {
   type ClaudeContentBlock as UtilsClaudeContentBlock
 } from './claude/utils'
 import { makeGetJsonScript, parseClaudeProject, parseClaudeProjectDocs } from './projects-utils'
+import {
+  ConversationFetchError,
+  RateLimitGuard,
+  RateLimitedError,
+  VERIFIED_EMPTY,
+  retryDelayMs,
+  sleep
+} from './fetch-guard'
 import fs from 'fs'
 import path from 'path'
 
@@ -32,6 +40,7 @@ export interface ClaudeConversationListItem {
   updated_at: string
   current_leaf_message_uuid: string | null
   project_uuid?: string | null
+  model?: string | null
 }
 
 export interface ClaudeContentBlock {
@@ -106,6 +115,8 @@ export class ClaudeProvider extends BaseProvider<ClaudeMetadata> {
   private isViewVisible: boolean = false
   private loginCheckInterval: NodeJS.Timeout | null = null
   private lastProjectSyncAt = 0
+  private rateGuard = new RateLimitGuard()
+  private readonly fetchGapMs = 300
   private projectDetailsLoaded = false
 
   constructor(storage: IStorage, pollingIntervalMs: number = 60000) {
@@ -558,6 +569,10 @@ export class ClaudeProvider extends BaseProvider<ClaudeMetadata> {
       return { success: false, error: 'Not connected' }
     }
 
+    if (this.rateGuard.coolingDown()) {
+      return { success: false, error: new RateLimitedError(this.rateGuard.until).message }
+    }
+
     try {
       // Projects first so folders exist before (possibly long) chat syncs finish
       await this.syncProjectsIfDue()
@@ -565,13 +580,17 @@ export class ClaudeProvider extends BaseProvider<ClaudeMetadata> {
       const metadata = await this.getMetadata()
 
       // Choose sync mode based on whether we've completed a full sync
+      let result: SyncResult
       if (!metadata.isFullSyncComplete) {
         console.log(`[${this.name}] Starting full sync from offset ${metadata.lastCompletedOffset}`)
-        return await this.fullSync(metadata)
+        result = await this.fullSync(metadata)
       } else {
         console.log(`[${this.name}] Starting incremental sync`)
-        return await this.incrementalSync()
+        result = await this.incrementalSync()
       }
+
+      if (result.success) await this.repairConversations()
+      return result
     } catch (error) {
       const errorMessage = (error as Error).message
       console.error(`[${this.name}] Sync error:`, error)
@@ -667,6 +686,7 @@ export class ClaudeProvider extends BaseProvider<ClaudeMetadata> {
 
     // 3. Membership for chats that are already stored (covers chats moved between projects)
     const assignments = new Map<string, string | null>()
+    const models = new Map<string, string>()
     for (let offset = 0; offset <= 10000; offset += LIMIT) {
       const page = await this.getJson(
         `${base}/chat_conversations?limit=${LIMIT}&offset=${offset}&consistency=eventual`
@@ -674,15 +694,20 @@ export class ClaudeProvider extends BaseProvider<ClaudeMetadata> {
       const items = (Array.isArray(page) ? page : []) as Array<{
         uuid: string
         project_uuid?: string | null
+        model?: string | null
       }>
-      for (const item of items) assignments.set(item.uuid, item.project_uuid ?? null)
+      for (const item of items) {
+        assignments.set(item.uuid, item.project_uuid ?? null)
+        if (item.model) models.set(item.uuid, item.model)
+      }
       if (items.length < LIMIT) break
     }
     const moved = await this.storage.setConversationProjectIds('claude', assignments)
+    const modelsFilled = await this.storage.setConversationModels('claude', models)
 
     console.log(
       `[${this.name}] Projects synced: ${listed.length} projects, ${detailed} refreshed, ` +
-        `${moved} stored chats re-filed (scanned ${assignments.size})`
+        `${moved} stored chats re-filed, ${modelsFilled} models filled (scanned ${assignments.size})`
     )
   }
 
@@ -732,7 +757,8 @@ export class ClaudeProvider extends BaseProvider<ClaudeMetadata> {
             created_at: item.created_at,
             updated_at: item.updated_at,
             current_leaf_message_uuid: item.current_leaf_message_uuid || null,
-            project_uuid: item.project_uuid ?? null
+            project_uuid: item.project_uuid ?? null,
+            model: item.model ?? null
           })
         )
 
@@ -821,6 +847,7 @@ export class ClaudeProvider extends BaseProvider<ClaudeMetadata> {
             try {
               await this.syncConversationWithRetry(conv)
             } catch (err) {
+              if (err instanceof RateLimitedError) throw err
               console.error(`[${this.name}] Error syncing conversation ${conv.uuid}:`, err)
             }
           }
@@ -844,35 +871,75 @@ export class ClaudeProvider extends BaseProvider<ClaudeMetadata> {
     conv: ClaudeConversationListItem,
     maxRetries = 3
   ): Promise<void> {
-    for (let attempt = 0; attempt < maxRetries; attempt++) {
+    for (let attempt = 0; ; attempt++) {
+      await sleep(this.fetchGapMs)
       try {
-        await this.syncConversation(conv)
-
-        // Clear error on success
-        await this.storage.updateConversationSyncError(conv.uuid, null, 0)
+        const messageCount = await this.syncConversation(conv)
+        this.rateGuard.recordSuccess()
+        // A chat that downloads fine with no messages is marked so repair skips it
+        await this.storage.updateConversationSyncError(
+          conv.uuid,
+          null,
+          messageCount === 0 ? VERIFIED_EMPTY : 0
+        )
         return
       } catch (error) {
-        if (attempt === maxRetries - 1) {
-          // Final failure - persist error
-          console.error(
-            `[${this.name}] Failed to sync conversation ${conv.uuid} after ${maxRetries} attempts:`,
-            error
+        if (attempt < maxRetries - 1) {
+          const backoffMs = retryDelayMs(error, attempt)
+          console.log(
+            `[${this.name}] Retry ${attempt + 1}/${maxRetries} for conversation ${conv.uuid} after ${backoffMs}ms`
           )
-          await this.storage.updateConversationSyncError(
-            conv.uuid,
-            (error as Error).message,
-            attempt + 1
-          )
-          throw error
+          await sleep(backoffMs)
+          continue
         }
 
-        // Exponential backoff: 1s, 2s, 4s
-        const backoffMs = Math.pow(2, attempt) * 1000
-        console.log(
-          `[${this.name}] Retry ${attempt + 1}/${maxRetries} for conversation ${conv.uuid} after ${backoffMs}ms`
+        // Final failure: record it (never save an empty chat as success) and move on.
+        // The repair pass retries it on a later cycle.
+        console.error(
+          `[${this.name}] Failed to sync conversation ${conv.uuid} after ${maxRetries} attempts:`,
+          error
         )
-        await new Promise((r) => setTimeout(r, backoffMs))
+        await this.storage.recordConversationFailure(
+          {
+            id: conv.uuid,
+            title: conv.name || 'Untitled',
+            provider: 'claude',
+            createdAt: new Date(conv.created_at),
+            updatedAt: new Date(conv.updated_at),
+            syncedAt: new Date(),
+            projectId: conv.project_uuid
+          },
+          (error as Error).message
+        )
+        if (this.rateGuard.recordFailure(error)) throw new RateLimitedError(this.rateGuard.until)
+        return
       }
+    }
+  }
+
+  /** Re-download chats that failed or were saved empty by older versions. */
+  private async repairConversations(limit = 60): Promise<void> {
+    const candidates = await this.storage.getConversationsNeedingRepair(this.name, limit)
+    if (candidates.length === 0) return
+    console.log(`[${this.name}] Repairing ${candidates.length} chats (failed or saved empty)`)
+    try {
+      for (const c of candidates) {
+        await this.syncConversationWithRetry(
+          {
+            uuid: c.id,
+            name: c.title,
+            summary: '',
+            created_at: c.createdAt.toISOString(),
+            updated_at: c.updatedAt.toISOString(),
+            current_leaf_message_uuid: null,
+            project_uuid: c.projectId
+          },
+          2
+        )
+      }
+    } catch (error) {
+      if (!(error instanceof RateLimitedError)) throw error
+      console.warn(`[${this.name}] Repair paused: ${error.message}`)
     }
   }
 
@@ -955,7 +1022,8 @@ export class ClaudeProvider extends BaseProvider<ClaudeMetadata> {
             created_at: item.created_at,
             updated_at: item.updated_at,
             current_leaf_message_uuid: item.current_leaf_message_uuid || null,
-            project_uuid: item.project_uuid ?? null
+            project_uuid: item.project_uuid ?? null,
+            model: item.model ?? null
           }
 
           const convTimestamp = new Date(conv.updated_at).getTime()
@@ -1016,17 +1084,8 @@ export class ClaudeProvider extends BaseProvider<ClaudeMetadata> {
         this.makeFetchConversationScript(this.organizationId, conversationId, headers)
       )
 
-      if (!result) {
-        console.warn(`[${this.name}] Failed to fetch conversation from API`)
-        return {
-          uuid: conversationId,
-          name: 'Untitled',
-          summary: '',
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString(),
-          current_leaf_message_uuid: null,
-          chat_messages: []
-        }
+      if (!result || result.__error) {
+        throw new ConversationFetchError(result?.__error ?? null, conversationId)
       }
 
       console.log(
@@ -1060,7 +1119,8 @@ export class ClaudeProvider extends BaseProvider<ClaudeMetadata> {
     }
   }
 
-  private async syncConversation(conv: ClaudeConversationListItem): Promise<void> {
+  /** Download one conversation and store it. Returns the number of messages saved. */
+  private async syncConversation(conv: ClaudeConversationListItem): Promise<number> {
     if (!this.view || !this.capturedHeaders || !this.organizationId) {
       throw new Error('Not connected')
     }
@@ -1081,7 +1141,8 @@ export class ClaudeProvider extends BaseProvider<ClaudeMetadata> {
       syncedAt: new Date(),
       messageCount: content.chat_messages.length,
       currentNodeId: content.current_leaf_message_uuid,
-      projectId: conv.project_uuid
+      projectId: conv.project_uuid,
+      model: conv.model
     })
 
     const messageInserts = content.chat_messages.map((msg) =>
@@ -1133,6 +1194,7 @@ export class ClaudeProvider extends BaseProvider<ClaudeMetadata> {
         await this.storage.upsertAttachments(attachmentInserts)
       }
     }
+    return content.chat_messages.length
   }
 
   private convertClaudeMessage(msg: ClaudeMessage, conversationId: string) {
@@ -1215,7 +1277,7 @@ export class ClaudeProvider extends BaseProvider<ClaudeMetadata> {
 
   if (!response.ok) {
     console.error('[Claude API] Failed to fetch conversation:', response.status);
-    return null;
+    return { __error: response.status };
   }
 
   const data = await response.json();

@@ -78,6 +78,18 @@ export class DrizzleStorageAdapter implements IStorage {
     return dbOps.setConversationProjectIds(provider, assignments)
   }
 
+  async setConversationModels(provider: string, models: Map<string, string>): Promise<number> {
+    return dbOps.setConversationModels(provider, models)
+  }
+
+  async recordConversationFailure(row: NewConversation, error: string): Promise<void> {
+    return dbOps.recordConversationFailure(row, error)
+  }
+
+  async getConversationsNeedingRepair(provider: string, limit: number): Promise<Conversation[]> {
+    return dbOps.getConversationsNeedingRepair(provider, limit)
+  }
+
   // Provider state operations
   async getProviderState<TMetadata = Record<string, unknown>>(
     providerName: ProviderName

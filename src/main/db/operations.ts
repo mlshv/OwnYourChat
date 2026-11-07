@@ -399,7 +399,8 @@ export async function upsertConversation(data: NewConversation): Promise<void> {
         messageCount: data.messageCount,
         currentNodeId: data.currentNodeId,
         // Left undefined by callers that don't know the project; drizzle skips undefined keys
-        projectId: data.projectId
+        projectId: data.projectId,
+        model: data.model
       }
     })
 }
@@ -428,7 +429,8 @@ export async function upsertMessages(data: NewMessage[]): Promise<void> {
           orderIndex: message.orderIndex,
           parentId: message.parentId,
           siblingIds: message.siblingIds,
-          siblingIndex: message.siblingIndex
+          siblingIndex: message.siblingIndex,
+          model: message.model
         }
       })
   }
@@ -602,6 +604,80 @@ export async function setConversationProjectIds(
     const next = assignments.get(row.id) ?? null
     if ((row.projectId ?? null) === next) continue
     await db.update(conversations).set({ projectId: next }).where(eq(conversations.id, row.id))
+    changed++
+  }
+  return changed
+}
+
+/**
+ * Record a failed download without touching stored messages. Creates a placeholder row for a
+ * chat that has never synced, so the repair pass can find and retry it.
+ */
+export async function recordConversationFailure(
+  row: NewConversation,
+  error: string
+): Promise<void> {
+  const db = getDatabase()
+  await db
+    .insert(conversations)
+    .values({ ...row, messageCount: row.messageCount ?? 0, syncError: error, syncRetryCount: 1 })
+    .onConflictDoUpdate({
+      target: conversations.id,
+      set: {
+        syncError: error,
+        syncRetryCount: sql`coalesce(${conversations.syncRetryCount}, 0) + 1`
+      }
+    })
+}
+
+/**
+ * Chats to re-download: failed ones (up to maxFailures attempts) and ones saved empty without
+ * an error (the old silent-failure behaviour). Verified-empty chats (retry count -1) are skipped.
+ */
+export async function getConversationsNeedingRepair(
+  provider: string,
+  limit: number,
+  maxFailures = 6
+): Promise<Conversation[]> {
+  const db = getDatabase()
+  const retries = sql`coalesce(${conversations.syncRetryCount}, 0)`
+  const rows = await db
+    .select()
+    .from(conversations)
+    .where(
+      and(
+        eq(conversations.provider, provider),
+        or(
+          and(isNotNull(conversations.syncError), sql`${retries} < ${maxFailures}`),
+          and(
+            eq(conversations.messageCount, 0),
+            sql`${conversations.syncError} is null`,
+            sql`${retries} = 0`
+          )
+        )
+      )
+    )
+    .orderBy(desc(conversations.updatedAt))
+    .limit(limit)
+  return rows.map(mapConversation)
+}
+
+/** Fill in chat-level model names (e.g. for chats synced before models were stored). */
+export async function setConversationModels(
+  provider: string,
+  models: Map<string, string>
+): Promise<number> {
+  const db = getDatabase()
+  const rows = await db
+    .select({ id: conversations.id, model: conversations.model })
+    .from(conversations)
+    .where(eq(conversations.provider, provider))
+
+  let changed = 0
+  for (const row of rows) {
+    const next = models.get(row.id)
+    if (!next || row.model === next) continue
+    await db.update(conversations).set({ model: next }).where(eq(conversations.id, row.id))
     changed++
   }
   return changed

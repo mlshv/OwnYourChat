@@ -1,10 +1,12 @@
-import { app, BrowserWindow, protocol, net, Menu } from 'electron'
+import { app, BrowserWindow, protocol, net, Menu, Tray, nativeImage } from 'electron'
 import { join } from 'path'
 import fs from 'fs'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 
-// Enable remote debugging for electron-mcp-server (QA/debug agent) in dev mode
-if (is.dev) {
+// Remote debugging (for electron-mcp-server / QA agents) exposes logged-in sessions to any
+// local process, so it is opt-in: set OWNYOURCHAT_DEBUG_PORT=1 when you need it.
+const debugPortEnabled = is.dev && process.env['OWNYOURCHAT_DEBUG_PORT'] === '1'
+if (debugPortEnabled) {
   app.commandLine.appendSwitch('remote-debugging-port', '9222')
 }
 import icon from '../../build/icon.png?asset'
@@ -216,6 +218,79 @@ protocol.registerSchemesAsPrivileged([
   }
 ])
 
+// Background mode: `--hidden` starts without a window (used by the Windows login launcher).
+// The window lives on behind a tray icon so closing it never stops syncing.
+const startHidden = process.argv.includes('--hidden')
+let isQuitting = false
+let tray: Tray | null = null
+
+// One copy only: a second launch shows the running window instead of starting
+// another sync against the same database.
+if (!app.requestSingleInstanceLock()) {
+  app.exit(0)
+} else {
+  app.on('second-instance', () => showMainWindow())
+}
+
+function showMainWindow(): void {
+  if (!mainWindow) return
+  if (mainWindow.isMinimized()) mainWindow.restore()
+  mainWindow.show()
+  mainWindow.focus()
+}
+
+function createTray(): void {
+  tray = new Tray(nativeImage.createFromPath(icon).resize({ width: 16, height: 16 }))
+  tray.setToolTip('OwnYourChat (syncing in the background)')
+  tray.setContextMenu(
+    Menu.buildFromTemplate([
+      { label: 'Open OwnYourChat', click: () => showMainWindow() },
+      { type: 'separator' },
+      {
+        label: 'Quit (stops syncing)',
+        click: () => {
+          isQuitting = true
+          app.quit()
+        }
+      }
+    ])
+  )
+  tray.on('click', () => showMainWindow())
+}
+
+// Background runs have no console, so keep a small rolling log file
+function setupFileLogging(): void {
+  try {
+    const dir = join(app.getPath('userData'), 'logs')
+    fs.mkdirSync(dir, { recursive: true })
+    const file = join(dir, 'main.log')
+    if (fs.existsSync(file) && fs.statSync(file).size > 10 * 1024 * 1024) {
+      fs.renameSync(file, join(dir, 'main.previous.log'))
+    }
+    const stream = fs.createWriteStream(file, { flags: 'a' })
+    for (const level of ['log', 'warn', 'error'] as const) {
+      const original = console[level].bind(console)
+      console[level] = (...args: unknown[]) => {
+        original(...args)
+        const line = args
+          .map((a) => (typeof a === 'string' ? a : a instanceof Error ? a.stack : safeJson(a)))
+          .join(' ')
+        stream.write(`${new Date().toISOString()} ${level.toUpperCase()} ${line}\n`)
+      }
+    }
+  } catch (error) {
+    console.error('[App] File logging unavailable:', error)
+  }
+}
+
+function safeJson(value: unknown): string {
+  try {
+    return JSON.stringify(value)
+  } catch {
+    return String(value)
+  }
+}
+
 function createWindow(): void {
   // Create the browser window.
   mainWindow = new BrowserWindow({
@@ -232,7 +307,15 @@ function createWindow(): void {
   })
 
   mainWindow.on('ready-to-show', () => {
-    mainWindow?.show()
+    if (!startHidden) mainWindow?.show()
+  })
+
+  // Closing hides to the tray; only "Quit" from the tray (or the File menu) stops syncing
+  mainWindow.on('close', (event) => {
+    if (!isQuitting && tray) {
+      event.preventDefault()
+      mainWindow?.hide()
+    }
   })
 
   mainWindow.webContents.setWindowOpenHandler((details) => {
@@ -253,8 +336,12 @@ function createWindow(): void {
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(async () => {
+  setupFileLogging()
+  console.log(`[App] Starting${startHidden ? ' hidden (background mode)' : ''}`)
+
   // Create application menu
   createApplicationMenu()
+  createTray()
 
   // Set up callback to rebuild menu when update is downloaded
   onUpdateDownloaded(() => {
@@ -305,7 +392,7 @@ app.whenReady().then(async () => {
   createWindow()
 
   // Enable Chrome DevTools Protocol for electron-mcp-server (QA/debug agent)
-  if (is.dev && mainWindow) {
+  if (debugPortEnabled && mainWindow) {
     try {
       mainWindow.webContents.debugger.attach('1.3')
       console.log('[App] CDP debugger attached for electron-mcp-server')
@@ -390,6 +477,7 @@ export function getMainWindow(): BrowserWindow | null {
 }
 // Handle app quit
 app.on('before-quit', async () => {
+  isQuitting = true
   await providerRegistry.stopAll()
   stopSyncScheduler()
   await stopMcpServer()
